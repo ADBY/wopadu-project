@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_button_like_icon_selected.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_button_like_icon_selected.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_blue_background.9.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_blue_background.9.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_button_send_icon.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_button_send_icon.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/messenger_bubble_small_white.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/messenger_bubble_small_white.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_close.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_close.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_blue_xout.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_blue_xout.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_button_icon.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_button_icon.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/messenger_bubble_large_blue.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/messenger_bubble_large_blue.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_black_background.9.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_black_background.9.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_black_bottomnub.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_black_bottomnub.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_blue_bottomnub.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_blue_bottomnub.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/messenger_bubble_small_blue.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/messenger_bubble_small_blue.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/picker_magnifier.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/picker_magnifier.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/messenger_button_send_round_shadow.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/messenger_button_send_round_shadow.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_black_xout.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_black_xout.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_black_topnub.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_black_topnub.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/com_facebook_tooltip_blue_topnub.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/com_facebook_tooltip_blue_topnub.png"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/drawable-xhdpi-v4/messenger_bubble_large_white.png",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/drawable-xhdpi/messenger_bubble_large_white.png"
+    }
+]

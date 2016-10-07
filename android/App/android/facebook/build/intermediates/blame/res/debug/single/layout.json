@@ -1,0 +1,86 @@
+[
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_list_row.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_list_row.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_title_bar_stub.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_title_bar_stub.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_search_bar_layout.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_search_bar_layout.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/com_facebook_login_fragment.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/com_facebook_login_fragment.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_search_box.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_search_box.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/com_facebook_tooltip_bubble.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/com_facebook_tooltip_bubble.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/com_facebook_activity_layout.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/com_facebook_activity_layout.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_placepickerfragment_list_row.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_placepickerfragment_list_row.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_friendpickerfragment.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_friendpickerfragment.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/messenger_button_send_blue_round.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/messenger_button_send_blue_round.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_placepickerfragment.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_placepickerfragment.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_activity_circle_row.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_activity_circle_row.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_title_bar.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_title_bar.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_list_section_header.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_list_section_header.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/messenger_button_send_blue_large.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/messenger_button_send_blue_large.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_checkbox.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_checkbox.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/messenger_button_send_white_large.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/messenger_button_send_white_large.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/messenger_button_send_white_round.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/messenger_button_send_white_round.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/messenger_button_send_blue_small.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/messenger_button_send_blue_small.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/messenger_button_send_white_small.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/messenger_button_send_white_small.xml"
+    },
+    {
+        "merged": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/res/merged/debug/layout/picker_image.xml",
+        "source": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/layout/picker_image.xml"
+    }
+]

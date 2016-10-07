@@ -1,0 +1,258 @@
+--
+-- For more information on build.settings see the Corona SDK Build Guide at:
+-- http://docs.coronalabs.com/guide/distribution/buildSettings/index.html
+--
+
+settings =
+{
+	
+	orientation =
+	{
+		-- Supported values for orientation:
+		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
+
+		default = "portrait",
+		supported = { "portrait", }
+	},
+	
+	excludeFiles =
+	{
+		-- Include only the necessary icon files on each platform
+		iphone = { "Icon-*dpi.png", },
+		android = { "Icon.png", "Icon-Small-*.png", "Icon*@2x.png", },
+	},
+	
+	plugins =
+    {
+		["plugin.notifications"] =
+        {
+            publisherId = "com.coronalabs"
+        },
+        ["plugin.GBCLanguageCabinet"] = {
+        	publisherId = "com.gamesbycandlelight",
+    	},
+        ["plugin.facebook.v4"] =
+        {
+            publisherId = "com.coronalabs"
+        },
+    },
+
+	--
+	-- iOS Section
+	--
+	iphone =
+	{
+		plist =
+		{
+			UIStatusBarHidden = false,
+			UIPrerenderedIcon = true, -- set to false for "shine" overlay
+			--UIApplicationExitsOnSuspend = true, -- uncomment to quit app on suspend
+		
+		NSAppTransportSecurity =
+       {
+        NSExceptionDomains =
+         {
+          ["wopadu.com"] =
+           {
+            NSIncludesSubdomains = true,
+            NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
+           },
+           ["googleapis.com"] =
+           {
+            NSIncludesSubdomains = true,
+            NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
+           },
+           
+           ["api.stripe.com"] =
+           {
+            NSIncludesSubdomains = true,
+            NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
+           },
+           
+           ["accounts.google.com"] =
+           {
+            NSIncludesSubdomains = true,
+            NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
+           },
+           
+           ["fbcdn.net"] = 
+			{
+				NSIncludesSubdomains = true,
+				NSExceptionRequiresForwardSecrecy = false,
+			},
+			["facebook.com"] = 
+			{
+				NSIncludesSubdomains = true,
+				NSExceptionRequiresForwardSecrecy = false,
+			},
+			["akamaihd.net"] = 
+			{
+				NSIncludesSubdomains = true,
+				NSExceptionRequiresForwardSecrecy = false,
+			},
+           
+         },
+         
+        
+         
+       }, 
+            
+            -- Whitelist Facebook Apps
+            LSApplicationQueriesSchemes = 
+            {
+                "fb",
+                "fbapi20130214",
+                "fbapi20130410",
+                "fbapi20140410",
+                "fbapi20140116",
+                "fbapi20150313",
+                "fbapi20150629",
+                "fbauth",
+                "fbauth2",
+                "fb-messenger-api20140430",
+            },
+			
+			UIAppFonts =
+            { 
+            	"BEBAS.TTF",
+	"FUTURASTD-BOLD_1.OTF",
+	"FUTURASTD-BOLDOBLIQUE_1.OTF",
+	"FUTURASTD-BOOK_1.OTF",
+	"FUTURASTD-BOOKOBLIQUE_1.OTF",
+	"FUTURASTD-CONDENSED_1.OTF",
+	"FUTURASTD-CONDENSEDBOLD_1.OTF",
+	"FUTURASTD-CONDENSEDBOLDOBL_1.OTF",
+	"FUTURASTD-CONDENSEDEXTRABD_1.OTF",
+	"FUTURASTD-CONDENSEDLIGHT_1.OTF",
+	
+	"FUTURASTD-CONDENSEDLIGHTOBL_1.OTF",
+	"FUTURASTD-CONDENSEDOBLIQUE_1.OTF",
+	"FUTURASTD-CONDEXTRABOLDOBL_1.OTF",
+	"FUTURASTD-EXTRABOLD_1.OTF",
+	"FUTURASTD-EXTRABOLDOBLIQUE_1.OTF",
+	"FUTURASTD-HEAVY_1.OTF",
+	"FUTURASTD-HEAVYOBLIQUE_1.OTF",
+	"FUTURASTD-LIGHT_1.OTF",
+	"FUTURASTD-LIGHTOBLIQUE_1.OTF",
+	"FUTURASTD-MEDIUM_1.OTF",
+	
+	"FUTURASTD-MEDIUMOBLIQUE_1.OTF",
+	"GOTHAM-BLACK.OTF",
+	"GOTHAM-BLACKITALIC.OTF",
+	"GOTHAM-BOLD.OTF",
+	"GOTHAM-BOLDITALIC.OTF",
+	"GOTHAM-BOOK.OTF",
+	"GOTHAM-BOOKITALIC.OTF",
+	"GOTHAM-LIGHT.OTF",
+	"GOTHAM-LIGHTITALIC.OTF",
+	"GOTHAM-MEDIUM.OTF",
+	
+	"GOTHAM-MEDIUMITALIC.OTF",
+	"GOTHAM-THINITALIC.OTF",
+	"GOTHAM-ULTRA.OTF",
+	"GOTHAM-ULTRAITALIC.OTF",
+	"GOTHAM-XLIGHT.OTF",
+	"GOTHAM-XLIGHTITALIC.OTF",
+	"GOTHAMNARROW-BLACK.TTF",
+	"GOTHAMNARROW-BLACKITALIC.TTF",
+	"GOTHAMNARROW-BOLD.TTF",
+	"GOTHAMNARROW-BOLDITALIC.TTF",
+	
+	"GOTHAMNARROW-BOOK.TTF",
+	"GOTHAMNARROW-BOOKITALIC.TTF",
+	"GOTHAMNARROW-LIGHT.TTF",
+	"GOTHAMNARROW-LIGHTITALIC.TTF",
+	"GOTHAMNARROW-MEDIUM.TTF",
+	"GOTHAMNARROW-MEDIUMITALIC.TTF",
+	"GOTHAMNARROW-THIN.TTF",
+	"GOTHAMNARROW-THINITALIC.TTF",
+	"GOTHAMNARROW-ULTRA.TTF",
+	"GOTHAMNARROW-ULTRAITALIC.TTF",
+	
+	"GOTHAMNARROW-XLIGHT.TTF",
+	"GOTHAMNARROW-XLIGHTITALIC.TTF"
+			},
+
+
+			CFBundleIconFiles =
+			{
+				"Icon.png",
+				"Icon@2x.png",
+				"Icon-60.png",
+				"Icon-60@2x.png",
+				"Icon-60@3x.png",
+				"Icon-72.png",
+				"Icon-72@2x.png",
+				"Icon-76.png",
+				"Icon-76@2x.png",
+				"Icon-Small.png",
+				"Icon-Small@2x.png",
+				"Icon-Small@3x.png",
+				"Icon-Small-40.png",
+				"Icon-Small-40@2x.png",
+				"Icon-Small-50.png",
+				"Icon-Small-50@2x.png",
+			},
+			
+			NSLocationWhenInUseUsageDescription = "This app uses maps.",
+			
+			UIApplicationExitsOnSuspend = false,
+			FacebookAppID = "290289701345335",	-- replace XXXXXXXXX with your facebook appId
+
+			CFBundleURLTypes =
+			{
+				{
+					CFBundleURLSchemes =
+					{
+						"fb290289701345335",	-- replace XXXXXXXXX with your facebook appId
+						
+					}
+				}
+			}
+		}
+	},
+	
+	
+	--
+	-- Android Section
+	--
+	android =
+	{
+		usesPermissions =
+		{
+			"android.permission.INTERNET",
+			"android.permission.VIBRATE",
+            "android.permission.GET_ACCOUNTS",
+            "android.permission.RECEIVE_BOOT_COMPLETED",
+            "com.google.android.c2dm.permission.RECEIVE",
+            ".permission.C2D_MESSAGE",
+            --optional permission used to display current location via the GPS
+            "android.permission.ACCESS_FINE_LOCATION",
+
+            --optional permission used to display current location via WiFi or cellular service
+            "android.permission.ACCESS_COARSE_LOCATION",
+		},
+		usesFeatures =
+        {
+            -- If you set permissions "ACCESS_FINE_LOCATION" and "ACCESS_COARSE_LOCATION" above,
+            -- you may want to set up your app to not require location services as follows.
+            -- Otherwise, devices that do not have location sevices (such as a GPS) will be unable
+            -- to purchase this app in the app store.
+            { name = "android.hardware.location", required = false },
+            { name = "android.hardware.location.gps", required = false },
+            { name = "android.hardware.location.network", required = false }
+        },
+        
+        facebookAppId = "290289701345335",  -- Replace XXXXXXXXXX with your Facebook App ID
+		
+	},
+	
+	window =
+	{
+		titleText =
+		{
+			default = "Twitter",
+		},
+	},
+	
+}

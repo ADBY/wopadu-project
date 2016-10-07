@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/build/intermediates/incremental/mergeDebugResources/merged.dir/values-xhdpi-v4/values-xhdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 50,
+                    "endOffset": 101
+                },
+                "from": {
+                    "file": "/Users/lucsoninfotech/Desktop/App fb test/android/facebook/res/values-xhdpi/dimens.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 1166,
+                        "endColumn": 50,
+                        "endOffset": 1212
+                    }
+                }
+            }
+        ]
+    }
+]
