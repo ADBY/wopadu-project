@@ -1,0 +1,232 @@
+.main-content{
+	min-height:auto;
+}
+.wrapper{
+	min-height:700px;
+}
+.panel-heading{
+	border-bottom:none !important;
+}
+
+/******* Cook  **********/
+.panel-heading .t-left{
+	width:35%;
+	display:inline-block
+}
+.panel-heading .t-center{
+	width:38%;
+	display:inline-block;
+	text-align:center;
+}
+.panel-heading .t-right{
+	width:25%;
+	display:inline-block;
+	text-align:right;
+}
+.pad-left-0{
+	padding-left:0;
+}
+.text-right{
+	text-align:right;
+}
+.select-1{
+	width:200px;
+	display:inline;
+}
+.panel-orange > .panel-heading {
+	background-color: #FF9800;
+	border-color: #FF9800;
+	color: #fff;
+}
+.panel-grey > .panel-heading {
+	background-color: #808080;
+	border-color: #808080;
+	color: #fff;
+}
+
+.logout-link{
+	text-align: right;
+	color: #fff;
+	font-weight: bold;
+}
+.complete-1{
+	color:#2ECC71;
+	margin-top: 11px;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.complete-2{
+	color:#3498DB;
+	margin-top: 11px;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/************** Resto Screeen *****************/
+.table_style .panel{
+	display:table;
+	width:100%;
+}
+.table_style .panel .panel-body{
+	display:table-cell;
+	vertical-align:middle;
+	padding: 15px;
+	font-size: 20px;
+	line-height: 30px;
+	font-weight: 100;
+}
+
+
+/************** Buttons ****************/
+
+.btn-orange {
+	color: #fff;
+	background-color: #FF9800;
+	border-color: #FF9900;
+}
+.btn-orange:hover, .btn-orange:focus{
+	color:#fff;
+	background-color:#ED9A00;
+}
+
+.btn-green-sea {
+	color: #fff;
+	background-color: #16a085;
+	border-color: #16a185;
+}
+.btn-green-sea:hover, .btn-green-sea:focus{
+	color:#fff;
+	background-color:#16a985;
+}
+
+.btn-nephritis {
+	color: #fff;
+	background-color: #27ae60;
+	border-color: #27ae60;
+}
+.btn-nephritis:hover, .btn-nephritis:focus{
+	color:#fff;
+	background-color:#27ae50;
+}
+
+.btn-concrete {
+	color: #fff;
+	background-color: #95a5a6;
+	border-color: #96a5a6;
+}
+.btn-concrete:hover, .btn-concrete:focus{
+	color:#fff;
+	background-color:#96a5a6;
+}
+
+.btn-belize-hole {
+	color: #fff;
+	background-color: #2980b9;
+	border-color: #2980c9;
+}
+.btn-belize-hole:hover, .btn-belize-hole:focus{
+	color:#fff;
+	background-color:#2980c9;
+}
+
+.btn-peter-river {
+	color: #fff;
+	background-color: #3498db;
+	border-color: #3498db;
+}
+.btn-peter-river:hover, .btn-peter-river:focus{
+	color:#fff;
+	background-color:#3498db;
+}
+
+
+
+/****************** Panels  **************/
+
+.panel-peter-river>.panel-heading {
+    color: #fff;
+    background-color: #3498db;
+    border-color: #3499db;
+}
+.panel-peter-river > .panel-heading {
+    color: #fff;
+    background-color: #3498db;
+    border-color: #3499db;
+}
+
+
+
+/******************* Login Form *****************/
+
+.field-loginform-rememberme{
+	margin-bottom:0 !important;
+}
+.form-signin p{
+	font-size:13px;
+}
+
+
+/**************** Other Pages ********/
+.table_cust_1{
+	width:100%;
+}
+.table_cust_1 tr td{
+	padding:10px;
+}
+.table_cust_1 tr{
+	border-bottom:1px solid #F9F9F9;
+}
+.table_cust_1 tbody tr th:first-child { 
+	width:30%;
+}
+
+.table_cust_2{
+	width:100%;
+}
+.table_cust_2 tr td{
+	padding:10px;
+}
+.table_cust_2 tr{
+	border:2px solid #7A7676;
+}
+.table_cust_2 tbody tr th:first-child { 
+	width:30%;
+}
+
+.table_cust_3{
+	width:70%;
+}
+.table_cust_3 tr td{
+	padding:10px;
+}
+.table_cust_3 tr{
+	border-left:none;
+	border-right:none;
+	border-top:none;
+	border-bottom:1px solid #F9F9F9;
+}
+.table_cust_3 tbody tr th:first-child { 
+	width:30%;
+}
+.table_cust_3 tbody tr td:first-child { 
+	width:60%;
+}
+
+#spinner3 .input-group{
+	width:100% !important;
+}
+.spinner-buttons.input-group-btn{
+	width:5% !important;
+}
+.wrapping-text{
+	/*display: inline-block;*/
+	-ms-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}

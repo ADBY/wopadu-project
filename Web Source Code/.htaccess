@@ -1,0 +1,10 @@
+RewriteEngine On
+
+RewriteRule    ^home$    index.php    [NC,L]
+RewriteRule    ^business$    business.php    [NC,L]
+RewriteRule    ^learnmore$    learnmore.php    [NC,L]
+RewriteRule    ^about$    about.php    [NC,L]
+RewriteRule    ^landingpage$    landingpage.php    [NC,L]
+RewriteRule    ^privacy-policy$    privacy-policy.php    [NC,L]
+RewriteRule    ^privacypolicy$    privacypolicy.php    [NC,L]
+RewriteRule    ^contactus$    contactus.php    [NC,L]
