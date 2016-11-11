@@ -49,8 +49,6 @@ end
 
 local function onGotoProductPage( event )
 	
-	--print("target id"..event.target.id)
-	
 	_selectedProductID = event.target.id
 	local pImagePath = system.pathForFile( "Product".._selectedProductID..".png", system.TemporaryDirectory )
     local pImageFile = io.open( pImagePath, "r" )
@@ -95,11 +93,9 @@ local function onRectTap( event )
 		logOutFunc()
 		
 	elseif(event.target.id == 6) then
-		print( "restaurants..." )
 		composer.gotoScene( "RestaurantsList" )
 		
 	elseif(event.target.id == 7) then
-		print( "tutorial..." )
 		composer.gotoScene( "tutorial" )
 		
 	end
@@ -124,11 +120,9 @@ local function onRectTouch( event )
 		logOutFunc()
 		
 	elseif(event.target.id == 6) then
-		print( "restaurants..." )
 		composer.gotoScene( "RestaurantsList" )
 		
 	elseif(event.target.id == 7) then
-		print( "tutorial..." )
 		composer.gotoScene( "tutorial" )
 		
 	end
@@ -141,27 +135,19 @@ function openNavigationTap( event )
 	if(composer.getSceneName("current") == "ProductListPage") then
 	
 	 VariableTable.MenuBg:removeEventListener("tap",openNavigationTap)
-    -- VariableTable.MenuBg:removeEventListener("touch",openNavigationTouch)
      
      local function addEvents( event )
 
 	 	VariableTable.MenuBg:addEventListener("tap",openNavigationTap)
-    	--VariableTable.MenuBg:addEventListener("touch",openNavigationTouch)
 		return true
 	end
 	
 	if(menuFlag == 0) then
-		
-		--[[navigationGroup.x = navigationGroup.x + _W/1.28
-		subMenuGroup.x = subMenuGroup.x + _W/1.28]]--
 		menuFlag = 1
 		transition.to( navigationGroup, { time=0, x=navigationGroup.x + _W/1.28,onComplete = addEvents } )
 		transition.to( productGroup, { time=0, x=productGroup.x + _W/1.28 } )
 		
 	elseif(menuFlag == 1) then
-		
-		--navigationGroup.x = navigationGroup.x - _W/1.28
-		--subMenuGroup.x = subMenuGroup.x - _W/1.28
 		menuFlag = 0
 		transition.to( navigationGroup, { time=0, x=navigationGroup.x - _W/1.28,onComplete = addEvents  } )
 		transition.to( productGroup, { time=0, x=productGroup.x - _W/1.28 } )
@@ -186,15 +172,11 @@ function openNavigationTouch( event )
 		end
 		if(menuFlag == 0) then
 	
-			--navigationGroup.x = navigationGroup.x + _W/1.28
-			--subMenuGroup.x = subMenuGroup.x + _W/1.28
 			menuFlag = 1
 			transition.to( navigationGroup, { time=1000, x=navigationGroup.x + _W/1.28,onComplete = addEvents  } )
 			transition.to( productGroup, { time=1000, x=productGroup.x + _W/1.28 } )
 		elseif(menuFlag == 1) then
 		
-			--navigationGroup.x = navigationGroup.x - _W/1.28
-			--subMenuGroup.x = subMenuGroup.x - _W/1.28
 			menuFlag = 0
 			transition.to( navigationGroup, { time=1000, x=navigationGroup.x - _W/1.28,onComplete = addEvents } )
 			transition.to( productGroup, { time=1000, x=productGroup.x - _W/1.28 } )
@@ -271,10 +253,6 @@ local function createNavigation()
     NavigationVariableTable_pList.ChefImage.anchorX = 0 
     navigationGroup:insert( NavigationVariableTable_pList.ChefImage )
     
-    --_HotelName = "Jamie’s  Italaian"
-    --_HotelAddress = "21st Street, New York \nZip Code 41108, United States"
-    
-    
     if(_HotelName:len() > 25) then
     	HotelNameText = tostring(_HotelName:sub(1,15))..".."
     else
@@ -299,22 +277,6 @@ local function createNavigation()
     NavigationVariableTable_pList.HotelAddress.anchorY = 0
     NavigationVariableTable_pList.HotelAddress:setTextColor( 1 )
     navigationGroup:insert( NavigationVariableTable_pList.HotelAddress )
-    
-    
-    --[[NavigationVariableTable_pList.ProfileBg = display.newImageRect(imageDirectory2.."ProfileBg.png",_W/1.19,_H/9.05)
-    NavigationVariableTable_pList.ProfileBg.x = -_W/1.28  
-    NavigationVariableTable_pList.ProfileBg.y =  _H/3.25 + NavigationVariableTable_pList.ProfileBg.height/2 
-    NavigationVariableTable_pList.ProfileBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable_pList.ProfileBg )
-    
-    NavigationVariableTable_pList.ProfilePicBg = display.newImageRect(imageDirectory2.."ProfilePicBg.png",_W/7.39,_H/13.06)
-    NavigationVariableTable_pList.ProfilePicBg.x = -_W/1.28 + _W/27  
-    NavigationVariableTable_pList.ProfilePicBg.y =  NavigationVariableTable_pList.ProfileBg.y
-    NavigationVariableTable_pList.ProfilePicBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable_pList.ProfilePicBg )]]--
-    
-    --_fName = "Krishna Maru"
-   -- _UserID = "krishnamaru123@gmail.com"
     
     if(_fName:len() > 15) then
     	UserNameText = tostring(_fName:sub(1,15))..".."
@@ -491,7 +453,6 @@ end
 
 local function waterListNetworkListener( event )
 	if ( event.isError ) then
-        --print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -500,7 +461,6 @@ local function waterListNetworkListener( event )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
     else
-        print ( "RESPONSE:" .. event.response )
         
         if( event.response == 0 or event.response == "0" ) then
         	timer.performWithDelay( 200, function() 
@@ -522,7 +482,6 @@ local function waterListNetworkListener( event )
         	
         elseif( event.response == "OK" ) then
         	
-        	--print( "response is ok..." )
         	local alert = native.showAlert( alertLabel, "Your water request has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         	timer.performWithDelay( 200, function() 
@@ -537,12 +496,9 @@ local function waterListNetworkListener( event )
 end
 
 local function handleButtonEvent( event )
-	--if event.phase == "ended" then
 		if event.target.id == "home" then
 			if(composer.getSceneName("current") == "ProductListPage") then
-				--print(event.target.id)
-				--print( composer.getSceneName("current") )
-				--print( "menu flag is ::: >>>>> "..menuFlag )
+				
 			if(menuFlag == 0) then
 				proList_OverRect.isVisible = true
 				navigationGroup.x = navigationGroup.x + _W/1.28
@@ -557,11 +513,9 @@ local function handleButtonEvent( event )
 			
 			end
 		elseif event.target.id == "PLACE ORDER" then
-			--print("gooooo")
 			composer.gotoScene("PlaceOrder")
 			
 		elseif event.target.id == "WATER" then
-			--print( "water button is pressed......" )
 			
 			local headers = {}
 			
@@ -574,7 +528,6 @@ local function handleButtonEvent( event )
 			params.body = body
 			
 			local url = _WebLink.."request-water.php?"
-			--print( url..body )
 			waterRequest = network.request( url, "POST", waterListNetworkListener, params )
 			native.setActivityIndicator( true )
 			
@@ -583,7 +536,6 @@ local function handleButtonEvent( event )
 			
 		end
 		
-	--end
 	return true
 end
 
@@ -599,15 +551,9 @@ local function menuListNetworkListener( event )
         	
     end
 	
-        --	for i = 1,#ProductIDArr do
-				
-        		
-        		--print( "categoryImage name is : "..ProductIDArr[i] )
-        		
         		m = 1
         		n = 1
-        			--print(#categoryImage)
-        			
+        		
         	for i = 1, #ProductIDArr do
         	
         		ProductId[i] = ProductIDArr[i]
@@ -624,12 +570,10 @@ local function menuListNetworkListener( event )
         			VariableTable.menuScrollView:insert( defaultPhoto[i] )
     			
     			if imageFile then
-    				--print(imageFile)
     				
-					image[i] = display.newImage( "Product"..ProductId[i]..".png", system.TemporaryDirectory)--, defaultPhoto[i].width, defaultPhoto[i].height)
+					image[i] = display.newImage( "Product"..ProductId[i]..".png", system.TemporaryDirectory)
 					image[i].x = defaultPhoto[i].x
 					image[i].y = defaultPhoto[i].y
-					--image[i].id = id[i].."/"..name[i]
 					image[i].width = defaultPhoto[i].height/(image[i].height/image[i].width)
 					image[i].height = defaultPhoto[i].height
 					
@@ -644,7 +588,6 @@ local function menuListNetworkListener( event )
 					image[i]:toFront()
 					
 				end
-					--print(tostring(ProductStatusArr[i]))
 					if(tostring(ProductStatusArr[i]) == "1" ) then
 						newLabel[i] = display.newImageRect(imageDirectory.."NewLabelBg1.png", _W/6.75, _H/12.15)
 						newLabel[i].x = defaultPhoto[i].x - defaultPhoto[i].width/2 
@@ -662,12 +605,7 @@ local function menuListNetworkListener( event )
         			VariableTable.menuScrollView:insert( nameBg[i] )
 					
 					local nameValue
-					
-					--[[if(tostring(ProductName[i]):len() > 20) then
-						nameValue = tostring(ProductName[i]):sub(1,20)..".."
-					else]]--	
-						nameValue = tostring(ProductName[i])
-					--end
+					nameValue = tostring(ProductName[i])
 					
 					local option = {
 						text = nameValue,
@@ -716,20 +654,13 @@ local function menuListNetworkListener( event )
         	end
 				
 			end
-        		
-        	
-        	
-        --	end
         	
 end
 
 local function handleBackButtonEvent( event )
-	print("product List backBtnis preseddd...................>>> ???")
 	if(_previousScene == "SubMenu3") then
-		print("back to main menu2")
 		composer.gotoScene("SubMenu3")
 	else
-		print("back to main menu")
 		composer.gotoScene("menu")
 	end
 	return true
@@ -737,12 +668,9 @@ end
 
 local function handleBackButtonEventTouch( event )
 	if event.phase == "ended" then
-		print("product List backBtnis preseddd...................>>> ???")
 		if(_previousScene == "SubMenu3") then
-			print("back to main menu2")
 			composer.gotoScene("SubMenu3")
 		else
-			print("back to main menu")
 			composer.gotoScene("menu")
 		end
 	end
@@ -754,20 +682,15 @@ local function onStartDisplay()
 	local k = 1
          
         if(#productData > 0) then
-       	 --print("Product data available")
         	for j = 1, #productData do
         		if(_selectedProductListCategoryID == productData[j].categoryID) then
-        		--print("same category product data found")
         			if(productData[j].productDetail) then
-        				--print("products")
         				 ProductNameArr[k] = productData[j].productDetail.item_name
         				 ProductIDArr[k] = productData[j].productDetail.id
         				 ProductStatusArr[k] = productData[j].productDetail.is_new
-        				--table.insert( subCatePriceArray,productData[j].productDetail.price)
         				k = k + 1
         							
         			end
-        		--end
         		else
         			
         		end
@@ -776,7 +699,6 @@ local function onStartDisplay()
         	 menuListNetworkListener()
         else
         	
-        	--print("no product availabel")
         	noItem = display.newText( GBCLanguageCabinet.getText("13Alert",_LanguageKey), _W/2,_H/2,_FontArr[26],_H/35 )
         	noItem:setTextColor( 57/255 ,9/255 ,78/255  )
         	displayGroup:insert(noItem)
@@ -789,9 +711,8 @@ local function onStartDisplay()
         end
        
        	if( #ProductIDArr > 0 ) then
-        	--native.setActivityIndicator( true )
+        	
         else
-        	print("no product availabel")
         	
         	if( noItem ) then
         		display.remove( noItem )
@@ -836,17 +757,14 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        print("Product List ........................................")
         
         menuFlag = 0
         
       	native.setActivityIndicator( true )
         
         _PreviousSceneforSetting = composer.getSceneName( "current" )
-        --print( "previous scene name for seetings :::>>>>".._PreviousSceneforSetting )
         
         _PreviousSceneforOrder = composer.getSceneName( "current" )
-    	--print( "previous scene name for order :::>>>>".._PreviousSceneforOrder )
         
         navigationGroup = display.newGroup()
         sceneGroup:insert( navigationGroup )
@@ -892,9 +810,7 @@ function scene:show( event )
         VariableTable.header2 = display.newImageRect( imageDirectory.."TabBg.png", _W, _H/20.21 )
         VariableTable.header2.x = _W/2
         VariableTable.header2.y = _H/11.85 + VariableTable.header2.height/2 + _H/96
-        VariableTable.header2:setFillColor( 254/255, 246/255, 245/255 )
         displayGroup:insert( VariableTable.header2 )
-        
         
         VariableTable.homeBtn = widget.newButton
 		{
@@ -903,35 +819,24 @@ function scene:show( event )
     		defaultFile = imageDirectory.."Home_Btn.png",
    			overFile = imageDirectory.."Home_Btn.png",
     		id = "home",
-    		--onEvent = handleButtonEvent
 		}
 		VariableTable.homeBtn.x = _W/29.18 + VariableTable.homeBtn.width/2
 		VariableTable.homeBtn.y = _H/41.73 + VariableTable.homeBtn.height/2
 		VariableTable.homeBtn:addEventListener( "tap", handleButtonEvent )
 		displayGroup:insert( VariableTable.homeBtn )
-		--[[
-		VariableTable.searchBtn = widget.newButton
-		{
-    		width = _W/23.47,
-    		height = _H/24,
-    		defaultFile = imageDirectory.."Search_Btn.png",
-   			overFile = imageDirectory.."Search_Btn.png",
-    		id = "search",
-    		--onEvent = handleButtonEvent
-		}
-		VariableTable.searchBtn.x = _W - _W/15.42
-		VariableTable.searchBtn.y = VariableTable.header.y - _H/192
-		VariableTable.searchBtn:addEventListener( "tap", handleButtonEvent )
-		displayGroup:insert( VariableTable.searchBtn )
-		]]--
 		
-		local buttonSize ,labelyOff
+		local buttonSize ,labelyOff, buttonSize2
 		
 		if( _LanguageKey == "ar" or _LanguageKey == "zh" or _LanguageKey == "hi" or _LanguageKey == "ja" or _LanguageKey == "ko" ) then
 			buttonSize = _H/40
+			buttonSize2 = _H/40
 			labelyOff = -8
+		elseif( _LanguageKey == "de" or _LanguageKey == "th" or _LanguageKey == "vi" ) then
+			buttonSize = _H/60
+			buttonSize2 = _H/80
 		else
 			buttonSize = _H/60
+			buttonSize2 = _H/60
 			labelyOff = -3
 		end
 		
@@ -939,16 +844,14 @@ function scene:show( event )
 		{
     		width = _W/5.51,
     		height = _H/24,
-    		defaultFile = "images/cartBtn2.png",
-   			overFile = "images/cartBtn2.png",
-   			label = GBCLanguageCabinet.getText("cartLabel",_LanguageKey),
-   			labelXOffset = 20,
+    		defaultFile = "images/language2.png",
+   			overFile = "images/language2.png",
+   			label = GBCLanguageCabinet.getText("cartLabel2",_LanguageKey),
    			labelYOffset = labelyOff,
    			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
    			font = _FontArr[1],
    			fontSize = buttonSize,
     		id = "PLACE ORDER",
-    		--onEvent = handleButtonEvent
 		}
 		VariableTable.placeOrderBtn.x = _W - _W/36
 		VariableTable.placeOrderBtn.y = VariableTable.header2.y
@@ -968,7 +871,6 @@ function scene:show( event )
    			font = _FontArr[1],
    			fontSize = buttonSize,
     		id = "Language",
-    		--onEvent = handleButtonEvent
 		}
 		Language.x = _W/36
 		Language.y = VariableTable.header2.y
@@ -976,44 +878,21 @@ function scene:show( event )
 		Language:addEventListener("tap",handleButtonEvent)
 		displayGroup:insert( Language )
 		
-		--[[VariableTable.waterBtn = widget.newButton
-		{
-    		width = _W/5.51,
-    		height = _H/24,
-    		defaultFile = "images/waterBtn2.png",
-   			overFile = "images/waterBtn2.png",
-    		label = "WATER",
-   			labelXOffset = 20,
-   			labelYOffset = -3,
-   			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
-   			font = _FontArr[1],
-   			fontSize = _H/60,
-    		id = "WATER",
-    		--onEvent = handleButtonEvent
-		}
-		VariableTable.waterBtn.x = _W/36
-		VariableTable.waterBtn.y = VariableTable.header2.y
-		VariableTable.waterBtn.anchorX = 0
-		VariableTable.waterBtn:addEventListener( "tap", handleButtonEvent )
-		displayGroup:insert( VariableTable.waterBtn )]]--
-		
-		
-		
 		VariableTable.CategoryTitleBg = display.newImageRect( imageDirectory4.."TitleBg.png", _W, _H/14.22 )
         VariableTable.CategoryTitleBg.x = _W/2
         VariableTable.CategoryTitleBg.y = VariableTable.header2.y + VariableTable.header2.height/2 + VariableTable.CategoryTitleBg.height/2 + _H/960
         displayGroup:insert( VariableTable.CategoryTitleBg )
         
         VariableTable.CategoryTitle = display.newText( tostring(_selectedProductListCategoryName), _W/6.75, VariableTable.CategoryTitleBg.y , _FontArr[6], _H/30 )
-        VariableTable.CategoryTitle:setFillColor( 1 )
+        VariableTable.CategoryTitle:setFillColor( 0 )
         VariableTable.CategoryTitle.anchorX = 0
         displayGroup:insert( VariableTable.CategoryTitle )
        
         
 		VariableTable.backBtn = widget.newButton
 		{
-    		width = _W/9 , --_W/15.42,
-    		height = _H/14.76 , --_H/33.10,
+    		width = _W/9 ,
+    		height = _H/14.76 ,
     		defaultFile = imageDirectory5.."Back_Btn1.png",
    			overFile = imageDirectory5.."Back_Btn1.png",
     		id = "back",
@@ -1024,15 +903,11 @@ function scene:show( event )
 		VariableTable.backBtn:addEventListener( "tap", handleBackButtonEvent )
 		displayGroup:insert( VariableTable.backBtn )
 		
-		
-		-- create scrollView
-		
 		VariableTable.menuScrollView = widget.newScrollView
 		{
     		width = _W,
     		height = _H,
     		top = VariableTable.CategoryTitleBg.y + VariableTable.CategoryTitleBg.height/2,
-    		--topPadding = _H/19.2,
 	 	  	bottomPadding = _H/19.2,
     		hideBackground = true,
     		scrollHeight = _H*2,

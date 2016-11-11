@@ -179,7 +179,6 @@ function startServer()
 		client = tcpServerSocket:accept()
 		if (client ~= nil) then
 			ip, port = client:getpeername()
-			print("Got connection from ".. ip .. " on port " .. port)
 
 			local request, err = client:receive()
 			if not err then

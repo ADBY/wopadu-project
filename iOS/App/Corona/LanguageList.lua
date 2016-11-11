@@ -1,7 +1,5 @@
 local scene = composer.newScene()
   
-  --ADD PERMISSIONS IN BUILD.SETTINGS
-  
 -- -----------------------------------------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE unless "composer.removeScene()" is called
 -- -----------------------------------------------------------------------------------------------------------------
@@ -35,8 +33,6 @@ end
 local function onRectTap( event )
 	_LanguageKey = event.target.id
 	storeData( "Langauge", _LanguageKey )
-	print( composer.getSceneName("previous") )
-	print( "+++++++++++++++++++++++++" )
 	if( composer.getSceneName("previous") == "FrontPage" or composer.getSceneName("previous") == nil ) then
 		composer.gotoScene("FrontPage")
 	else
@@ -51,8 +47,6 @@ local function onRectTouch( event )
 	if(event.phase == "began") then
 		_LanguageKey = event.target.id
 	storeData( "Langauge", _LanguageKey )
-	print( composer.getSceneName("previous") )
-	print( "+++++++++++++++++++++++++" )
 	if( composer.getSceneName("previous") == "FrontPage" or composer.getSceneName("previous") == nil ) then
 		composer.gotoScene("FrontPage")
 	else
@@ -98,8 +92,6 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen)
-        print("Langaue list page")
-        print( composer.getSceneName("previous") )
         
     backBtn = widget.newButton
 	{
@@ -108,7 +100,6 @@ function scene:show( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = _H/27
@@ -143,7 +134,6 @@ languageListGroup:insert( languageListScrollView )
 
 		local function languageListNetworkListener( event )
 		if ( event.isError ) then
-        	print( "Network error!" )
     		native.setActivityIndicator( false )
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 
@@ -161,8 +151,6 @@ languageListGroup:insert( languageListScrollView )
 		
 			rectBg = { }
 			title = { }
-			--titleName = {"English","chinese","french","german","hindi","italian","japanese","korean","russian","spanish","thai","turkish","ukrainian"}
-			--languageId = { "en","zh","fr","de","hi","it","ja","ko","ru","es","th","tr","uk" }
 			
 			for i = 1, (#languageList + 1) do
 		
@@ -173,7 +161,6 @@ languageListGroup:insert( languageListScrollView )
 				rectBg[i].anchorY = 0
 				rectBg[i].id = "en"
 				rectBg[i]:addEventListener("tap",onRectTap)
-				--rectBg[i]:addEventListener("touch",onRectTouch)
 				languageListScrollView:insert(rectBg[i])
 			
 				title[i] = display.newText("English",_W/54,rectBg[i].y + rectBg[i].height/2,_FontArr[6],_H/36.76)
@@ -188,7 +175,6 @@ languageListGroup:insert( languageListScrollView )
 				rectBg[i].anchorY = 0
 				rectBg[i].id = languageList[i-1].language_code
 				rectBg[i]:addEventListener("tap",onRectTap)
-				--rectBg[i]:addEventListener("touch",onRectTouch)
 				languageListScrollView:insert(rectBg[i])
 			
 				title[i] = display.newText(languageList[i-1].language_name_2,_W/54,rectBg[i].y + rectBg[i].height/2,_FontArr[6],_H/36.76)

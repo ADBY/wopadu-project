@@ -38,14 +38,13 @@ webURL = "https://coronalabs.com/"
 --	     be used for the next session without the user having to log in again.
 -- The following is returned after a successful authenications and log-in by the user
 --
-local access_token --= "366991388-sHlWitYpvHIIIwOFEO0LF5M7Rj2MuUP93M7nKyLk"
-local access_token_secret --= "XUdbDg4GJRrdvsLJYFmfc2M6OpfUhUVYVD1ikTWp5GLlu"
+local access_token
+local access_token_secret
 local user_id
 local screen_name
 
 -- Local variables used in the tweet
 local postMessage
---local delegate
 
 -- Forward references
 local doTweet			-- function to send the actual tweet
@@ -53,7 +52,6 @@ local doTweet			-- function to send the actual tweet
 -- Display a message if there is no app keys set
 -- (App keys must be strings)
 --
-print( "*******************************************" )
 if not consumer_key or not consumer_secret then
 	-- Handle the response from showAlert dialog boxbox
 	--
@@ -74,7 +72,6 @@ end
 --
 local function webListener(event)
 
-	print("listener: ", event.url)
 	local remain_open = true
 	local url = event.url
 
@@ -82,12 +79,10 @@ local function webListener(event)
 	-- It also has the "oauth_token_secret" and "oauth_verifier" strings
 	--
 	if url:find("oauth_token") and url:find(webURL) then
-		print( "In if condiiton....." )
 		----------------------------------------------------
 		-- Callback from getAccessToken
 		----------------------------------------------------
 		local function accessToken_ret( status, access_response )
-			print( "In accessToken_ret function...." )
 			
 			access_response = responseToTable( access_response, {"=", "&"} )
 			access_token = access_response.oauth_token
@@ -95,14 +90,10 @@ local function webListener(event)
 			user_id = access_response.user_id
 			screen_name = access_response.screen_name
 			
-			print( access_token.."//"..access_token_secret.."//"..user_id.."//"..screen_name )
-			
 			if not access_token then
 				return
 			end
-		
-			print( "Tweeting" )
-		
+			
 			doTweet()		-- send the actual tweet
 
 		end -- end of callback listener
@@ -126,7 +117,6 @@ local function webListener(event)
 		-- Logon was canceled by user
 		--
 		remain_open = false
-		--delegate.twitterCancel()
 		twitterCancel()
 		
 	end
@@ -164,7 +154,6 @@ function responseToTable(str, delimeters)
 				str = str:sub((end_index + delimeters[2]:len()), str:len())
 			end
 			obj[key] = value
-			--print(key .. ":" .. value)		-- **debug
 		else
 	
 			local val_index = str:find(delimeters[1])
@@ -199,7 +188,6 @@ end
 function tweet(del, msg)
 
 	postMessage = msg
-	--delegate = del
 	
 	-- Check to see if we are authorized to tweet
 	if not access_token then
@@ -208,15 +196,10 @@ function tweet(del, msg)
 		-- Callback from getRequestToken
 		----------------------------------------------------
 		function tweetAuth_ret( status, result )
-		    print( "In tweetAuth_ret function.........." )
 			local twitter_request_token = result:match('oauth_token=([^&]+)')
 			local twitter_request_token_secret = result:match('oauth_token_secret=([^&]+)')
 					
 			if not twitter_request_token then
-				print( ">> No valid token received!")	-- **debug
-				
-				-- No valid token received. Abort
-				--delegate.twitterFailed()
 				twitterFailed()
 				
 				return
@@ -225,8 +208,6 @@ function tweet(del, msg)
 			-- Request the authorization (step 2)
 			-- Displays a webpopup to access the Twitter site so user can sign in
 			--
-			
-			print( "web vieew show pop up..............." )
 			
 			native.showWebPopup(0, 0, _W, _H, "https://api.twitter.com/oauth/authenticate?oauth_token="
 				.. twitter_request_token, {urlRequest = webListener})
@@ -237,13 +218,7 @@ function tweet(del, msg)
 		-- Executes first to authorize account
 		----------------------------------------------------
 		
-		print( "++++++++++++++++++++++++++++++" )
-		print( consumer_key )
-		print( consumer_secret )
-		
 		if not consumer_key or not consumer_secret then
-			-- Exit if no API keys set (avoids crashing app)
-			--delegate.twitterFailed()
 			twitterFailed()
 			
 			return
@@ -259,7 +234,6 @@ function tweet(del, msg)
 		-- Account is already authorized, just tweet
 		----------------------------------------------------
 
-		print( "Tweeting" )
 		doTweet()
 		
 	end
@@ -315,22 +289,11 @@ function doTweet()
 		twitterSuccess( values[1], screen_name, response )
 		
 	end
-
-	-- Build the parameter table for the Twitter Request
-	-- values[1] = type of request (tweet, users, friends, etc.)
-	-- values[2] = Twitter URL suffix
-	-- values[3] = medthod: GET | POST
-	-- values[4] ... values[n] = parameter pairs
-	-- "SELF" is replaced by current screen_name
-	--
-	local params = {}
 	
-	print( "screen_name is >>>>>>>>>>>> " )
-	print( screen_name )
+	local params = {}
 	
 	if #values > 3 then
 		for i = 4, #values do
-			print( values[i][1] .. " = " .. values[i][2]  )
 			params[i-3] = { key = values[i][1], value = values[i][2] }
 		
 			if params[i-3].value == "SELF" then 

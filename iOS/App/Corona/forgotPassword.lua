@@ -37,7 +37,6 @@ local function onEmailEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -89,7 +88,6 @@ end
 local function forgotPswdListNetworkListener( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -97,7 +95,6 @@ local function forgotPswdListNetworkListener( event )
 		
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
     else
-        print ( "RESPONSE:" .. event.response )
         
         local forgotPswdList = json.decode(event.response)
 		
@@ -117,7 +114,6 @@ local function forgotPswdListNetworkListener( event )
         	local alert = native.showAlert( alertLabel,  GBCLanguageCabinet.getText("Email4Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk2 )
         	
         elseif event.response == "OK" then
-        	print( "mail sent successfully" )
         	local options = {
         		params = { emailForChangePswd = emailTfValue }
         	}
@@ -137,7 +133,6 @@ local function handleButtonEvent( event )
 	if event.phase == "ended" then
 		
 		if event.target.id == "forgot" then
-			print( "forgot password" )
 			if emailTf.text == "" then
 				local alert = native.showAlert( alertLabel,GBCLanguageCabinet.getText("Email1Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk2 )
 			
@@ -157,7 +152,6 @@ local function handleButtonEvent( event )
 				params.body = body
 				
 				local url = _WebLink.."password-forgot.php?"
-				print( url..body )
 				forgotPassRequest = network.request( url, "POST", forgotPswdListNetworkListener, params )
 				native.setActivityIndicator( true )
 			
@@ -195,20 +189,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("ForgotPasswordLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "tap", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
-    	
+        
     local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -216,7 +197,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -235,9 +215,7 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        
-        print( "In forgot Password screen....." )
-        
+                
         heading.text = GBCLanguageCabinet.getText("ForgotPasswordLabel",_LanguageKey)
         
         local option = {

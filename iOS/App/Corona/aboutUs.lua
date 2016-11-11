@@ -36,20 +36,16 @@ end
 local function aboutUsListNetworkListener( event )
 	
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
     else
-        print ( "RESPONSE:" .. event.response )
         
         local aboutUsList = json.decode(event.response)
         
         if aboutUsList == 0 then
-        	print( "No data is available." )
-        	--local alert = native.showAlert( alertLabel, "There is no data available.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	noData = display.newText( GBCLanguageCabinet.getText("noInfoLabel",_LanguageKey)  , _W/2,_H/2,_FontArr[6], _H/40)
         	noData:setFillColor( 83/255, 80/255, 79/255 )
         	aboutUsGroup:insert(noData)
@@ -99,27 +95,14 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("AboutUsLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventtouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-		]]--
+        
 	local backBtn = widget.newButton
 	{
     	width = _W/9,
     	height = _H/14.76,
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
-    	id = "back",
-    	--onEvent = handleButtonEvent
+    	id = "back"
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -140,7 +123,6 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         
-        print( "In about us screen...." )
         heading.text = GBCLanguageCabinet.getText("AboutUsLabel",_LanguageKey)
         
         
@@ -177,12 +159,10 @@ function scene:show( event )
 				
 		if( _LanguageKey == "en" ) then
 			local url = _WebLink.."site-about-us.php"
-			print( url..body )
 			aboutUSRequest = network.request( url, "POST", aboutUsListNetworkListener, params )
 		
 		else
 			local url = _WebLink.."site-about-us.php?lang=".._LanguageKey
-			print( url..body )
 			aboutUSRequest = network.request( url, "POST", aboutUsListNetworkListener, params )
 		
 		end			

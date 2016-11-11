@@ -12,9 +12,6 @@ local imageDirectory2 = "images/Setting/"
 local imageDirectory3 = "images/RateWopado/"
 
 
---local imageDirectory = "images/Login/"
---local imageDirectory2 = "images/Product Details/"
---local imageDirectory3 = "images/Home/"
 local displayGroup, background, param, noOfRatings,heading
 local VariableTable = { header, title, backBtn, noReview, reviewsTableView, reviewBg, reviewTf, submitBtn, line }
 local viewReviewList = { }
@@ -51,20 +48,17 @@ end
 
 local function onRowRender( event )
 	local row = event.row
-
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
+	
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
     
     local rowName = display.newText( row, viewReviewList[row.index].first_name, _W/2, _H/24, _FontArr[26], _H/35 )
     rowName:setFillColor( 83/255, 20/255, 111/255 )
     rowName.anchorX = 0
-    --rowName.anchorY = 0
     rowName.x = _W/36
     rowName.y = rowHeight * 0.15
     
     if tonumber(viewReviewList[row.index].rating) == 0 then
-    	print( viewReviewList[row.index].rating )
 		for i = 1, 5 do
 			local rowImage = display.newImageRect( row, imageDirectory3.."Empty_Star.png", _W/21.17, _H/40  )
     		rowImage.anchorX = 0
@@ -73,9 +67,7 @@ local function onRowRender( event )
 		end
 	
 	else
-   		print( viewReviewList[row.index].rating )
    		local no = 5 - viewReviewList[row.index].rating
-   		print( no )
    		
    		for i = 1, 5 do
 	   		reviewImage[i] = display.newImageRect( row, imageDirectory3.."Fill_Star.png", _W/21.17, _H/40  )
@@ -113,13 +105,10 @@ local function onRowRender( event )
     rowReview.x = _W/54
     rowReview.y = rowHeight * 0.30
     
-    print("review Lenght "..rowReview.text:len())
-    
 end
 
 local function viewReviewListNetworkListener( event )
     		if ( event.isError ) then
-        		print( "Network error!" )
 				
         		timer.performWithDelay( 200, function() 
     			native.setActivityIndicator( false )
@@ -128,7 +117,6 @@ local function viewReviewListNetworkListener( event )
 				local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 				
 			else
-				print ( "RESPONSE::::" .. event.response )
 				
 				if( event.response == 0 or event.response == "0" ) then
 					timer.performWithDelay( 200, function() 
@@ -223,7 +211,6 @@ local function getOtherReviews( event )
 		params.timeout = 180
 		
 		local url = _WebLink.."app-rating.php?"
-		print( url..body )
 		viewReviewRequest = network.request( url, "POST", viewReviewListNetworkListener, params )
 		native.setActivityIndicator( true )
    	
@@ -232,7 +219,6 @@ end
 
 local function ViewMyOldReviewNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
 				
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -241,7 +227,6 @@ local function ViewMyOldReviewNetworkListener( event )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 				
 	else
-		print ( "RESPONSE:" .. event.response )
 		getOtherReviews()	
 		if( event.response == 0 or event.response == "0" ) then
 			timer.performWithDelay( 200, function() 
@@ -265,7 +250,6 @@ local function ViewMyOldReviewNetworkListener( event )
 			timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
-			--local alert = native.showAlert( alertLabel, "User has not reviewed yet", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 					
 		else
 			timer.performWithDelay( 200, function() 
@@ -273,21 +257,6 @@ local function ViewMyOldReviewNetworkListener( event )
 			end )
 				local reviewData = json.decode(event.response)
 				
-				--[[local no = reviewData.rating
-				print( "No of star is : " ..no )
-				noOfRatings = no
-	
-				for i = 1, no do
-					emptyStar[i].isVisible = false
-					fillStar[i].isVisible = true
-				end
-	
-				for i = no+1, 5 do
-					emptyStar[i].isVisible = true
-					fillStar[i].isVisible = false
-				end]]--
-				
-				--VariableTable.reviewTf.text = reviewData.review
 		end			
 	end
 	return true
@@ -295,7 +264,6 @@ end
 
 local function handleFillStarImgEvent( event )
 	local no = event.target.id
-	print( "No of star is : " ..no )
 	noOfRatings = no
 	
 	for i = 1, no do
@@ -313,16 +281,13 @@ end
 
 local function onReviewEdit( event )
     if ( event.phase == "began" ) then
-        print( event.text )
 
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
 
     elseif ( event.phase == "editing" ) then
-    	print( event.text )
         
     end
 
@@ -352,7 +317,6 @@ end
 
 local function addReviewListNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
 				
     	timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -364,7 +328,7 @@ local function addReviewListNetworkListener( event )
 		timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
-			print("add/update rating resposne: "..event.response)
+		
 		if(event.response == "0" or event.response == 0) then
 		
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("6Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing ) 
@@ -389,8 +353,6 @@ end
 local function handleSubmitButtonEvent( event )
 	if(event.phase == "ended") then
 		if VariableTable.reviewTf.text ~= "" or noOfRatings > 0 then
-				print( "Review : "..VariableTable.reviewTf.text )
-				print( "no of ratings : "..noOfRatings )
 				
 				local headers = {}
 				
@@ -407,7 +369,6 @@ local function handleSubmitButtonEvent( event )
 				params.timeout = 180
 				
 				local url = _WebLink.."app-rating.php?"
-				print( url..body )
 				addReviewRequest = network.request( url, "POST", addReviewListNetworkListener, params )
 				native.setActivityIndicator( true )
 				
@@ -441,20 +402,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("RateWopaduLabel",_LanguageKey), header.x, header.y, _FontArr[30], _H/36.76 ) 
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + _H/38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()    
-		]]--
-		
+        
 	local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -462,7 +410,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -493,7 +440,7 @@ function scene:show( event )
         	if i == 1 then
 				emptyStar[i] = display.newImageRect( imageDirectory3.."Empty_Star.png", _W/18, _H/32 )
 				emptyStar[i].anchorX = 0
-        		emptyStar[i].x = _W/36  --_W/21.6
+        		emptyStar[i].x = _W/36
         		emptyStar[i].y = _H/13 + _H/38.4
         		emptyStar[i].id = i
         		emptyStar[i]:addEventListener( "tap", handleFillStarImgEvent )
@@ -533,16 +480,13 @@ function scene:show( event )
         
         VariableTable.reviewBg = display.newImageRect( imageDirectory3.."TextBox Bg.png", _W, _H/6.4 )
         VariableTable.reviewBg.x = _W/2
-        --VariableTable.reviewBg.anchorX = 0
         VariableTable.reviewBg.y = _H/12 + VariableTable.reviewBg.height/2 + _H/19.2
         displayGroup:insert( VariableTable.reviewBg )
         
         VariableTable.reviewTf = native.newTextBox( VariableTable.reviewBg.x, VariableTable.reviewBg.y, VariableTable.reviewBg.width - textFieldWidth, VariableTable.reviewBg.height - textFieldHeight )
 		VariableTable.reviewTf.hasBackground = false
 		VariableTable.reviewTf.isEditable = true
-		--VariableTable.reviewTf.anchorX = 0
 		VariableTable.reviewTf.placeholder = GBCLanguageCabinet.getText("addReviewsLabel",_LanguageKey)
-		--VariableTable.reviewTf:addEventListener( "userInput", onReviewEdit )
 		VariableTable.reviewTf.font = native.newFont( _Font2, _H/38.4 )
 		VariableTable.reviewTf:setTextColor( 57/255, 9/255 ,78/255 )
 		displayGroup:insert( VariableTable.reviewTf )
@@ -586,7 +530,6 @@ function scene:show( event )
 		params.timeout = 180
 		
 		local url = _WebLink.."app-rating.php?"
-		print( url..body )
 		myOldReviewRequest = network.request( url, "POST", ViewMyOldReviewNetworkListener, params )
 		native.setActivityIndicator( true )
 		

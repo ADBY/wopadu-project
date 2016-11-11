@@ -38,7 +38,6 @@ end
 
 local function handleOk( event )
 	fNameTf.text = ""
-	--lNameTf.text = ""
 	mobNoTf.text = ""
 	emailTf.text = ""
 	pswdTf.text = ""
@@ -52,7 +51,6 @@ end
 
 local function handleOk2( event )
 	fNameTf.text = ""
-	--lNameTf.text = ""
 	mobNoTf.text = ""
 	emailTf.text = ""
 	pswdTf.text = ""
@@ -67,7 +65,6 @@ local function handleOk3( event )
 end
 
 local function handleOk4( event )
-	--lNameTf.text = ""
 		
 	return true
 end
@@ -97,7 +94,6 @@ local function onFNameEdit( event )
 		lineImg.isVisible = false
 		
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
         signUpGroup.y = signUpGroupY
         facebookBtn.isVisible = true
 		twitterBtn.isVisible = true
@@ -121,7 +117,6 @@ local function onLNameEdit( event )
 		lineImg.isVisible = false
 		
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
         signUpGroup.y = signUpGroupY
         facebookBtn.isVisible = true
 		twitterBtn.isVisible = true
@@ -145,7 +140,6 @@ local function onMobNoEdit( event )
 		lineImg.isVisible = false
 		
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
         signUpGroup.y = signUpGroupY
         facebookBtn.isVisible = true
 		twitterBtn.isVisible = true
@@ -169,7 +163,6 @@ local function onEmailEdit( event )
 		lineImg.isVisible = false
 		
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
         signUpGroup.y = signUpGroupY
         facebookBtn.isVisible = true
 		twitterBtn.isVisible = true
@@ -193,7 +186,7 @@ local function onPswdEdit( event )
 		lineImg.isVisible = false
 		
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        print( event..text )
         signUpGroup.y = signUpGroupY
         facebookBtn.isVisible = true
 		twitterBtn.isVisible = true
@@ -237,52 +230,7 @@ end
 
 
 local function deviceIdNetworkListener( event )
-
-	--[[if ( event.isError ) then
-        print( "Network error!" )
-        
-        local alert = native.showAlert( alertError, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        timer.performWithDelay( 200, function() 
-    	native.setActivityIndicator( false )
-		end )
-    else
-        print ( "RESPONSE: " .. event.response )
-        
-        local deviceIdList = json.decode(event.response)
-        
-        if( deviceIdList == 0 ) then
-        	local alert = native.showAlert( alertError, "All fields are mandatory123.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 1 ) then
-        	local alert = native.showAlert( alertError, "All fields are mandatory.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        
-        elseif( deviceIdList == 2 ) then
-        	local alert = native.showAlert( alertError, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 3 ) then
-        	local alert = native.showAlert( alertError, "User id does not exists.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 4 ) then
-        	local alert = native.showAlert( alertError, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 5 ) then
-        	local alert = native.showAlert( alertError, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        
-        else
-        	print( "Device id is registered successfully." )
-        	
-		end
-
-        timer.performWithDelay( 200, function() 
-    	native.setActivityIndicator( false )
-		end )
-        
-    end]]--
-    
-    --downloadMenuImage()
-    --fetchDataFromBeacon()
-    native.setActivityIndicator( false )
-    print( _Tutorial )
+	native.setActivityIndicator( false )
     if _Tutorial == "0" then
 		composer.gotoScene("welcomeTutorialScreen")
 	else
@@ -292,10 +240,8 @@ local function deviceIdNetworkListener( event )
 end
 
 local function registerDeviceFunc( event )
-
-
+	
 	local deviceID = system.getInfo( "deviceID" )
-    print( "Device ID : "..deviceID )
     local platformName
         		
     if system.getInfo( "platformName" ) == "Android" then
@@ -306,7 +252,7 @@ local function registerDeviceFunc( event )
         platformName = 1
     end
 		if(RegistrationId == "") then
-			--RegistrationId = "testingRegistrationId"
+			
 		else
 	
 		end					
@@ -337,14 +283,12 @@ end
 local function signUpListNetworkListener( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
     else
-        print ( "RESPONSE:" .. event.response )
         
         local signUpList = json.decode(event.response)
         
@@ -357,9 +301,6 @@ local function signUpListNetworkListener( event )
         elseif( signUpList == 2 ) then
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("3Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk3 )
         	
-        --[[elseif( signUpList == 3 ) then
-        	local alert = native.showAlert( alertLabel, "Last name is invalid, Contains only alphabets and space.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk4 )
-		]]--
         elseif( signUpList == 4 ) then
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Email2Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk5 )
         	
@@ -376,16 +317,12 @@ local function signUpListNetworkListener( event )
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         else
-        	--[[[_UserID = signUpList.id
-			storeData( "UserID", signUpList.id )
-			storeData( "Varified", "0" )]]--
 			storeData( "UserID", signUpList.id )
         	storeData( "UserName", signUpList.email )
 			storeData( "Password", pswdTf.text )
 			storeData( "Varified", "0" )
 			storeData( "F_Name", signUpList.first_name )
 			storeData( "L_Name", signUpList.last_name )
-			
 			
 			_UserName = signUpList.email
 			_fName = signUpList.first_name
@@ -408,7 +345,6 @@ end
 
 local function signUpUsingFBNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         networkReqCount1 = networkReqCount1 + 1
     	native.setActivityIndicator( false )
@@ -426,7 +362,6 @@ local function signUpUsingFBNetworkListener( event )
 		
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local signUpList = json.decode(event.response)
         
@@ -495,7 +430,6 @@ end
 
 local function signUpUsingTwitterNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         networkReqCount4 = networkReqCount4 + 1
         
@@ -509,13 +443,11 @@ local function signUpUsingTwitterNetworkListener( event )
 			
 			local url = _WebLink.."fb-g-connect.php?first_name="..fName.."&last_name="..lName.."&email="..response.email.."&connect=t"
 			local url2 = url:gsub(" ", "%%20")
-			print( url2 )
 			signInTwitterRequest = network.request( url2, "GET", signUpUsingTwitterNetworkListener )
 			native.setActivityIndicator( true )
 			
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local twitterSignInList = json.decode(event.response)
         
@@ -550,7 +482,6 @@ local function signUpUsingTwitterNetworkListener( event )
         	local alert = native.showAlert( alertLabel, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         
         else
-        	print( "login successful via Twitter ...." )
         	_UserID = twitterSignInList.id
 			storeData( "UserID", twitterSignInList.id )
         	storeData( "UserName", twitterSignInList.email )
@@ -562,10 +493,8 @@ local function signUpUsingTwitterNetworkListener( event )
 			storeData( "Allergies", twitterSignInList.allergies )
 			
 			if(twitterSignInList.card_number == nil or twitterSignInList.card_number == "" or twitterSignInList.card_number == " ") then
-				print( "no stripe details" )
+				
 			else
-				print("stripe details")
-				--storeData( "S_ID", twitterSignInList.stripe_id )
 				storeData( "S_CardNo", twitterSignInList.card_number )
 				storeData( "S_CVVNo", twitterSignInList.cvv_number )
 				storeData( "S_ExpiryMonth", twitterSignInList.expiry_date_month )
@@ -575,7 +504,6 @@ local function signUpUsingTwitterNetworkListener( event )
 				_StripeCVVNo = twitterSignInList.cvv_number
 				_StripeExpMont = twitterSignInList.expiry_date_month
 				_StripeExpYear = twitterSignInList.expiry_date_year
-				--_StripeCustomerID = twitterSignInList.stripe_id
 				_StripePin = twitterSignInList.pin_number
 			end
 			
@@ -587,7 +515,6 @@ local function signUpUsingTwitterNetworkListener( event )
 			_Varified = "1"
 			_Alleregy = twitterSignInList.allergies
 			
-			print("now register device")
 			registerDeviceFunc()
         	
         end
@@ -623,7 +550,6 @@ local function listener( event )
 --- Debug Event parameters printout --------------------------------------------------
 --- Prints Events received up to 20 characters. Prints "..." and total count if longer
 ---
-	print( "Facebook Listener events:" )
 	
 	local maxStr = 20		-- set maximum string length
 	local endStr
@@ -639,23 +565,16 @@ local function listener( event )
 	end
 --- End of debug Event routine -------------------------------------------------------
 
-    print( "event.name", event.name ) -- "fbconnect"
-    print( "event.type:", event.type ) -- type is either "session" or "request" or "dialog"
-	print( "isError: " .. tostring( event.isError ) )
-	print( "didComplete: " .. tostring( event.didComplete) )
+    
 -----------------------------------------------------------------------------------------
 	-- After a successful login event, send the FB command
 	-- Note: If the app is already logged in, we will still get a "login" phase
 	--
     if ( "session" == event.type ) then
         -- event.phase is one of: "login", "loginFailed", "loginCancelled", "logout"
-		print("In SESSION PHASE")
-		--statusMessage.textObject.text = event.phase		-- tjn Added
-		
-		print( "Session Status: " .. event.phase )
 		
 		if event.phase ~= "login" then
-			-- Exit if login error
+			
 			return
 		end
 		
@@ -673,33 +592,24 @@ local function listener( event )
 		-- Request the current logged in user's info
 		if fbCommand == GET_USER_INFO then
 			facebook.request( "me" )
-			--facebook.request( "me/friends" )		-- Alternate request
 		end
 		
 -----------------------------------------------------------------------------------------
 
     elseif ( "request" == event.type ) then
-    	print("In REQUEST PHASE")
         -- event.response is a JSON object from the FB server
         local response = event.response
         	
 		if ( not event.isError ) then
 	        response = json.decode( event.response )
-	        print("response is ......"..event.response)
 	       
 	        if fbCommand == GET_USER_INFO then
-	        	print("GET_USER_INFO>>>>>>>>>>>")
-				--statusMessage.textObject.text = response.name
-				print(response.email)
-				print(response.first_name)
-				print(response.last_name)
-				printTable( response, "User Info", 3 )
+	        	printTable( response, "User Info", 3 )
 				
 				if(response.email == nil or response.email == "" or response.email == " ") then
 					
 				else
 				
-					print("got emailID ???????????? ")
 					local headers = {}
 			
 					headers["Content-Type"] = "application/x-www-form-urlencoded"
@@ -712,7 +622,6 @@ local function listener( event )
 					params.timeout = 180
 				
 					local url = _WebLink.."fb-g-connect.php?"
-					print( url..body )
 					signInFbRequest = network.request( url, "POST", signUpUsingFBNetworkListener, params )
 					native.setActivityIndicator( true )
 					
@@ -720,20 +629,14 @@ local function listener( event )
 				
 			end
 			
-			print("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\")
-	        print(fbCommand)
-	        
     	else
         	-- Post Failed
-			--statusMessage.textObject.text = "Post failed"
 			printTable( event.response, "Post Failed Response", 3 )
 		end
 		
 	elseif ( "dialog" == event.type ) then
 		-- showDialog response
 		--
-		print( "dialog response:", event.response )
-		--statusMessage.textObject.text = event.response
     end
     
 end
@@ -742,7 +645,6 @@ local function handleButtonEvent( event )
 	if event.phase == "ended" then
 		
 		if event.target.id == "signUp" then
-			print( "signUp" )
 			if fNameTf.text == "" then
 				local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Enter1Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk7 )
 			
@@ -779,36 +681,27 @@ local function handleButtonEvent( event )
 				params.timeout = 180
 				
 				local url = _WebLink.."register.php?"
-				print( url..body )
 				signUpRequest = network.request( url, "POST", signUpListNetworkListener, params )
 				native.setActivityIndicator( true )
 			
 			end
 		
 		elseif event.target.id == "facebook" then
-			print( "facebook" )
-			print( appId )
 			if ( appId ) then
 				fbCommand = GET_USER_INFO
 				facebook.login( appId, listener, {"publish_actions","email"}  )
-				
-				--fbCommand = GET_USER_INFO
-				--enforceFacebookLogin()
 				
 			else
 				native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey),{ GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 			end
 			
 		elseif event.target.id == "twitter" then
-			print( "twitter" )
 			
 			local listener = function( event )
 				if event.phase == "authorised" then
-					print( "authorisation is successful...." )
 					local postMessage = {"users", "account/verify_credentials.json", "GET",
 						{"screen_name", "SELF"}, {"skip_status", "true"},
 						{"include_entities", "false"}, {"include_email", "true"} }
-					print( "size :::: "..#postMessage )
 					twitter:getInfo( postMessage )
 				end
 			end
@@ -871,19 +764,6 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("SignUpLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
     	
     local backBtn = widget.newButton
 	{
@@ -892,7 +772,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -912,8 +791,6 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         
-        print( "In sign up screen......" )
-        
         heading.text = GBCLanguageCabinet.getText("SignUpLabel",_LanguageKey)
         
         signUpGroup = display.newGroup()
@@ -925,7 +802,7 @@ function scene:show( event )
     		height = _H/16.27,
     		defaultFile = imageDirectory.."Facebook_Btn.png",
    			overFile = imageDirectory.."Facebook_Btn.png",
-    		label = GBCLanguageCabinet.getText("FacebookLabel",_LanguageKey),--"CONNECT WITH FACEBOOK",
+    		label = GBCLanguageCabinet.getText("FacebookLabel",_LanguageKey),
     		labelColor = { default={ 52/255, 85/255, 146/255 }, over={ 52/255, 85/255, 146/255 } },
     		labelYOffset = _H/275,
     		fontSize = _H/30,
@@ -934,7 +811,7 @@ function scene:show( event )
     		onEvent = handleButtonEvent
 		}
 		facebookBtn.x = _W/2
-		facebookBtn.y = _H/7.68 --lineImg.y + lineImg.height/2 + facebookBtn.height/2 + _H/27.42
+		facebookBtn.y = _H/7.68
 		signUpGroup:insert( facebookBtn )
 		
 		twitterBtn = widget.newButton
@@ -943,7 +820,7 @@ function scene:show( event )
     		height = _H/16.27,
     		defaultFile = imageDirectory.."Twitter_Btn.png",
    			overFile = imageDirectory.."Twitter_Btn.png",
-    		label = GBCLanguageCabinet.getText("TwitterLabel",_LanguageKey),--"CONNECT WITH TWITTER",
+    		label = GBCLanguageCabinet.getText("TwitterLabel",_LanguageKey),
     		labelColor = { default={ 0/255, 172/255, 237/255 }, over={ 0/255, 172/255, 237/255 } },
     		labelYOffset = _H/275,
     		fontSize = _H/30,
@@ -952,7 +829,7 @@ function scene:show( event )
     		onEvent = handleButtonEvent
 		}
 		twitterBtn.x = _W/2
-		twitterBtn.y = facebookBtn.y + facebookBtn.height/2 + twitterBtn.height/2 + _H/38.4 --signInBtn.y + twitterBtn.height*1.5 + _H/64
+		twitterBtn.y = facebookBtn.y + facebookBtn.height/2 + twitterBtn.height/2 + _H/38.4
 		signUpGroup:insert( twitterBtn )
 		
 		lineImg = display.newImageRect( imageDirectory.."DeviderLine.png", _W, _H/384 )
@@ -963,7 +840,7 @@ function scene:show( event )
         local option = {
         	text = GBCLanguageCabinet.getText("wopaduNeedsDetailsLabel",_LanguageKey),
         	x = _W/2,
-        	y = lineImg.y + lineImg.height/2 + _H/27.42, --_H/19.2 + _H/27.42,
+        	y = lineImg.y + lineImg.height/2 + _H/27.42,
         	width = _W - _W/27,
         	height = 0,
         	font = _FontArr[6],
@@ -1054,7 +931,7 @@ function scene:show( event )
     		onEvent = handleButtonEvent
 		}
 		signUpBtn.x = _W/2
-		signUpBtn.y = pswdBg.y + pswdBg.height/2 + signUpBtn.height/2 + _H/19.2 --signUpBtn.height/2 + _H/1.76
+		signUpBtn.y = pswdBg.y + pswdBg.height/2 + signUpBtn.height/2 + _H/19.2
 		signUpGroup:insert( signUpBtn )
 		
 		if( _LanguageKey == "de" or _LanguageKey == "ru" ) then
@@ -1068,25 +945,12 @@ function scene:show( event )
         	labelTextSizes = _H/55.20
         end
 		
-		--[[signUp = display.newText( "SIGN UP WITH EMAIL", _W/2, _H/1.17, _FontArr[6], _H/32 )
-		signUp.anchorY = 0
-		signUp.y = _H/1.34 + signUp.height/2
-        signUp:setFillColor( 83/255, 80/255, 79/255 )
-        signInGroup:insert( signUp )
-        
-        signUpBg = display.newRect( signUp.x, signUp.y, signUp.width + _W/36, signUp.height + _H/96 )
-        signUpBg.anchorY = 0
-        signUpBg:setFillColor( 0, 0, 0, 0.01 )
-        signUpBg:addEventListener( "tap", handleSignUpEvent )
-        signInGroup:insert( signUpBg )]]--
-        
         title = display.newText(tostring(GBCLanguageCabinet.getText("20Alert",_LanguageKey)), _W/2, _H/1.07 - _H/96, _FontArr[30], labelTextSizes )
 		title.anchorY = 0
         title:setFillColor( 139/255, 139/255, 139/255 )
         signUpGroup:insert( title )
         
         title2 = display.newText(GBCLanguageCabinet.getText("andLabel",_LanguageKey), _W/2, _H/1.045- _H/96, _FontArr[30], labelTextSizes )
-        --title2.anchorX = 0
 		title2.anchorY = 0
         title2:setFillColor( 139/255, 139/255, 139/255 )
         signUpGroup:insert( title2 )
@@ -1181,9 +1045,6 @@ function scene:hide( event )
         
         display.remove( twitterBtn )
         twitterBtn = nil
-        
-        --[[display.remove( googleBtn )
-        googleBtn = nil]]--
         
         display.remove( lineImg )
         lineImg = nil

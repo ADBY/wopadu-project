@@ -17,7 +17,6 @@ local heading
 
 local function handleBackButtonEvent( event )
 	local previous = composer.getSceneName( "previous" )
-	print( "##########".._PreviousSceneforSetting )
 	if previous == "changePassword" or previous == "terms" or previous == "aboutUs" or previous == "RatePage" or previous == "ShareWopado_Overlay" then
 		composer.gotoScene( _PreviousSceneforSetting )
 	else
@@ -74,34 +73,10 @@ local function onRectTouch( event )
 end
 
 function shareFunc(e)
-    --[[for i = 1, #rectBg do
-    
-    	rectBg[i]:removeEventListener("tap",onRectTap)
-		rectBg[i]:removeEventListener("touch",onRectTouch)
-    	
-    end ]]--   			
-    
-	composer.gotoScene( "ShareWopado_Overlay" )
+    composer.gotoScene( "ShareWopado_Overlay" )
 					
     return true
 end
-
---[[function scene:resumeGame()
-    --code to resume game
-    local function onActivateEvents()
-    
-    for i = 1, #rectBg do
-    
-    	rectBg[i]:addEventListener("tap",onRectTap)
-		rectBg[i]:addEventListener("touch",onRectTouch)
-    	
-    end   
-
-	end
-    timer.performWithDelay(1500,onActivateEvents)
-    
-    return true
-end]]--
 
 
 -- "scene:create()"
@@ -134,7 +109,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -158,9 +132,7 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         
-        print( "previous scene name is :::>>>>>> ".._PreviousSceneforSetting )
         heading.text = GBCLanguageCabinet.getText("settingLabel",_LanguageKey)
-        
         
         rectBg = { }
 		title = { }

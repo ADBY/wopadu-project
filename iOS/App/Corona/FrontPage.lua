@@ -56,7 +56,6 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         if( _LanguageKey == "ru" ) then
-        	print("russian selected")
         	s_fontSize = _H/60
         elseif( _LanguageKey == "uk"  ) then
         	s_fontSize = _H/45

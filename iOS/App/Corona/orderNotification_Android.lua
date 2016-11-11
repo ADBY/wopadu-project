@@ -44,7 +44,6 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        print("notification page...........android12")
         
         local background = display.newImageRect( imageDirectory.."Background.png", _W, _H )
         background.x = _W/2
@@ -78,7 +77,6 @@ function scene:show( event )
     	
       	local Label1 = display.newText( option )
     	Label1:setFillColor( 83/255, 20/255, 111/255 )
-    	--Label1.anchorX = 0
     	sceneGroup:insert( Label1 )
 		
 	local backBtn = widget.newButton
@@ -88,7 +86,6 @@ function scene:show( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -97,9 +94,7 @@ function scene:show( event )
         
     local DetailsTable = param.noti_table    
     
-    print("order number is/////")
-    print(DetailsTable.order_number)
-    orderNoValue = DetailsTable.order_number
+   	orderNoValue = DetailsTable.order_number
     orderNameValue = DetailsTable.item_name
     loopIndex = 0
     
@@ -117,7 +112,6 @@ function scene:show( event )
     
     local dateTime = display.newText( DetailsTable.order_time,_W/2, Label1.y + Label1.height/2 + _H/38.4,0,0, _FontArr[30], _H/55 )
     dateTime:setFillColor( 0.5,0.5,0.5,0.5 )
-    --dateTime.anchorX = 0
     sceneGroup:insert( dateTime )
     
     local s = orderNameValue
@@ -159,41 +153,9 @@ function scene:show( event )
     end
     
     end
-       
-       
-    --[[
-    if(_CartArray.Note == "" or _CartArray.Note == nil or _CartArray.Note == " ") then
-    	
-    	print("no notes in row "..i)
-    
-    else	
-    	
-    	orderNote = display.newText("Notes",_W/36, rowHeight * 0.85,_FontArr[6],_H/55)
-    	orderNote:setTextColor( 83/255, 20/255, 111/255 )
-    	orderNote.anchorX = 0
-    	row:insert(orderNote)
-    	
-    	orderNoteBg = display.newRect(orderNote.x + orderNote.width/2,orderNote.y - orderNote.height/2 - _H/192,orderNote.width + _W/27,orderNote.height + _H/96)
-    	orderNoteBg:setFillColor( 1, 1, 1, 0.01 )
-    	orderNoteBg.anchorY = 0
-    	orderNoteBg.id = i
-    	orderNoteBg:addEventListener("touch",onShowProductNote)
-    	row:insert(orderNoteBg)
-    	
-		orderNoteLine = display.newLine(orderNote.x ,orderNote.y + _H/110 , orderNote.x + orderNote.width,orderNote.y + _H/110)
-        orderNoteLine:setStrokeColor( 83/255, 20/255, 111/255 )
-		orderNoteLine.strokeWidth = 2
-        row:insert(orderNoteLine)
-           
-        orderNote:toFront() 	
-        orderNoteLine:toFront()
-    
-    end   
-    ]]--
      
     local Label2 = display.newText( GBCLanguageCabinet.getText("HaveAGreatDayLabel",_LanguageKey),_W/2, _H - _H/48,0,0, _FontArr[30], _H/40 )
     Label2:setFillColor( 83/255, 20/255, 111/255 )
-    --Label2.anchorX = 0
     Label2.anchorY = 1
     sceneGroup:insert( Label2 )   
         

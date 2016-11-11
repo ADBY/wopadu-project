@@ -114,7 +114,6 @@ function scene:show( event )
 		
 		notes = ""
         notes = param.noteValue
-        --notes = "A unique double layered Paneer patty with a spicy creamy sauce, covered with fresh lettuce in a soft warm bun An oven baked omelette with onions & bell peppers; filled with Molten cheddar cheese, jalapenos, paprika & chillies & topped with a crispy Golden hash-brown - enclosed in a soft bun with spicy chilli mayo!"
         
        local option = {
 		text = notes,

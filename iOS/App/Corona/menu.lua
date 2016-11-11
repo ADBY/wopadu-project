@@ -54,14 +54,9 @@ end
 
 local function onGotoSubMenu( event )
 	
-	print("target id"..event.target.id)
-	
 	local id = event.target.id:sub(1, string.find( event.target.id,"//" ) - 1 )
 	
 	local index = event.target.id:sub(string.find( event.target.id,"//" ) + 2,event.target.id:len())
-	
-	print(_menuList[tonumber(index)].id )
-	print("//////////".. id)
 	
 	if(_menuList[tonumber(index)].sub_menu) then
 		
@@ -118,11 +113,9 @@ local function onRectTap( event )
 		logOutFunc()
 		
 	elseif(event.target.id == 6) then
-		print( "restaurants..." )
 		composer.gotoScene( "RestaurantsList" )
 		
 	elseif(event.target.id == 7) then
-		print( "tutorial..." )
 		composer.gotoScene( "tutorial" )
 		
 	end
@@ -147,11 +140,9 @@ local function onRectTouch( event )
 		logOutFunc()
 		
 	elseif(event.target.id == 6) then
-		print( "restaurants..." )
 		composer.gotoScene( "RestaurantsList" )
 		
 	elseif(event.target.id == 7) then
-		print( "tutorial..." )
 		composer.gotoScene( "tutorial" )
 		
 	end
@@ -212,10 +203,6 @@ local function createNavigation()
     NavigationVariableTable.ChefImage.anchorX = 0 
     navigationGroup:insert( NavigationVariableTable.ChefImage )
     
-    --_HotelName = "Jamie’s  Italaian"
-    --_HotelAddress = "21st Street, New York \nZip Code 41108, United States"
-    
-    
     if(_HotelName:len() > 25) then
     	HotelNameText = tostring(_HotelName:sub(1,15))..".."
     else
@@ -241,28 +228,12 @@ local function createNavigation()
     NavigationVariableTable.HotelAddress:setTextColor( 1 )
     navigationGroup:insert( NavigationVariableTable.HotelAddress )
     
-    
-    --[[NavigationVariableTable.ProfileBg = display.newImageRect(imageDirectory2.."ProfileBg.png",_W/1.19,_H/9.05)
-    NavigationVariableTable.ProfileBg.x = -_W/1.28  
-    NavigationVariableTable.ProfileBg.y =  _H/3.25  + NavigationVariableTable.ProfileBg.height/2 
-    NavigationVariableTable.ProfileBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable.ProfileBg )
-    
-    NavigationVariableTable.ProfilePicBg = display.newImageRect(imageDirectory2.."ProfilePicBg.png",_W/7.39,_H/13.06)
-    NavigationVariableTable.ProfilePicBg.x = -_W/1.28 + _W/27  
-    NavigationVariableTable.ProfilePicBg.y =  NavigationVariableTable.ProfileBg.y
-    NavigationVariableTable.ProfilePicBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable.ProfilePicBg )]]--
-    
-    --_fName = "Krishna Maru"
-    --_UserID = "krishnamaru123@gmail.com"
-    
     if(_fName:len() > 15) then
     	UserNameText = tostring(_fName:sub(1,15))..".."
     else
     	UserNameText = _fName
     end
-    --_W/1.28 + _W/7.2
+    
     NavigationVariableTable.UserName = display.newText(UserNameText,-_W/1.28 + _W/15.42,_H/2.74,_FontArr[6],_H/31.51 )
     NavigationVariableTable.UserName.anchorX = 0
     NavigationVariableTable.UserName.anchorY = 1
@@ -432,7 +403,6 @@ end
 
 local function waterListNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -441,7 +411,6 @@ local function waterListNetworkListener( event )
 		local alert = native.showAlert( alertLabel, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
     else
-        print ( "RESPONSE:" .. event.response )
         
         if( event.response == 0 or event.response == "0" ) then
         	timer.performWithDelay( 200, function() 
@@ -462,8 +431,6 @@ local function waterListNetworkListener( event )
         	local alert = native.showAlert( alertLabel, "Something went wrong, Please try again.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         elseif( event.response == "OK" ) then
-        	
-        	print( "response is ok..." )
         	local alert = native.showAlert( alertLabel, "Your water request has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         	timer.performWithDelay( 200, function() 
@@ -478,9 +445,7 @@ local function waterListNetworkListener( event )
 end
 
 local function handleButtonEvent( event )
-	--if event.phase == "ended" then
-
-		if event.target.id == "home" then
+	if event.target.id == "home" then
 			if(composer.getSceneName("current") == "menu") then
 			if(menuFlag == 0) then
 				OverRect.isVisible = true
@@ -497,7 +462,6 @@ local function handleButtonEvent( event )
 			end
 			end
 		elseif event.target.id == "search" then
-			print("search")
 			VariableTable.restaurantName.isVisible = false
 			VariableTable.restaurantAdd.isVisible = false
 			VariableTable.searchTextField.isVisible = true
@@ -507,7 +471,6 @@ local function handleButtonEvent( event )
 			composer.gotoScene("PlaceOrder")
 			
 		elseif event.target.id == "WATER" then
-			print( "water button is pressed......" )
 			
 			local headers = {}
 			
@@ -520,7 +483,6 @@ local function handleButtonEvent( event )
 			params.body = body
 			
 			local url = _WebLink.."request-water.php?"
-			print( url..body )
 			waterRequest = network.request( url, "POST", waterListNetworkListener, params )
 			native.setActivityIndicator( true )
 		
@@ -529,257 +491,105 @@ local function handleButtonEvent( event )
 			
 		end
 		
-	--end
 	return true
 end
 
---[[local function networkListener( event )
-	if ( event.isError ) then
-		print( "Network error - download failed" )
-		count = count + 1
-		
-		if count == #categoryImage then
-			for i = 1, #categoryImage do
-        		local imagePath = system.pathForFile( categoryName[i]..".png", system.TemporaryDirectory )
-				print("Path = "..imagePath)
-    			local imageFile = io.open( imagePath, "r" )
-    			
-    			if imageFile then
-    				print(imageFile)
-    				
-    				defaultPhoto[i] = display.newImageRect(imageDirectory.."ProductBg.png", _W/2.04, _H/4.86)
-					defaultPhoto[i].x = m*_W/3.66 + (_W/5.4*(m - 1))
-        			defaultPhoto[i].y = n*_H/6.85 + (_H/6.4*(n - 1))
-        			VariableTable.menuScrollView:insert( defaultPhoto[i] )
-					
-					image[i] = display.newImageRect(categoryName[i]..".png", system.TemporaryDirectory, defaultPhoto[i].width, defaultPhoto[i].height)
-					image[i].x = defaultPhoto[i].x
-					image[i].y = defaultPhoto[i].y
-					--image[i].id = id[i].."/"..name[i]
-					VariableTable.menuScrollView:insert( image[i] )
-					image[i]:addEventListener( "tap", onGotoSubMenu )
-					image[i]:toFront()
-					
-					nameBg[i] = display.newImageRect(imageDirectory.."ProductNameBG.png", defaultPhoto[i].width, _H/18.64)
-					nameBg[i].anchorY = 1
-					nameBg[i].x = defaultPhoto[i].x
-        			nameBg[i].y = defaultPhoto[i].y + defaultPhoto[i].height/2
-        			nameBg[i].alpha = 0.7
-        			VariableTable.menuScrollView:insert( nameBg[i] )
-					
-					name[i] = display.newText( categoryName[i], nameBg[i].x, nameBg[i].y - nameBg[i].height/2, _FontArr[6], _H/32.47 )
-    				name[i]:setFillColor( 1 )
-    				VariableTable.menuScrollView:insert( name[i] )
-    			end
-				
-				if(i%2 == 0)then
-					n = n + 1
-					m = 1
-				else
-					m = m + 1
-				end
-			end
-			
-			timer.performWithDelay( 200, function() 
-			native.setActivityIndicator( false )
-			end )
-        end
-        
-    elseif ( event.phase == "began" ) then
-		print( "Progress Phase: began" )
-		
-    elseif ( event.phase == "ended" ) then
-		print( "Displaying response image file" )
-		
-		count = count + 1
-		
-		if count == #categoryImage then
-			for i = 1, #categoryImage do
-        		local imagePath = system.pathForFile( categoryName[i]..".png", system.TemporaryDirectory )
-				print("Path = "..imagePath)
-    			local imageFile = io.open( imagePath, "r" )
-    			
-    			if imageFile then
-    				print(imageFile)
-    				
-    				defaultPhoto[i] = display.newImageRect(imageDirectory.."ProductBg.png", _W/2.04, _H/4.86)
-					defaultPhoto[i].x = m*_W/3.98 + (_W/4.05*(m - 1))
-        			defaultPhoto[i].y = n*_H/9.4 + (_H/10*(n - 1))
-        			VariableTable.menuScrollView:insert( defaultPhoto[i] )
-					
-					image[i] = display.newImageRect(categoryName[i]..".png", system.TemporaryDirectory, defaultPhoto[i].width, defaultPhoto[i].height)
-					image[i].x = defaultPhoto[i].x
-					image[i].y = defaultPhoto[i].y
-					--image[i].id = id[i].."/"..name[i]
-					VariableTable.menuScrollView:insert( image[i] )
-					--image[i]:addEventListener("tap", openImage)
-					image[i]:toFront()
-					
-					nameBg[i] = display.newImageRect(imageDirectory.."ProductNameBG.png", defaultPhoto[i].width, _H/18.64)
-					nameBg[i].anchorY = 1
-					nameBg[i].x = defaultPhoto[i].x
-        			nameBg[i].y = defaultPhoto[i].y + defaultPhoto[i].height/2
-        			nameBg[i].alpha = 0.7
-        			VariableTable.menuScrollView:insert( nameBg[i] )
-					
-					name[i] = display.newText( categoryName[i], nameBg[i].x, nameBg[i].y - nameBg[i].height/2, _FontArr[6], _H/32.47 )
-    				name[i]:setFillColor( 1 )
-    				VariableTable.menuScrollView:insert( name[i] )
-    				
-    			end
-				
-				if(i%2 == 0)then
-					n = n + 1
-					m = 1
-				else
-					m = m + 1
-				end
-			end
-			
-			timer.performWithDelay( 200, function() 
-			native.setActivityIndicator( false )
-			end )
-        end
-        
-    end
-end]]--
-
 local function menuListNetworkListener( event )
-	print("menu")
-	--[[if ( event.isError ) then
-        print( "Network error!" )
-        
-        timer.performWithDelay( 200, function() 
-    	native.setActivityIndicator( false )
-		end )
+	for i = 1,#_menuList do
+		categoryId[i] = _menuList[i].id
+		categoryName[i] = _menuList[i].category_name
+		categoryImage[i] = _menuList[i].images
 		
-		local alert = native.showAlert( alertLabel, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
+		m = 1
+		n = 1
 		
-    else
-        print ( "RESPONSE:" .. event.response )
-        
-        local _menuList = json.decode(event.response)
-		
-		if( _menuList == 0 ) then
-        	local alert = native.showAlert( alertLabel, "All fields are mandatory.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-        	
-        elseif( _menuList == 1 ) then
-        	local alert = native.showAlert( alertLabel, "Store id can't be empty.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-        
-        elseif( _menuList == 2 ) then
-        	local alert = native.showAlert( alertLabel, "Something went wrong, Please try again.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-        	
-        elseif( _menuList == 3 ) then
-        
-        	VariableTable.noCategory = display.newText( "There are no categories in this store", _W/2, _H/2, _FontArr[30], _H/40 )
-        	VariableTable.noCategory:setFillColor( 0 )
-        	menuScrollView:insert( VariableTable.noCategory )
-        	VariableTable.noCategory:toFront()
-		
-        else
-        	]]--
-        	--display.remove( VariableTable.noCategory )
-        	--VariableTable.noCategory = nil
-        	
-        	for i = 1,#_menuList do
-				categoryId[i] = _menuList[i].id
-        		categoryName[i] = _menuList[i].category_name
-        		categoryImage[i] = _menuList[i].images
-        		--print( "categoryImage name is : "..categoryImage[i] )
-        		
-        		m = 1
-        		n = 1
-        			print(#categoryImage)
-        	for i = 1, #categoryImage do
-        		local imagePath = system.pathForFile( "MainCategory".._menuList[i].id..".png", system.TemporaryDirectory )
-				--print("Path = "..imagePath)
-    			local imageFile = io.open( imagePath, "r" )
-    				defaultPhoto[i] = display.newImageRect(imageDirectory.."ProductBg.png", _W/2.04, _H/4.86)
-					defaultPhoto[i].x = m*_W/3.98 + (_W/4.05*(m - 1))
-        			defaultPhoto[i].y = n*_H/9.2 + (_H/10*(n - 1))
-        			defaultPhoto[i].id = categoryId[i].."//"..i
-        			defaultPhoto[i]:addEventListener( "tap", onGotoSubMenu )
-        			VariableTable.menuScrollView:insert( defaultPhoto[i] )
-    			if imageFile then
-    				print(imageFile)
-    				
-					image[i] = display.newImage("MainCategory".._menuList[i].id..".png", system.TemporaryDirectory)--, defaultPhoto[i].width, defaultPhoto[i].height)
-					image[i].x = defaultPhoto[i].x
-					image[i].y = defaultPhoto[i].y
-					--image[i].id = id[i].."/"..name[i]
-					image[i].width = defaultPhoto[i].height/(image[i].height/image[i].width)
-					image[i].height = defaultPhoto[i].height
-					
-					if( image[i].width > defaultPhoto[i].width ) then
-						image[i].width = defaultPhoto[i].width
-					else
-					
-					end
-					VariableTable.menuScrollView:insert( image[i] )
-					
-					image[i]:toFront()
-				end
+		for i = 1, #categoryImage do
+			local imagePath = system.pathForFile( "MainCategory".._menuList[i].id..".png", system.TemporaryDirectory )
+			local imageFile = io.open( imagePath, "r" )
+			defaultPhoto[i] = display.newImageRect(imageDirectory.."ProductBg.png", _W/2.04, _H/4.86)
+			defaultPhoto[i].x = m*_W/3.98 + (_W/4.05*(m - 1))
+			defaultPhoto[i].y = n*_H/9.2 + (_H/10*(n - 1))
+			defaultPhoto[i].id = categoryId[i].."//"..i
+			defaultPhoto[i]:addEventListener( "tap", onGotoSubMenu )
+			VariableTable.menuScrollView:insert( defaultPhoto[i] )
+			
+			if imageFile then
+				image[i] = display.newImage("MainCategory".._menuList[i].id..".png", system.TemporaryDirectory)
+				image[i].x = defaultPhoto[i].x
+				image[i].y = defaultPhoto[i].y
+				image[i].width = defaultPhoto[i].height/(image[i].height/image[i].width)
+				image[i].height = defaultPhoto[i].height
 				
-					if(_menuList[i].new_items == "YES") then
-						newLabel[i] = display.newImageRect(imageDirectory.."NewLabelBg1.png", _W/6.75, _H/12.15)
-						newLabel[i].x = defaultPhoto[i].x - defaultPhoto[i].width/2 
-        				newLabel[i].y = defaultPhoto[i].y - defaultPhoto[i].height/2
-        				newLabel[i].anchorX = 0
-        				newLabel[i].anchorY = 0
-        				VariableTable.menuScrollView:insert( newLabel[i] )
-					end
-					
-					nameBg[i] = display.newImageRect(imageDirectory.."ProductNameBG.png", defaultPhoto[i].width, _H/18.64)
-					nameBg[i].anchorY = 1
-					nameBg[i].x = defaultPhoto[i].x
-        			nameBg[i].y = defaultPhoto[i].y + defaultPhoto[i].height/2
-        			nameBg[i].alpha = 0.7
-        			VariableTable.menuScrollView:insert( nameBg[i] )
-					
-					local option = {
-						text = categoryName[i],
-						x = nameBg[i].x,
-						y = nameBg[i].y - nameBg[i].height/2 - _H/96,
-						width = _W/2.25,
-						height = _H/32.47,
-						font = _FontArr[6],
-						fontSize =  _H/32.47,
-						align = "center"
-					}
-					
-					name[i] = display.newText( option )
-					name[i].anchorY = 0
-    				name[i]:setFillColor( 1 )
-    				VariableTable.menuScrollView:insert( name[i] )
-    			
-				
-				if(i%2 == 0)then
-					n = n + 1
-					m = 1
+				if( image[i].width > defaultPhoto[i].width ) then
+					image[i].width = defaultPhoto[i].width
 				else
-					m = m + 1
+				
 				end
+				VariableTable.menuScrollView:insert( image[i] )
+				
+				image[i]:toFront()
 			end
-        	
-        	if( i == #_menuList ) then
-        		
-        		timer.performWithDelay( 500,function() 
-        			if( #image ) then
-        				if( image[i] ) then
-        					image[i]:toFront()
-        					nameBg[i]:toFront()
-        					name[i]:toFront()
-        					
-        					if( newLabel[i] ) then
-        					
-        						newLabel[i]:toFront()
-        						
-        					end
-        				end
-        			end
-        		end,1 )
-        		
-        	end
+			
+				if(_menuList[i].new_items == "YES") then
+					newLabel[i] = display.newImageRect(imageDirectory.."NewLabelBg1.png", _W/6.75, _H/12.15)
+					newLabel[i].x = defaultPhoto[i].x - defaultPhoto[i].width/2 
+					newLabel[i].y = defaultPhoto[i].y - defaultPhoto[i].height/2
+					newLabel[i].anchorX = 0
+					newLabel[i].anchorY = 0
+					VariableTable.menuScrollView:insert( newLabel[i] )
+				end
+				
+				nameBg[i] = display.newImageRect(imageDirectory.."ProductNameBG.png", defaultPhoto[i].width, _H/18.64)
+				nameBg[i].anchorY = 1
+				nameBg[i].x = defaultPhoto[i].x
+				nameBg[i].y = defaultPhoto[i].y + defaultPhoto[i].height/2
+				nameBg[i].alpha = 0.7
+				VariableTable.menuScrollView:insert( nameBg[i] )
+				
+				local option = {
+					text = categoryName[i],
+					x = nameBg[i].x,
+					y = nameBg[i].y - nameBg[i].height/2 - _H/96,
+					width = _W/2.25,
+					height = _H/32.47,
+					font = _FontArr[6],
+					fontSize =  _H/32.47,
+					align = "center"
+				}
+				
+				name[i] = display.newText( option )
+				name[i].anchorY = 0
+				name[i]:setFillColor( 1 )
+				VariableTable.menuScrollView:insert( name[i] )
+			
+			
+			if(i%2 == 0)then
+				n = n + 1
+				m = 1
+			else
+				m = m + 1
+			end
+		end
+		
+		if( i == #_menuList ) then
+			
+			timer.performWithDelay( 500,function() 
+				if( #image ) then
+					if( image[i] ) then
+						image[i]:toFront()
+						nameBg[i]:toFront()
+						name[i]:toFront()
+						
+						if( newLabel[i] ) then
+						
+							newLabel[i]:toFront()
+							
+						end
+					end
+				end
+			end,1 )
+			
+		end
         	
         	
         	end
@@ -789,18 +599,14 @@ end
 
 local function onSearchEdit( event )
 	if ( event.phase == "began" ) then
-        print( event.text )
         search_productCatId = { }
         search_productData = { }
 	
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
-    	print( "In submitted phase..........." )
-    	print( "size of product data array ::: "..#productData )
     	search_productName = event.target.text
     	
     if event.target.text == "" or event.target.text == " " or event.target.text == nil then
-    	print( "empty string...." )
     	VariableTable.searchBg.isVisible = false
 		VariableTable.searchTextField.isVisible = false
     	VariableTable.restaurantName.isVisible = true
@@ -810,26 +616,20 @@ local function onSearchEdit( event )
     	for i = 1, #productData do
     		local a = string.find(string.lower(tostring(productData[i].productDetail.item_name)),string.lower(tostring(event.target.text)))
 			if a == nil then
-				--print( "nothing....." )
+				
 			else
-				print( "Entered text :::: "..event.target.text )
-				print( "Matching text is ::::: "..productData[i].productDetail.item_name )
 				table.insert( search_productCatId, productData[i].categoryID )
 				table.insert( search_productData,productData[i].productDetail )
-				--break
+				
 			end
 		end
-		--print( "loop break" )
 		
-		print( "size of search cat id array ::: "..#search_productCatId )
-		print( "size of search product data array ::: "..#search_productData )
 		composer.gotoScene( "searchProduct" )
 		
 	end
 
     elseif ( event.phase == "editing" ) then
-    	print( event.text )
-        
+    	
     end
 
 	return true
@@ -862,17 +662,14 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        --NewLabelBg.png
-		
-        print( "In menu screen........" )
+        
         _previousScene = composer.getSceneName( "current" )
         menuFlag = 0
+        _Flag = false
         
         _PreviousSceneforSetting = composer.getSceneName( "current" )
-        print( "previous scene name for seetings :::>>>>".._PreviousSceneforSetting )
         
         _PreviousSceneforOrder = composer.getSceneName( "current" )
-    	print( "previous scene name for order :::>>>>".._PreviousSceneforOrder )
         
         navigationGroup = display.newGroup()
         sceneGroup:insert( navigationGroup )
@@ -926,7 +723,7 @@ function scene:show( event )
         VariableTable.searchBg.y = _H/23.13
         displayGroup:insert( VariableTable.searchBg )
         VariableTable.searchBg.isVisible = false
-        --_W/2, _H/23.13, _W/1.5, _H/19.2
+        
         VariableTable.searchTextField = native.newTextField( VariableTable.searchBg.x, VariableTable.searchBg.y, VariableTable.searchBg.width - textFieldWidth, VariableTable.searchBg.height - textFieldHeight )
         VariableTable.searchTextField.hasBackground = false
         VariableTable.searchTextField.placeholder = GBCLanguageCabinet.getText("searchByProductNameLabel",_LanguageKey)
@@ -938,17 +735,15 @@ function scene:show( event )
         VariableTable.header2 = display.newImageRect( imageDirectory.."TabBg.png", _W, _H/20.21 )
         VariableTable.header2.x = _W/2
         VariableTable.header2.y = _H/11.85 + VariableTable.header2.height/2 + _H/96
-        VariableTable.header2:setFillColor( 254/255, 246/255, 245/255 )
         displayGroup:insert( VariableTable.header2 )
         
         VariableTable.homeBtn = widget.newButton
 		{
-    		width = _W/13.5, --_W/16.11,
-    		height = _H/24,  --_H/28.65,
+    		width = _W/13.5,
+    		height = _H/24,
     		defaultFile = imageDirectory.."Home_Btn.png",
    			overFile = imageDirectory.."Home_Btn.png",
     		id = "home",
-    		--onEvent = handleButtonEvent
 		}
 		VariableTable.homeBtn.x = _W/29.18 + VariableTable.homeBtn.width/2
 		VariableTable.homeBtn.y = _H/41.73 + VariableTable.homeBtn.height/2
@@ -957,70 +752,50 @@ function scene:show( event )
 		
 		VariableTable.searchBtn = widget.newButton
 		{
-    		width = _W/23.47,  --_W/27.69,
-    		height = _H/24,  --_H/28.65,
+    		width = _W/23.47,
+    		height = _H/24,
     		defaultFile = imageDirectory.."Search_Btn.png",
    			overFile = imageDirectory.."Search_Btn.png",
     		id = "search",
-    		--onEvent = handleButtonEvent
 		}
 		VariableTable.searchBtn.x = _W - _W/15.42
 		VariableTable.searchBtn.y = VariableTable.header.y - _H/192
 		VariableTable.searchBtn:addEventListener("tap",handleButtonEvent)
 		displayGroup:insert( VariableTable.searchBtn )
 		
-		local buttonSize ,labelyOff
+		local buttonSize ,labelyOff, buttonSize2
 		
 		if( _LanguageKey == "ar" or _LanguageKey == "zh" or _LanguageKey == "hi" or _LanguageKey == "ja" or _LanguageKey == "ko" ) then
 			buttonSize = _H/40
+			buttonSize2 = _H/40
 			labelyOff = -8
+		elseif( _LanguageKey == "de" or _LanguageKey == "th" or _LanguageKey == "vi" ) then
+			buttonSize = _H/60
+			buttonSize2 = _H/80
 		else
 			buttonSize = _H/60
+			buttonSize2 = _H/60
 			labelyOff = -3
 		end
-		
 		
 		VariableTable.placeOrderBtn = widget.newButton
 		{
     		width = _W/5.51,
     		height = _H/24,
-    		defaultFile = "images/cartBtn2.png",
-   			overFile = "images/cartBtn2.png",
-   			label = GBCLanguageCabinet.getText("cartLabel",_LanguageKey),
-   			labelXOffset = 20,
+    		defaultFile = "images/language2.png",
+   			overFile = "images/language2.png",
+   			label = GBCLanguageCabinet.getText("cartLabel2",_LanguageKey),
    			labelYOffset = labelyOff,
    			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
    			font = _FontArr[1],
    			fontSize = buttonSize,
     		id = "PLACE ORDER",
-    		--onEvent = handleButtonEvent
 		}
 		VariableTable.placeOrderBtn.x = _W - _W/36
 		VariableTable.placeOrderBtn.y = VariableTable.header2.y
 		VariableTable.placeOrderBtn.anchorX = 1
 		VariableTable.placeOrderBtn:addEventListener("tap",handleButtonEvent)
 		displayGroup:insert( VariableTable.placeOrderBtn )
-		
-		--[[VariableTable.waterBtn = widget.newButton
-		{
-    		width = _W/5.51,
-    		height = _H/24,
-    		defaultFile = "images/waterBtn2.png",
-   			overFile = "images/waterBtn2.png",
-    		label = "WATER",
-   			labelXOffset = 20,
-   			labelYOffset = -3,
-   			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
-   			font = _FontArr[1],
-   			fontSize = _H/60,
-    		id = "WATER",
-    		--onEvent = handleButtonEvent
-		}
-		VariableTable.waterBtn.x = _W/36
-		VariableTable.waterBtn.y = VariableTable.header2.y
-		VariableTable.waterBtn.anchorX = 0
-		VariableTable.waterBtn:addEventListener("tap",handleButtonEvent)
-		displayGroup:insert( VariableTable.waterBtn )]]--
 		
 		VariableTable.Language = widget.newButton
 		{
@@ -1034,7 +809,6 @@ function scene:show( event )
    			font = _FontArr[1],
    			fontSize = buttonSize,
     		id = "Language",
-    		--onEvent = handleButtonEvent
 		}
 		VariableTable.Language.x = _W/36
 		VariableTable.Language.y = VariableTable.header2.y
@@ -1042,39 +816,18 @@ function scene:show( event )
 		VariableTable.Language:addEventListener("tap",handleButtonEvent)
 		displayGroup:insert( VariableTable.Language )
 		
-		-- create scrollView
-		
 		VariableTable.menuScrollView = widget.newScrollView
 		{
     		width = _W,
     		height = _H,
     		top =  VariableTable.header2.y + VariableTable.header2.height/2 + _H/384,
-    		--topPadding = _H/19.2,
-	 	  	bottomPadding = _H/19.2,
+	 	  	bottomPadding = _H/6.4,
     		hideBackground = true,
     		scrollHeight = _H*2,
     		horizontalScrollDisabled = true
 		}
 		displayGroup:insert( VariableTable.menuScrollView )
 		
-		-- Access Google over SSL:
-		
-		--[[local headers = {}
-		
-		headers["Content-Type"] = "application/x-www-form-urlencoded"
-		headers["Accept-Language"] = "en-US"
-		
-		local body = "ws=1&store_id=1"
-		local params = {}
-		params.headers = headers
-		params.body = body
-		
-		local url = _WebLink.."store-categories.php?"
-		print( url..body )
-		network.request( url, "POST", menuListNetworkListener, params )
-		native.setActivityIndicator( true )]]--
-        
-        
     OverRect = display.newRect(_W/2,_H/2,_W,_H)
    	OverRect:setFillColor( 0,0,0,0.01 )
    	OverRect:addEventListener("touch",onTouchNavigationOverRect)

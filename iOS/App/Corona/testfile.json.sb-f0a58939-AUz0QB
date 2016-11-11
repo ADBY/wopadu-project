@@ -20,7 +20,7 @@
     },
 
     "orderBtnLabel":{
-        "en":"Order       Confirmed",
+        "en":"Order Confirmed",
         "zh":"訂單已確認",
 	"fr":"Commande confirmée",
         "de":"Bestellung bestätigt",
@@ -1295,46 +1295,6 @@
 	"pt":"Adicionar",
 	"vi":"Thêm vào",
 	"ar":"إضافة"
-
-    },
-
-    "AddLabel2":{
-        "en":"Add More",
-        "zh":"添加更多",
-	"fr":"Ajouter plus",
-        "de":"Mehr hinzufügen",
-	"hi":"अधिक जोड़ें",
-        "it":"Aggiungere altro",
-	"ja":"さらに追加",
-        "ko":"추가 추가",
-	"ru":"Добавить больше",
-	"es":"Añadir más",
-	"th":"เพิ่มขึ้น",
-	"tr":"Daha ekle",
-	"uk":"Додати більше",
-	"pt":"Adicione mais",
-	"vi":"Bổ sung thêm",
-	"ar":"أضف المزيد"
-
-    },
-
-    "EditLabel":{
-        "en":"Edit",
-        "zh":"編輯",
-	"fr":"modifier",
-        "de":"Bearbeiten",
-	"hi":"संपादित करें",
-        "it":"Modifica",
-	"ja":"編集",
-        "ko":"편집하다",
-	"ru":"редактировать",
-	"es":"Editar",
-	"th":"แก้ไข",
-	"tr":"Düzenleme",
-	"uk":"редагувати",
-	"pt":"Editar",
-	"vi":"Chỉnh sửa",
-	"ar":"تحرير"
 
     },
 

@@ -761,7 +761,6 @@ function scene:show( event )
         VariableTable.header2 = display.newImageRect( imageDirectory.."TabBg.png", _W, _H/20.21 )
         VariableTable.header2.x = _W/2
         VariableTable.header2.y = _H/11.85 + VariableTable.header2.height/2 + _H/96
-        VariableTable.header2:setFillColor( 254/255, 246/255, 245/255 )
         displayGroup:insert( VariableTable.header2 )
         
         
@@ -778,21 +777,6 @@ function scene:show( event )
 		VariableTable.homeBtn.y = _H/41.73 + VariableTable.homeBtn.height/2
 		VariableTable.homeBtn:addEventListener( "tap", handleButtonEvent )
 		displayGroup:insert( VariableTable.homeBtn )
-		--[[
-		VariableTable.searchBtn = widget.newButton
-		{
-    		width = _W/23.47,
-    		height = _H/24,
-    		defaultFile = imageDirectory.."Search_Btn.png",
-   			overFile = imageDirectory.."Search_Btn.png",
-    		id = "search",
-    		--onEvent = handleButtonEvent
-		}
-		VariableTable.searchBtn.x = _W - _W/15.42
-		VariableTable.searchBtn.y = VariableTable.header.y - _H/192
-		VariableTable.searchBtn:addEventListener( "tap", handleButtonEvent )
-		displayGroup:insert( VariableTable.searchBtn )
-		]]--
 		
 		local buttonSize ,labelyOff
 		
@@ -846,52 +830,16 @@ function scene:show( event )
 		VariableTable.Language:addEventListener("tap",handleButtonEvent)
 		displayGroup:insert( VariableTable.Language )
 		
-		
-		--[[VariableTable.waterBtn = widget.newButton
-		{
-    		width = _W/5.51,
-    		height = _H/24,
-    		defaultFile = "images/waterBtn2.png",
-   			overFile = "images/waterBtn2.png",
-    		label = "WATER",
-   			labelXOffset = 20,
-   			labelYOffset = -3,
-   			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
-   			font = _FontArr[1],
-   			fontSize = _H/60,
-    		id = "WATER",
-    		--onEvent = handleButtonEvent
-		}
-		VariableTable.waterBtn.x = _W/36
-		VariableTable.waterBtn.y = VariableTable.header2.y
-		VariableTable.waterBtn.anchorX = 0
-		VariableTable.waterBtn:addEventListener( "tap", handleButtonEvent )
-		displayGroup:insert( VariableTable.waterBtn )]]--
-		
 		VariableTable.CategoryTitleBg = display.newImageRect( imageDirectory4.."TitleBg.png", _W, _H/14.22 )
         VariableTable.CategoryTitleBg.x = _W/2
         VariableTable.CategoryTitleBg.y = VariableTable.header2.y + VariableTable.header2.height/2 + VariableTable.CategoryTitleBg.height/2 + _H/960
         displayGroup:insert( VariableTable.CategoryTitleBg )
         
         VariableTable.CategoryTitle = display.newText( tostring(search_productName), _W/6.75, VariableTable.CategoryTitleBg.y , _FontArr[6], _H/30 )
-        VariableTable.CategoryTitle:setFillColor( 1 )
+        VariableTable.CategoryTitle:setFillColor( 0 )
         VariableTable.CategoryTitle.anchorX = 0
         displayGroup:insert( VariableTable.CategoryTitle )
         
-        --[[
-        VariableTable.backBtn = display.newImageRect( imageDirectory5.."Back_Btn.png", _W/15.42, _H/33.10 )
-     	VariableTable.backBtn.x = _W/36 + VariableTable.backBtn.width/2
-     	VariableTable.backBtn.y = VariableTable.CategoryTitleBg.y
-     	displayGroup:insert( VariableTable.backBtn )
-       			
-		VariableTable.backBg = display.newRect( VariableTable.backBtn.x, VariableTable.backBtn.y, VariableTable.backBtn.width + _W/21.6, VariableTable.backBtn.height + _H/38.4 )
-		VariableTable.backBg:setFillColor( 83/255, 20/255, 111/255 , 0.01 )
-	 	VariableTable.backBg:addEventListener( "tap", handleBackButtonEvent )
-	 	VariableTable.backBg:addEventListener( "touch", handleBackButtonEventTouch )
-	 	displayGroup:insert( VariableTable.backBg )
-	 	VariableTable.backBtn:toFront()
-	 	]]--
-       
 		VariableTable.backBtn = widget.newButton
 		{
     		width = _W/9 , --_W/15.42,

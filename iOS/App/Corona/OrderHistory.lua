@@ -55,26 +55,13 @@ local function getDateValue( str )
 	return d
 end
 
---[[local function onTouchOrderRect( event )
-	if( event.phase == "began" ) then
-		
-		
-	
-	end
-	return true
-end]]--
-
-
 local function onOrderHistoryRowRender( event )
-	 local row = event.row
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
+	local row = event.row
+    
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 	
 	local i = row.index
-	print("row"..i)
-	
-	
 	
 	row.id = orderHistoryData[i].id
 	
@@ -188,11 +175,7 @@ local function onOrderHistoryRowTouch( event )
 	if(event.phase == "tap") then
 		_selectedOrderID = event.row.id
 		composer.gotoScene("OrderDetailsPage")
-	
-	--[[elseif(event.phase == "tap") then
-		_selectedOrderID = event.row.id
-		composer.gotoScene("OrderDetailsPage")
-		]]--
+		
 	end
 	return true
 end
@@ -200,7 +183,6 @@ end
 
 local function ViewMyOrdersNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
 				
     	timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -212,7 +194,7 @@ local function ViewMyOrdersNetworkListener( event )
 		timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
-			print("add/update rating resposne: "..event.response)
+		
 		if(event.response == "0" or event.response == 0) then
 		
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("AllFieldsMandatoryAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
@@ -225,7 +207,6 @@ local function ViewMyOrdersNetworkListener( event )
 			noItem:setTextColor( 0 )
 			orderHistoryGroup:insert(noItem)
 			
-			--local alert = native.showAlert( alertLabel, "No previous orders found", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		else
 			orderHistoryData = json.decode(event.response)
 			
@@ -259,7 +240,6 @@ end
 
 local function ViewMyExtraOrdersNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
 				
     	timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -271,7 +251,7 @@ local function ViewMyExtraOrdersNetworkListener( event )
 		timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
-			print("add/update rating resposne: "..event.response)
+		
 		if(event.response == "0" or event.response == 0) then
 			pageIndex = pageIndex - 1
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("AllFieldsMandatoryAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
@@ -280,7 +260,6 @@ local function ViewMyExtraOrdersNetworkListener( event )
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		elseif(event.response == "2" or event.response == 2) then
 			pageIndex = pageIndex - 1
-			--local alert = native.showAlert( alertLabel, "No previous orders found", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		else
 			orderHistoryExtraData = json.decode(event.response)
 			
@@ -299,14 +278,8 @@ local function ViewMyExtraOrdersNetworkListener( event )
 					display.remove(noItem)
 					noItem = nil
 				end
-				print("indexssss")
-				print(((oldIndex) + 1))
-				print((oldIndex + #orderHistoryExtraData))
-				
-				
 				
 				for i = ((oldIndex) + 1), (oldIndex + #orderHistoryExtraData) do
-					print("inser row.....")
 					orderHistoryTableView:insertRow{
 						rowHeight = _H/10.66,
 						lineColor = { 1, 0, 0, 0 }
@@ -333,19 +306,14 @@ end
 
 local function orderHistoryScrollListener( event )
 	if ( event.limitReached ) then
-		print(event.direction)
        	if ( event.direction == "up" ) then 
-       		print("reached limit"..pageIndex)
-
-				pageIndex = pageIndex + 1
-				print("pagination search")
-				
+			pageIndex = pageIndex + 1
+			
 			local headers = {}
 		
 		headers["Content-Type"] = "application/x-www-form-urlencoded"
 		headers["Accept-Language"] = "en-US"
 		
-		--local body = "ws=1&user_id=".._UserID.."&page="..pageIndex
 		local body = "ws=1&user_id=".._UserID.."&store_id=".._StoreID.."&page="..pageIndex
 		local params = {}
 		params.headers = headers
@@ -353,7 +321,6 @@ local function orderHistoryScrollListener( event )
 		params.timeout = 180
 		
 		local url = _WebLink.."orders-store.php?"
-		print( url..body )
 		extraOrderListRequest = network.request( url, "POST", ViewMyExtraOrdersNetworkListener, params )
 		native.setActivityIndicator( true )
 			
@@ -389,20 +356,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("orderHistoryLabel",_LanguageKey), header.x, header.y, _FontArr[30], _H/36.76 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + _H/38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()    
-		]]--
-		
+        
 	local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -410,7 +364,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -429,7 +382,7 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        print(" ORder History Page ...............................")
+        
         heading.text = GBCLanguageCabinet.getText("orderHistoryLabel",_LanguageKey)
         
         orderHistoryGroup = display.newGroup()
@@ -454,8 +407,7 @@ orderHistoryGroup:insert(orderHistoryTableView)
 		
 		headers["Content-Type"] = "application/x-www-form-urlencoded"
 		headers["Accept-Language"] = "en-US"
-		--local body
-		--local body = "ws=1&user_id=".._UserID.."&page="..pageIndex
+		
 		local body = "ws=1&user_id=".._UserID.."&store_id=".._StoreID.."&page="..pageIndex
 		local params = {}
 		params.headers = headers
@@ -463,7 +415,6 @@ orderHistoryGroup:insert(orderHistoryTableView)
 		params.timeout = 180
 		
 		local url = _WebLink.."orders-store.php?"
-		print( url..body )
 		orderListRequest = network.request( url, "POST", ViewMyOrdersNetworkListener, params )
 		native.setActivityIndicator( true )
 

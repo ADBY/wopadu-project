@@ -47,20 +47,16 @@ end
 local function policyDataNetworkListener( event )
 	
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
     else
-        print ( "RESPONSE:" .. event.response )
         
         local policyData = json.decode(event.response)
         
         if termsList == 0 then
-        	print( "No data is available." )
-        	--local alert = native.showAlert( alertLabel, "There is no data available.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	noData = display.newText( GBCLanguageCabinet.getText("noTermsLabel",_LanguageKey) , _W/2,_H/2,_FontArr[6], _H/40)
         	noData:setFillColor( 83/255, 80/255, 79/255 )
         	policyGroup:insert(noData)
@@ -106,20 +102,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("PrivacyPolicyLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
-    	
+        
     local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -127,7 +110,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -147,11 +129,9 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         
-        print( "In policy screen......" )
         heading.text = GBCLanguageCabinet.getText("PrivacyPolicyLabel",_LanguageKey)
         
         if( _LanguageKey == "ru" ) then
-        	print( "language ".._LanguageKey )
         	heading.size = _H/50
         else
         
@@ -192,7 +172,6 @@ function scene:show( event )
 		params.body = body
 				
 		local url = _WebLink.."site-policy.php?"
-		print( url..body )
 		policyRequest = network.request( url, "POST", policyDataNetworkListener, params )
 		native.setActivityIndicator( true )
 

@@ -46,7 +46,6 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        print("notification page...........ios12")
         
         local background = display.newImageRect( imageDirectory.."Background.png", _W, _H )
         background.x = _W/2
@@ -80,11 +79,8 @@ function scene:show( event )
     	
       	local Label1 = display.newText( option )
     	Label1:setFillColor( 83/255, 20/255, 111/255 )
-    	--Label1.anchorX = 0
     	sceneGroup:insert( Label1 )
     	
-    	
-		
 	local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -92,7 +88,6 @@ function scene:show( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -100,53 +95,13 @@ function scene:show( event )
 	sceneGroup:insert( backBtn )
         
     local notificationData = param.noti_table 
-    print(notificationData)   
     local orderID = ""
     local orderDetailID = ""
-    --print(string.sub(notificationData,1,string.find( tostring(notificationData), ":" )-1))
-   -- print(string.sub(1,tonumber(string.find( tostring(notificationData), ":" )) - 1))
    	orderID = string.sub(notificationData,1,string.find( notificationData, ":" ) - 1)
     orderDetailID = string.sub(notificationData,string.find( notificationData, ":" ) + 1,notificationData:len()) 
     
-    print("order Id is......"..orderID)
-    print("order details id is......."..orderDetailID)
-    
-    --[[
-    if(_CartArray.Note == "" or _CartArray.Note == nil or _CartArray.Note == " ") then
-    	
-    	print("no notes in row "..i)
-    
-    else	
-    	
-    	orderNote = display.newText("Notes",_W/36, rowHeight * 0.85,_FontArr[6],_H/55)
-    	orderNote:setTextColor( 83/255, 20/255, 111/255 )
-    	orderNote.anchorX = 0
-    	row:insert(orderNote)
-    	
-    	orderNoteBg = display.newRect(orderNote.x + orderNote.width/2,orderNote.y - orderNote.height/2 - _H/192,orderNote.width + _W/27,orderNote.height + _H/96)
-    	orderNoteBg:setFillColor( 1, 1, 1, 0.01 )
-    	orderNoteBg.anchorY = 0
-    	orderNoteBg.id = i
-    	orderNoteBg:addEventListener("touch",onShowProductNote)
-    	row:insert(orderNoteBg)
-    	
-		orderNoteLine = display.newLine(orderNote.x ,orderNote.y + _H/110 , orderNote.x + orderNote.width,orderNote.y + _H/110)
-        orderNoteLine:setStrokeColor( 83/255, 20/255, 111/255 )
-		orderNoteLine.strokeWidth = 2
-        row:insert(orderNoteLine)
-           
-        orderNote:toFront() 	
-        orderNoteLine:toFront()
-    
-    end   
-    ]]--
-       
-       
-   
-       
 local function NotificationDataNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -154,7 +109,6 @@ local function NotificationDataNetworkListener( event )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
     else
-        print ( "RESPONSE:" .. event.response )
         
         local DetailsTable = json.decode(event.response)
         
@@ -192,76 +146,69 @@ local function NotificationDataNetworkListener( event )
     		native.setActivityIndicator( false )
 			end )
         	if( DetailsTable ) then
-        
-        	print("order number is/////")
-    		print(DetailsTable.order_number)
-    		orderNoValue = DetailsTable.order_number
-    		orderNameValue = DetailsTable.item_name
-    		loopIndex = 0
-    
-    		extraItemArr = { }
-   		 	if( DetailsTable.options == nil or DetailsTable.options == "" ) then
-    	
-    		else
-    			loopIndex = #DetailsTable.options
-    
-    		end 
-    		
-    		
-    
-    		local orderLabel = display.newText( GBCLanguageCabinet.getText("orderNoLabel",_LanguageKey).." : "..orderNoValue,_W/2, Label1.y + Label1.height + _H/19.2  , _FontArr[30], _H/25 )
-    		--orderLabel:setFillColor( 83/255, 20/255, 111/255 )
-    		orderLabel:setFillColor( 206/255, 23/255, 100/255 )
-    		
-    		sceneGroup:insert( orderLabel )
-    
-    		local s = orderNameValue
-    		if(s:len() > 27) then
-        		s = s:sub(1,27).."..."
-    		else	
-    			s = s
-			end
+				orderNoValue = DetailsTable.order_number
+				orderNameValue = DetailsTable.item_name
+				loopIndex = 0
+		
+				extraItemArr = { }
+				if( DetailsTable.options == nil or DetailsTable.options == "" ) then
 			
-    		local dateTime = display.newText( DetailsTable.order_time,_W/2, Label1.y + Label1.height/2 + _H/38.4,0,0, _FontArr[30], _H/55 )
-    		dateTime:setFillColor( 0.5,0.5,0.5,0.5 )
-    		--dateTime.anchorX = 0
-    		sceneGroup:insert( dateTime )
-    		
-    		orderName = display.newText( "",_W/36, orderLabel.y + orderLabel.height,_FontArr[6],_H/35)
-    		orderName:setTextColor( 83/255, 20/255, 111/255 )
-    		orderName.text = s
-    		orderName.anchorX = 0
-    		sceneGroup:insert(orderName)
+				else
+					loopIndex = #DetailsTable.options
+		
+				end
+    			
+				local orderLabel = display.newText( GBCLanguageCabinet.getText("orderNoLabel",_LanguageKey).." : "..orderNoValue,_W/2, Label1.y + Label1.height + _H/19.2  , _FontArr[30], _H/25 )
+				orderLabel:setFillColor( 206/255, 23/255, 100/255 )
+				
+				sceneGroup:insert( orderLabel )
+    			
+				local s = orderNameValue
+				if(s:len() > 27) then
+					s = s:sub(1,27).."..."
+				else	
+					s = s
+				end
+				
+				local dateTime = display.newText( DetailsTable.order_time,_W/2, Label1.y + Label1.height/2 + _H/38.4,0,0, _FontArr[30], _H/55 )
+				dateTime:setFillColor( 0.5,0.5,0.5,0.5 )
+				sceneGroup:insert( dateTime )
+				
+				orderName = display.newText( "",_W/36, orderLabel.y + orderLabel.height,_FontArr[6],_H/35)
+				orderName:setTextColor( 83/255, 20/255, 111/255 )
+				orderName.text = s
+				orderName.anchorX = 0
+				sceneGroup:insert(orderName)
+					
+				quantityArr = display.newText("",_W/2 + _W/6, _H/24.30,_FontArr[6],_H/35)
+				quantityArr:setTextColor( 83/255, 20/255, 111/255 )
+				quantityArr.text = _CartArray.quantity
+				sceneGroup:insert(quantityArr)
         		
-    		quantityArr = display.newText("",_W/2 + _W/6, _H/24.30,_FontArr[6],_H/35)
-    		quantityArr:setTextColor( 83/255, 20/255, 111/255 )
-    		quantityArr.text = _CartArray.quantity
-    		sceneGroup:insert(quantityArr)
-        		
-    		if(loopIndex > 0) then
-    	
-    			for j = 1, loopIndex do
-    				
-    				extraItemArr[j] = display.newText("",_W/36, _H/24.30,_FontArr[6],_H/35)
-    				extraItemArr[j]:setTextColor( 0, 0, 0,0.5 )
-    				extraItemArr[j].anchorX = 0
-    				extraItemArr[j].anchorY = 0
-    				sceneGroup:insert(extraItemArr[j])
-    				extraItemArr[j].text = DetailsTable.options[j].option_name.. " : "..DetailsTable.options[j].sub_name
-    				if(j == 1) then
-    					extraItemArr[j].y = orderName.y + orderName.height/2 + _H/192
-    		
-    				else
-    					extraItemArr[j].y = extraItemArr[j-1].y + extraItemArr[j-1].height + _H/192
-    	
-    				end
-    	
-    			end
-    
-    		end
-       	
+				if(loopIndex > 0) then
+			
+					for j = 1, loopIndex do
+						
+						extraItemArr[j] = display.newText("",_W/36, _H/24.30,_FontArr[6],_H/35)
+						extraItemArr[j]:setTextColor( 0, 0, 0,0.5 )
+						extraItemArr[j].anchorX = 0
+						extraItemArr[j].anchorY = 0
+						sceneGroup:insert(extraItemArr[j])
+						extraItemArr[j].text = DetailsTable.options[j].option_name.. " : "..DetailsTable.options[j].sub_name
+						if(j == 1) then
+							extraItemArr[j].y = orderName.y + orderName.height/2 + _H/192
+				
+						else
+							extraItemArr[j].y = extraItemArr[j-1].y + extraItemArr[j-1].height + _H/192
+			
+						end
+			
+					end
+		
+				end
+       			
        		end
-       
+       		
         end
 	end
 	return true
@@ -290,14 +237,12 @@ end
 	params.timeout = 180
 				
 	local url = _WebLink.."orders-detail-notif.php?"
-	print( url..body )
 	orderNotificationRequest = network.request( url, "POST", NotificationDataNetworkListener, params )
 	native.setActivityIndicator( true )
 	
 	
 	local Label2 = display.newText( GBCLanguageCabinet.getText("HaveAGreatDayLabel",_LanguageKey),_W/2, _H - _H/48,0,0, _FontArr[30], _H/40 )
     Label2:setFillColor( 83/255, 20/255, 111/255 )
-    --Label2.anchorX = 0
     Label2.anchorY = 1
     sceneGroup:insert( Label2 )
 	

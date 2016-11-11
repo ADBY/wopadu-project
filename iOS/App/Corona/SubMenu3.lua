@@ -25,7 +25,6 @@ local subCateImage = { }
 local newLabel = { }
 
 local navigationGroup,subMenuGroup,menuFlag,param, Background, sldView
---local scrollViewSubMenu[i] = { }
 local scrollViewSubMenu = { }
 
 local sub_OverRect
@@ -38,9 +37,6 @@ local NavigationVariableTable = { "sliderBg", "logo", "HeaderBG", "ChefImage", "
 "OrderLabel", "FeedBackLabel", "SettingLabel", "LogOutLabel", "UserName", "UserEmail", "HotelAddress", "HotelName", "MenuProductImage" }
  
 local  header2, HeaderBg, MenuIcon, MenuBg, homeBtn, Bg, restaurantName, restaurantAdd, MenuTitle, MenuTitleBg, backBtn, backBg, list 
- 
---local VariableTable = { HeaderBg, MenuIcon, Bg, restaurantName, restaurantAdd, MenuTitle, MenuTitleBg, backBtn, backBg, list  } 
-
 
 
 local function onDoNothing( event )
@@ -49,8 +45,6 @@ end
 
 
 local function handleBackButtonEvent( event )
-	print("submenu 3 backBtnis preseddd...................>>> ???")
-	print("back to main menu")
 	composer.gotoScene("menu")
 	
 	return true
@@ -58,8 +52,6 @@ end
 
 local function handleBackButtonEventTouch( event )
 	if event.phase == "began" then
-		print("submenu 3 backBtnis preseddd...................>>> ???")
-		print("back to main menu")
 		composer.gotoScene("menu")
 	end
 	
@@ -67,47 +59,21 @@ local function handleBackButtonEventTouch( event )
 end
 
 function openNavigationTap( event )
-	print( "In open navigation tap function....................." )
-	print("a")
-	print( composer.getSceneName("current") )
-	print( menuFlag.."%%%%%%%%%%" )
 	if(composer.getSceneName("current") == "SubMenu2") then
-		print("b")
-	 --MenuBg:removeEventListener("tap",openNavigationTap)
-     --MenuBg:removeEventListener("touch",openNavigationTouch)
-     
-     local function addEvents( event )
-
-	 	--MenuBg:addEventListener("tap",openNavigationTap)
-    	--MenuBg:addEventListener("touch",openNavigationTouch)
-		return true
-	end
-	
-	if(menuFlag == 0) then
-			print("c")
-		--[[navigationGroup.x = navigationGroup.x + _W/1.28
-		subMenuGroup.x = subMenuGroup.x + _W/1.28
-		menuFlag = 1
-		transition.to( navigationGroup, { time=0, x=navigationGroup.x + _W/1.28,onComplete = addEvents } )
-		transition.to( subMenuGroup, { time=0, x=subMenuGroup.x + _W/1.28 } )
-		]]--		
-		navigationGroup.x = navigationGroup.x + _W/1.28
-		subMenuGroup.x = subMenuGroup.x + _W/1.28
-		menuFlag = 1
+		local function addEvents( event )
+			return true
+		end
 		
-	elseif(menuFlag == 1) then
-		print("d")
-		--[[navigationGroup.x = navigationGroup.x - _W/1.28
-		--subMenuGroup.x = subMenuGroup.x - _W/1.28
-		menuFlag = 0
-		transition.to( navigationGroup, { time=0, x=navigationGroup.x - _W/1.28,onComplete = addEvents  } )
-		transition.to( subMenuGroup, { time=0, x=subMenuGroup.x - _W/1.28 } )
-		]]--
-		navigationGroup.x = navigationGroup.x - _W/1.28
-		subMenuGroup.x = subMenuGroup.x - _W/1.28
-		menuFlag = 0
+		if(menuFlag == 0) then
+			navigationGroup.x = navigationGroup.x + _W/1.28
+			subMenuGroup.x = subMenuGroup.x + _W/1.28
+			menuFlag = 1			
+		elseif(menuFlag == 1) then
+			navigationGroup.x = navigationGroup.x - _W/1.28
+			subMenuGroup.x = subMenuGroup.x - _W/1.28
+			menuFlag = 0
+		end
 		
-	end
 	end
 	return true
 end
@@ -115,26 +81,15 @@ end
 function openNavigationTouch( event )
 	if(event.phase == "began") then
 		if(composer.getSceneName == "SubMenu2") then
-		-- MenuBg:removeEventListener("tap",openNavigationTap)
-     	--MenuBg:removeEventListener("touch",openNavigationTouch)
-     	
-     	 local function addEvents( event )
-
-	 		--MenuBg:addEventListener("tap",openNavigationTap)
-    		--MenuBg:addEventListener("touch",openNavigationTouch)
+		local function addEvents( event )
+			
 			return true
 		end
 		if(menuFlag == 0) then
-	
-			--navigationGroup.x = navigationGroup.x + _W/1.28
-			--subMenuGroup.x = subMenuGroup.x + _W/1.28
 			menuFlag = 1
 			transition.to( navigationGroup, { time=1000, x=navigationGroup.x + _W/1.28,onComplete = addEvents  } )
 			transition.to( subMenuGroup, { time=1000, x=subMenuGroup.x + _W/1.28 } )
 		elseif(menuFlag == 1) then
-		
-			--navigationGroup.x = navigationGroup.x - _W/1.28
-			--subMenuGroup.x = subMenuGroup.x - _W/1.28
 			menuFlag = 0
 			transition.to( navigationGroup, { time=1000, x=navigationGroup.x - _W/1.28,onComplete = addEvents } )
 			transition.to( subMenuGroup, { time=1000, x=subMenuGroup.x - _W/1.28 } )
@@ -174,7 +129,6 @@ local function onRectTap( event )
 		logOutFunc()
 		
 	elseif(event.target.id == 6) then
-		print( "restaurants..." )
 		composer.gotoScene( "RestaurantsList" )
 		
 	end
@@ -199,7 +153,6 @@ local function onRectTouch( event )
 		logOutFunc()
 		
 	elseif(event.target.id == 6) then
-		print( "restaurants..." )
 		composer.gotoScene( "RestaurantsList" )
 		
 	end
@@ -210,7 +163,6 @@ end
 
 local function onCategoryTap(event)
     local row = event.target
-    print("tapped Category", row.id)
     
     for k,v in pairs(rowTitles) do rowTitles[k]=nil end
     for k,v in pairs(sub_rowTitles) do sub_rowTitles[k]=nil end
@@ -230,14 +182,9 @@ end
 
 local function onCategoryRectTap( event )
 	
-	print("rect of category tapped/////////////")
-	print(event.target.id)
-	
 	local targetId = event.target.id:sub(1,event.target.id:len() - 3)
 	local targetType = event.target.id:sub(event.target.id:len() - 2,event.target.id:len())
 	if(targetType == "Cat") then
-		
-		
 		local flag = 0
 		local name = ""
 		for i = 1, #subCategoryTable do
@@ -299,27 +246,20 @@ local function onCategoryRectTap( event )
 	return false
 end
 
-
--- Handle row rendering
- local function onRowRender( event )
+local function onRowRender( event )
 	local phase = event.phase
 	local row = event.row
 	local isCategory = row.isCategory
 	local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
-	print("row rende")
-	-- in graphics 2.0, the group contentWidth / contentHeight are initially 0, and expand once elements are inserted into the group.
-	-- in order to use contentHeight properly, we cache the variable before inserting objects into the group
-
-	local groupContentHeight = row.contentHeight
 	
+	local groupContentHeight = row.contentHeight
 	
 	if isCategory then
             
             local categoryBtn = display.newImageRect( row,imageDirectory2.."RowBg.png", row.width, row.height )
             categoryBtn.anchorX, categoryBtn.anchorY = 0, 0
             categoryBtn:addEventListener ( "tap", onCategoryTap )
-            --categoryBtn.alpha = 0
             categoryBtn.isHitTestable = true
             categoryBtn.id = row.id
             
@@ -357,7 +297,6 @@ end
             
     else
 		
-		print("scroll view formation .......****************************")
 		scrollViewSubMenu[i] = widget.newScrollView
 		{
    		 	y = rowHeight * 0.5,
@@ -371,25 +310,17 @@ end
 		}
 		row:insert(scrollViewSubMenu[i])
 		
-		
-				
-				
-		
-		print("$$$$$$$")
 		local Rows = math.ceil( #sub_rowTitles[row.index].items/2 )
 		Rect = { }
 		nameBg = { }
 		
 		if(#sub_rowTitles[row.index].items <= 2) then
 			j = 1
-			print("less then two sub category available")
 			
 			for j = 1, #sub_rowTitles[row.index].items do
-			print(j)
 			if(j == 1) then
-				print("first category")
 				Rect[1] = display.newImageRect(imageDirectory2.."TileBg.png",_W/2.04 ,_H/4.86)
-				Rect[1].x = 0 + _W/155 --rowWidth * 0.0065
+				Rect[1].x = 0 + _W/155
 				Rect[1].y = rowHeight * 0.010
 				Rect[1].anchorX = 0
 				Rect[1].anchorY = 0
@@ -398,7 +329,6 @@ end
 				scrollViewSubMenu[i]:insert(Rect[1])
 				
 			elseif(j == 2) then
-				print("second category")
 				Rect[j] = display.newImageRect(imageDirectory2.."TileBg.png",_W/2.04 ,_H/4.86)
 				Rect[j].x = Rect[j-1].x + Rect[j-1].width + _W/155
 				Rect[j].y = rowHeight * 0.010
@@ -453,7 +383,7 @@ end
 					if(sub_rowTitles[row.index].items[j+1]) then
 				
 						Rect[j + 1] = display.newImageRect(imageDirectory2.."TileBg.png",_W/2.04 ,_H/4.86)
-						Rect[j + 1].x = Rect[j-1].x + Rect[j-1].width + _W/108--Rect[j + 1].x 
+						Rect[j + 1].x = Rect[j-1].x + Rect[j-1].width + _W/108
 						Rect[j + 1].y = rowHeight * 0.990
 						Rect[j + 1].anchorX = 0
 						Rect[j + 1].anchorY = 1
@@ -487,18 +417,10 @@ end
 		
 		end
 		
-		print("sub to sub category")
-		print(#sub_rowTitles[row.index].ids)
-		
-		--sub_rowTitles[#rowTitles + 1] = {items = itmes1,ids = id1}
-		
 		for i = 1,#Rect do
 		
 				local itemType = sub_rowTitles[row.index].ids[i]:sub(sub_rowTitles[row.index].ids[i]:len() - 2,sub_rowTitles[row.index].ids[i]:len())
 				local itemID = sub_rowTitles[row.index].ids[i]:sub(1,sub_rowTitles[row.index].ids[i]:len() - 3)
-				print(sub_rowTitles[row.index].ids[i])
-				print(itemType)
-				print(itemID)
 				if(itemType == "Cat") then
 				
 				 	imagePath = system.pathForFile( "SubToSubCategory"..itemID..".png", system.TemporaryDirectory )
@@ -515,12 +437,11 @@ end
 				subCateImage[i] = display.newImage(path,system.TemporaryDirectory)
 				subCateImage[i].x = Rect[i].x
 				subCateImage[i].y = Rect[i].y
-				subCateImage[i].width = _H/4.86 /(subCateImage[i].height/subCateImage[i].width )--_W/2.04 
+				subCateImage[i].width = _H/4.86 /(subCateImage[i].height/subCateImage[i].width )
 				subCateImage[i].height = _H/4.86
 				subCateImage[i].anchorX = Rect[i].anchorX
 				subCateImage[i].anchorY = Rect[i].anchorY
 				subCateImage[i].id = i
-				--subCateImage[i]:addEventListener("tap",onCategoryRectTap)
 				scrollViewSubMenu[i]:insert(subCateImage[i])
 				
 				if(subCateImage[i].width > _W/2.04) then
@@ -608,41 +529,26 @@ end
 		
 	end
 	
-	
-	--rowTitle:toFront()
-	
-	
 end
 
--- Hande row touch events
 local function onRowTouch( event )
 	local phase = event.phase
 	local row = event.target
 	
 	if "press" == phase then
-		print( "Pressed row: " .. row.index )
 
 	elseif "release" == phase then
-		-- Update the item selected text
-		print("You selected: " .. rowTitles[row.index])
-	
-		print( "Tapped and/or Released row: " .. row.index )
-		
-		print(#subCategoryTable.sub_menu[event.row.index].sub_menu)
 		
 	end
 end
 
 function populateList()
-	print("inside populate func")
     for i = 1, #listItems do
-	--Add the rows category title
 	itmes1 = { }
 	id1 = { }
 	price1 = { }
 	rowTitles[ #rowTitles + 1 ] = {title = listItems[i].title ,id =listItems[i].id }
 	
-	--Insert the category
 	list:insertRow{
     	id = i,
 		rowHeight = _H/15,
@@ -653,9 +559,7 @@ function populateList()
 		isCategory = true,
 	}
         
-        if not listItems[i].collapsed then
-            --Insert the item
-           
+        if not listItems[i].collapsed then           
             if( #listItems[i].items > 2 ) then
             	rowHeight = _H/2.35
             elseif( #listItems[i].items == 0 ) then
@@ -669,23 +573,16 @@ function populateList()
                     	id1[j] = listItems[i].ids[j]
                     	price1[j] = listItems[i].price[j]
                     end
-                    print("sub categoryID "..#id1)
                     sub_rowTitles[#rowTitles + 1] = {items = itmes1,ids = id1, prices = price1 }
-                   
-                    
-            --for j = 1, #listItems[i].items do
-                    --Add the rows item title
-                    rowTitles[ #rowTitles + 1 ] = {title = "Sub categories", id = "nil"}
+                   	
+                   	rowTitles[ #rowTitles + 1 ] = {title = "Sub categories", id = "nil"}
 					
-                    --Insert the item
                     list:insertRow{
                         rowHeight = rowHeight,
                         isCategory = false,
                         listener = onRowTouch
                     }
                     
-                    
-            --end            
         end
     end
     
@@ -775,22 +672,6 @@ local function createNavigation2()
     NavigationVariableTable.HotelAddress.anchorY = 0
     NavigationVariableTable.HotelAddress:setTextColor( 1 )
     navigationGroup:insert( NavigationVariableTable.HotelAddress )
-    
-    
-    --[[NavigationVariableTable.ProfileBg = display.newImageRect(imageDirectory.."ProfileBg.png",_W/1.19,_H/9.05)
-    NavigationVariableTable.ProfileBg.x = -_W/1.28  
-    NavigationVariableTable.ProfileBg.y =  _H/3.25 + NavigationVariableTable.ProfileBg.height/2 
-    NavigationVariableTable.ProfileBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable.ProfileBg )
-    
-    NavigationVariableTable.ProfilePicBg = display.newImageRect(imageDirectory.."ProfilePicBg.png",_W/7.39,_H/13.06)
-    NavigationVariableTable.ProfilePicBg.x = -_W/1.28 + _W/27  
-    NavigationVariableTable.ProfilePicBg.y =  NavigationVariableTable.ProfileBg.y
-    NavigationVariableTable.ProfilePicBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable.ProfilePicBg )]]--
-    
-    --_fName = "Krishna Maru"
-    --_UserID = "krishnamaru123@gmail.com"
     
     if(_fName:len() > 15) then
     	UserNameText = tostring(_fName:sub(1,15))..".."
@@ -974,10 +855,6 @@ local function createNavigation()
     NavigationVariableTable.ChefImage.anchorX = 0 
     navigationGroup:insert( NavigationVariableTable.ChefImage )
     
-    --_HotelName = "Jamie’s  Italaian"
-    --_HotelAddress = "21st Street, New York \nZip Code 41108, United States"
-    
-    
     if(_HotelName:len() > 25) then
     	HotelNameText = tostring(_HotelName:sub(1,15))..".."
     else
@@ -1003,28 +880,12 @@ local function createNavigation()
     NavigationVariableTable.HotelAddress:setTextColor( 1 )
     navigationGroup:insert( NavigationVariableTable.HotelAddress )
     
-    
-    --[[NavigationVariableTable.ProfileBg = display.newImageRect(imageDirectory.."ProfileBg.png",_W/1.19,_H/9.05)
-    NavigationVariableTable.ProfileBg.x = -_W/1.28  
-    NavigationVariableTable.ProfileBg.y =  _H/3.25  + NavigationVariableTable.ProfileBg.height/2 
-    NavigationVariableTable.ProfileBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable.ProfileBg )
-    
-    NavigationVariableTable.ProfilePicBg = display.newImageRect(imageDirectory.."ProfilePicBg.png",_W/7.39,_H/13.06)
-    NavigationVariableTable.ProfilePicBg.x = -_W/1.28 + _W/27  
-    NavigationVariableTable.ProfilePicBg.y =  NavigationVariableTable.ProfileBg.y
-    NavigationVariableTable.ProfilePicBg.anchorX = 0 
-    navigationGroup:insert( NavigationVariableTable.ProfilePicBg )]]--
-    
-    --_fName = "Krishna Maru"
-    --_UserID = "krishnamaru123@gmail.com"
-    
     if(_fName:len() > 15) then
     	UserNameText = tostring(_fName:sub(1,15))..".."
     else
     	UserNameText = _fName
     end
-    --_W/1.28 + _W/7.2
+    
     NavigationVariableTable.UserName = display.newText(UserNameText,-_W/1.28 + _W/15.42,_H/2.74,_FontArr[6],_H/31.51 )
     NavigationVariableTable.UserName.anchorX = 0
     NavigationVariableTable.UserName.anchorY = 1
@@ -1178,7 +1039,6 @@ end
 
 local function waterListNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -1187,7 +1047,6 @@ local function waterListNetworkListener( event )
 		local alert = native.showAlert( alertLabel, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
     else
-        print ( "RESPONSE:" .. event.response )
         
         if( event.response == 0 or event.response == "0" ) then
         	timer.performWithDelay( 200, function() 
@@ -1209,7 +1068,6 @@ local function waterListNetworkListener( event )
         	
         elseif( event.response == "OK" ) then
         	
-        	print( "response is ok..." )
         	local alert = native.showAlert( alertLabel, "Your water request has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         	timer.performWithDelay( 200, function() 
@@ -1226,12 +1084,9 @@ end
 
 
 local function handleButtonEvent( event )
-	--if( event.phase == "ended" ) then
 		if(event.target.id == "PLACE ORDER") then
-			
 			composer.gotoScene("PlaceOrder")
 		elseif( event.target.id == "WATER" ) then
-			print( "water button is pressed......" )
 			
 			local headers = {}
 			
@@ -1244,24 +1099,12 @@ local function handleButtonEvent( event )
 			params.body = body
 			
 			local url = _WebLink.."request-water.php?"
-			print( url..body )
 			waterRequest = network.request( url, "POST", waterListNetworkListener, params )
 			native.setActivityIndicator( true )
 		
 		elseif( event.target.id == "home" ) then
-			print( "Home button is pressed..........." )
-			print("a")
-			print( composer.getSceneName("current") )
-			print( menuFlag.."%%%%%%%%%%" )
 			if(composer.getSceneName("current") == "SubMenu3") then
-				print("b")
 				if(menuFlag == 0) then
-					print("c")
-					
-					--[[if sldView then
-						sldView.isVisible = false
-					end]]--
-					
 					sub_OverRect.isVisible = true
 					navigationGroup.x = navigationGroup.x + _W/1.28
 					subMenuGroup.x = subMenuGroup.x + _W/1.28
@@ -1269,11 +1112,6 @@ local function handleButtonEvent( event )
 					
 					
 				elseif(menuFlag == 1) then
-					print("d")
-					
-					--[[if sldView then
-						sldView.isVisible = true
-					end]]--
 					sub_OverRect.isVisible = false
 					navigationGroup.x = navigationGroup.x - _W/1.28
 					subMenuGroup.x = subMenuGroup.x - _W/1.28
@@ -1286,7 +1124,6 @@ local function handleButtonEvent( event )
 			composer.gotoScene( "LanguageList" )	
 			
 		end
-	--end	
 	return true
 end
 
@@ -1299,42 +1136,19 @@ name = { }
 
 local function onGotoSubMenu( event )
 	
-	print("target id"..event.target.id)
-	
 	local id = event.target.id:sub(1, string.find( event.target.id,"//" ) - 1 )
 	
 	local index = event.target.id:sub(string.find( event.target.id,"//" ) + 2,event.target.id:len())
 	
-	--print(_menuList[tonumber(index)].id )
-	--print("//////////".. id)
+	_selectedProductListCategoryID = id
+	_selectedProductListCategoryName = listItems[tonumber(index)].title
+	composer.gotoScene("ProductListPage")
 	
-	--[[if(_menuList[tonumber(index)].sub_menu) then
-		
-	if( #_menuList[tonumber(index)].sub_menu > 0 ) then 
-		_selectedMainCategoryID = id
-		composer.gotoScene( "SubMenu3" )
-		
-	else]]--
-	
-		_selectedProductListCategoryID = id
-		_selectedProductListCategoryName = listItems[tonumber(index)].title
-		composer.gotoScene("ProductListPage")
-	
-	--[[end
-	else
-	
-		_selectedProductListCategoryID = id
-		_selectedProductListCategoryName = _menuList[tonumber(index)].category_name
-		composer.gotoScene("ProductListPage")
-	
-	end]]--
-
 	return true
 end
 
 
 local function subMenuListNetworkListener( event )
-	print("menu")
 				m = 1
         		n = 1
         	if( #listItems > 0 ) then
@@ -1353,14 +1167,9 @@ local function subMenuListNetworkListener( event )
         	end		
         		
         	for i = 1,#listItems do
-        		print(",,,,,,,,,,,,,,,,,,,,,,"..i)
 				categoryId[i] = listItems[i].id
         		categoryName[i] = listItems[i].title
-        		--categoryImage[i] = listItems[i].images
         		
-        		
-        			--print(#categoryImage)
-        	--for i = 1, 1 do
         		local imagePath = system.pathForFile( "SubCategory"..listItems[i].id..".png", system.TemporaryDirectory )
     			local imageFile = io.open( imagePath, "r" )
     				defaultPhoto[i] = display.newImageRect(imageDirectory4.."ProductBg.png", _W/2.04, _H/4.86)
@@ -1369,15 +1178,12 @@ local function subMenuListNetworkListener( event )
         			defaultPhoto[i].id = categoryId[i].."//"..i
         			defaultPhoto[i]:addEventListener( "tap", onGotoSubMenu )
         			subMenuScrollView:insert( defaultPhoto[i] )
-        			print(defaultPhoto[i].x.."//"..defaultPhoto[i].y)
         			
     			if imageFile then
-    				print(imageFile)
     				
-					image[i] = display.newImage("SubCategory"..listItems[i].id..".png", system.TemporaryDirectory)--, defaultPhoto[i].width, defaultPhoto[i].height)
+					image[i] = display.newImage("SubCategory"..listItems[i].id..".png", system.TemporaryDirectory)
 					image[i].x = defaultPhoto[i].x
 					image[i].y = defaultPhoto[i].y
-					--image[i].id = id[i].."/"..name[i]
 					image[i].width = defaultPhoto[i].height/(image[i].height/image[i].width)
 					image[i].height = defaultPhoto[i].height
 					
@@ -1390,8 +1196,6 @@ local function subMenuListNetworkListener( event )
 					
 					image[i]:toFront()
 				end
-					print(listItems[i].id)
-					print(tostring(listItems[i].new_items))
 					if(tostring(listItems[i].new_items) == "YES" ) then
 						newLabel[i] = display.newImageRect(imageDirectory4.."NewLabelBg1.png", _W/6.75, _H/12.15)
 						newLabel[i].x = defaultPhoto[i].x - defaultPhoto[i].width/2 
@@ -1454,8 +1258,6 @@ local function subMenuListNetworkListener( event )
         		
         		end
 				
-			--end
-        	
         	end
 end
 
@@ -1537,7 +1339,6 @@ local function onShowDisplay()
         		new_item = subCategoryTable[i].new_items
         		k = #subCategoryTable[i].sub_menu
         		
-        		print("k is ..."..k)
         		if(k > 0) then
         			for  j = 1, k do
         				table.insert( subCateArray,subCategoryTable[i].sub_menu[j].category_name)
@@ -1547,14 +1348,12 @@ local function onShowDisplay()
         			
         		else
         			if(#productData > 0) then
-        				print("Product data available")
         				for j = 1, #productData do
         					
         					if(subCategoryTable[i].id == productData[j].categoryID) then
-        							print("same category product data found")
+        							
         						if(productData[j].productDetail) then
         							
-        							print("products")
         							table.insert( subCateArray,productData[j].productDetail.item_name)
         							table.insert( subCateIDArray,productData[j].productDetail.id.."Pro")
         							table.insert( subCatePriceArray,productData[j].productDetail.price)
@@ -1604,15 +1403,11 @@ function scene:show( event )
      	native.setActivityIndicator( true )
      end
      
-     print("FIRST Sub Menu........................................")
-     
      _previousScene = composer.getSceneName( "current" )
      
     _PreviousSceneforSetting = composer.getSceneName( "current" )
-    print( "previous scene name for seetings :::>>>>".._PreviousSceneforSetting )
     
     _PreviousSceneforOrder = composer.getSceneName( "current" )
-    print( "previous scene name for order :::>>>>".._PreviousSceneforOrder )
      
      Background = display.newImageRect(imageDirectory.."Background.png",_W,_H)
      Background.x = _W/2
@@ -1647,7 +1442,6 @@ function scene:show( event )
     	defaultFile = imageDirectory2.."Home_Btn.png",
    		overFile = imageDirectory2.."Home_Btn.png",
     	id = "home",
-    	--onEvent = handleButtonEvent
 	}
 	homeBtn.x = _W/29.18 + homeBtn.width/2
 	homeBtn.y = _H/41.73 + homeBtn.height/2
@@ -1686,16 +1480,14 @@ function scene:show( event )
 		{
     		width = _W/5.51,
     		height = _H/24,
-    		defaultFile = "images/cartBtn2.png",
-   			overFile = "images/cartBtn2.png",
-   			label = GBCLanguageCabinet.getText("cartLabel",_LanguageKey),
-   			labelXOffset = 20,
+    		defaultFile = "images/language2.png",
+   			overFile = "images/language2.png",
+   			label = GBCLanguageCabinet.getText("cartLabel2",_LanguageKey),
    			labelYOffset = -3,
    			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
    			font = _FontArr[1],
    			fontSize = _H/60,
     		id = "PLACE ORDER",
-    		--onEvent = handleButtonEvent
 		}
 		placeOrderBtn.x = _W - _W/36
 		placeOrderBtn.y = header2.y
@@ -1715,7 +1507,6 @@ function scene:show( event )
    			font = _FontArr[1],
    			fontSize = _H/60,
     		id = "Language",
-    		--onEvent = handleButtonEvent
 		}
 		Language.x = _W/36
 		Language.y = header2.y
@@ -1723,37 +1514,13 @@ function scene:show( event )
 		Language:addEventListener("tap",handleButtonEvent)
 		subMenuGroup:insert( Language )
 		
-		
-		--[[waterBtn = widget.newButton
-		{
-    		width = _W/5.51,
-    		height = _H/24,
-    		defaultFile = "images/waterBtn2.png",
-   			overFile = "images/waterBtn2.png",
-    		label = "WATER",
-   			labelXOffset = 20,
-   			labelYOffset = -3,
-   			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
-   			font = _FontArr[1],
-   			fontSize = _H/60,
-    		id = "WATER",
-    		--onEvent = handleButtonEvent
-		}
-		waterBtn.x = _W/36
-		waterBtn.y = header2.y
-		waterBtn.anchorX = 0
-		waterBtn:addEventListener("tap",handleButtonEvent)
-		subMenuGroup:insert( waterBtn )]]--
-		
-    
      MenuTitleBg = display.newImageRect(imageDirectory2.."TitleBg.png",_W,_H/14.22)
      MenuTitleBg.x = _W/2
-     MenuTitleBg.y = _H/7.5 + MenuTitleBg.height/2 +_H/96 --_H/10.97 + MenuTitleBg.height/2
+     MenuTitleBg.y = _H/7.5 + MenuTitleBg.height/2 +_H/96
      subMenuGroup:insert(MenuTitleBg)
      
      MenuTitle = display.newText( "", _W/7.2, MenuTitleBg.y, MenuTitleBg.width - _W/54, 0, _FontArr[6], _H/27.42 )
      MenuTitle.anchorX = 0
-     --MenuTitle.anchorY = 0
      MenuTitle:setFillColor( 1 )
      subMenuGroup:insert( MenuTitle )
     
@@ -1764,32 +1531,15 @@ function scene:show( event )
     	defaultFile = imageDirectory3.."Back_Btn1.png",
    		overFile = imageDirectory3.."Back_Btn1.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/36 + backBtn.width/2
 	backBtn.y = MenuTitleBg.y
-	--backBtn:addEventListener("tap",handleBackButtonEvent)
 	subMenuGroup:insert( backBtn )
 	 	 
    local yPos = MenuTitleBg.y + MenuTitleBg.height/2 + _H/960 
 	
 	local function scrollListener( event )
-	
-		print(event.phase)
-	
-		--[[if(composer.getSceneName("current") == "SubMenu2") then
-		if ( event.direction == "up" ) then 
-			--print( "Reached top limit" )
-			subMenuScrollView:takeFocus( event )
-        elseif ( event.direction == "down" ) then 
-        	--print( "Reached bottom limit" )
-        	subMenuScrollView:takeFocus( event )
-        elseif ( event.direction == "left" ) then 
-        	--print( "Reached left limit" )
-        elseif ( event.direction == "right" ) then 
-        	--print( "Reached right limit" )
-        end
-        end]]--
+		
 		return true
 	end
 	
@@ -1802,7 +1552,6 @@ subMenuScrollView = widget.newScrollView
     scrollWidth = _W,
     scrollHeight = _H * 2,
     hideBackground = true,
-    --listener = scrollListener,
     horizontalScrollDisabled = true
 }
 subMenuGroup:insert(subMenuScrollView)   
@@ -1814,8 +1563,6 @@ categoryBtn = { }
 		if( e.phase == "moved" ) then
 			
 			local dy = math.abs( ( e.y - e.yStart ) )
-        	-- If the touch on the button has moved more than 10 pixels,
-       	 	-- pass focus back to the scroll view so it can continue scrolling
         	if ( dy > 10 ) then
             	subMenuScrollView:takeFocus( e )
         	else
@@ -1910,9 +1657,6 @@ function scene:hide( event )
 	 	display.remove(HeaderBg)
 	 	HeaderBg = nil
 	 	
-	 	--display.remove(MenuIcon)
-	 	--MenuIcon = nil
-	 	
 	 	display.remove(Bg)
 	 	Bg = nil
 	 	
@@ -1948,28 +1692,6 @@ function scene:hide( event )
 		
 	 	display.remove(Background)
 	 	Background = nil
-	 	
-	 		print("total no of scrollview")
-	 		--print(#scrollViewSubMenu[i])
-	 		
-		--[[for i = 1,#scrollViewSubMenu[i] do
-	 	
-	 	print("number of scroll view in loop."..i)
-	 		
-	 		if(scrollViewSubMenu[i][i] == nil) then
-	 			print(" scrollview not found")
-	 		else
-	 			print("removing scrollview")
-	 			display.remove(scrollViewSubMenu[i])
-	 			scrollViewSubMenu[i] = nil
-			end
-	 	end
-	]]--
-	 	
-	
-	 	--_selectedMainCategoryID
-	 	--display.remove(MenuBg)
-	 	--MenuBg = nil
 	 	
 	 	display.remove( homeBtn )
 	 	homeBtn = nil

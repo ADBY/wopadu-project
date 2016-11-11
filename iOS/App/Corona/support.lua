@@ -70,7 +70,7 @@ end
 local function supportListNetworkListener( event )
 	
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         networkReqCount2 = networkReqCount2 + 1
     	native.setActivityIndicator( false )
     	if( networkReqCount2 > 3 ) then
@@ -100,14 +100,11 @@ local function supportListNetworkListener( event )
 	    	
 	    end
     else
-        print ( "RESPONSE:" .. event.response )
+        
         
         local supportList = json.decode(event.response)
         
-        print( supportList.value )
-        
         if supportList == 0 then
-        	print( "No data is available." )
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("13Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         	timer.performWithDelay( 200, function() 
@@ -120,8 +117,6 @@ local function supportListNetworkListener( event )
    			title.text = supportList.value
     		title:setFillColor( 83/255, 80/255, 79/255 )
     		suportScrollView:insert( title )
-    		
-    		--suportScrollView:setScrollHeight( title.height + _H/4 )
     		
     		timer.performWithDelay( 200, function() 
     			native.setActivityIndicator( false )
@@ -137,13 +132,13 @@ end
 
 local function feedbackNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         local alert = native.showAlert( alertLabel,  GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
     else
-        print ( "RESPONSE:" .. event.response )
+        
         
 		if( event.response == "0" or event.response == 0 ) then
 			local alert = native.showAlert( alertLabel,  GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
@@ -194,7 +189,6 @@ local function handleSubmitButtonEvent( event )
 		params.body = body
 		
 		local url = _WebLink.."feedback-email.php?"
-		print( url..body )
 		feedbackRequest = network.request( url, "POST", feedbackNetworkListener, params )
 		native.setActivityIndicator( true )
 		end
@@ -218,21 +212,6 @@ function scene:create( event )
         background.y = _H/2
         sceneGroup:insert( background )
         
-        
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
-    	
 end
 
 
@@ -245,7 +224,6 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        print( "In support screen......" )
         
         networkReqCount2 = 0
         
@@ -275,7 +253,6 @@ function scene:show( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -313,7 +290,6 @@ function scene:show( event )
 		params.body = body
 		
 		local url = _WebLink.."site-faq.php?"
-		print( url..body )
 		network.request( url, "POST", supportListNetworkListener, params )
 		native.setActivityIndicator( true )
         
@@ -337,7 +313,6 @@ function scene:show( event )
 		reviewTf.hasBackground = false
 		reviewTf.isEditable = true
 		reviewTf.anchorY = 0
-		--reviewTf.placeholder = "Add Feedback here..."
 		reviewTf:addEventListener( "userInput", onReviewEdit )
 		reviewTf.font = native.newFont( _Font2, _H/38.4 )
 		suportScrollView:insert( reviewTf )
@@ -370,8 +345,7 @@ function scene:show( event )
     	heading:toFront()
     	backBtn:toFront()
 		
-        -- http://bridgetechnocrats.in/wopado/ws/feedback-email.php?ws=1&user_id=1&content=this-is-the-message
-        
+		
                 
     elseif ( phase == "did" ) then
         -- Called when the scene is now on screen.

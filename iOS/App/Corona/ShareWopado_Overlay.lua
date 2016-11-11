@@ -21,7 +21,6 @@ local function onBgTouch( event )
 	if( event.phase == "ended" ) then
 	
 		composer.gotoScene( composer.getSceneName( "previous" ) )
-		--parent:resumeGame()
 		
 	end
 	return true
@@ -30,7 +29,6 @@ end
 local function onBgTap( event )
 	
 	composer.gotoScene( composer.getSceneName( "previous" ) )
-	--parent:resumeGame()
 	return true
 end
 
@@ -73,14 +71,12 @@ end
 local function onComplete( event )
 
 	composer.gotoScene( composer.getSceneName( "previous" ) )
-	--parent:resumeGame()
 	
 	return true
 end
 
 local function shareWopadoNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -88,7 +84,6 @@ local function shareWopadoNetworkListener( event )
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
     else
-        print ( "RESPONSE:" .. event.response )
         
         local googleSignInList = json.decode(event.response)
         
@@ -153,7 +148,6 @@ local function handleButtonEvent( event )
 		params.timeout = 180
 				
 		local url = _WebLink.."share-app.php?"
-		print( url..body )
 		shareRequest = network.request( url, "POST", shareWopadoNetworkListener, params )
 		native.setActivityIndicator( true )
 		
@@ -181,7 +175,6 @@ function scene:show( event )
     local sceneGroup = self.view
     local phase = event.phase
 	parent = event.parent
-	--param = event.params
 	
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
@@ -298,9 +291,6 @@ function scene:hide( event )
         display.remove(shareGroup)
         shareGroup = nil
         
-        
-        
-        ----parent:resumeGame()
         
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.

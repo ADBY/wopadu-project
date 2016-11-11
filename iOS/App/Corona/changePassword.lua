@@ -62,7 +62,6 @@ local function onOldPswdEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -78,7 +77,6 @@ local function onNewPswdEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -94,7 +92,6 @@ local function onRetypePswdEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -151,7 +148,6 @@ end
 local function changePswdListNetworkListener( event )
 	
 	if ( event.isError ) then
-        print( "Network error!" )
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -160,7 +156,6 @@ local function changePswdListNetworkListener( event )
 		local alert = native.showAlert( alertLabel, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
     else
-        print ( "RESPONSE:" .. event.response )
         
         local changePswdList = json.decode(event.response)
 
@@ -205,7 +200,6 @@ local function handleButtonEvent( event )
 	if event.phase == "ended" then
 		
 		if event.target.id == "save" then
-			print( "save password" )
 			-- Access Google over SSL:
 			
 			local headers = {}
@@ -223,7 +217,6 @@ local function handleButtonEvent( event )
 			params.body = body
 			
 			local url = _WebLink.."password-change.php?"
-			print( url..body )
 			changePassRequest = network.request( url, "POST", changePswdListNetworkListener, params )
 			native.setActivityIndicator( true )
 			
@@ -260,20 +253,7 @@ function scene:create( event )
         heading = display.newText(GBCLanguageCabinet.getText("ChangePasswordLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
-    	
+        
     local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -281,7 +261,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -307,7 +286,6 @@ function scene:show( event )
         heading.text = GBCLanguageCabinet.getText("ChangePasswordLabel",_LanguageKey)
         
         _passwordPreviousScene = composer.getSceneName( "current" )
-        print( "In change Password screen123....." )
         changePasswordGroup = display.newGroup()
         sceneGroup:insert(changePasswordGroup)
         

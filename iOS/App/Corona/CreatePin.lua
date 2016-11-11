@@ -37,7 +37,7 @@ end
 
 local function placeOrdersNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
+    	
 				
     	timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -73,16 +73,13 @@ local function placeOrdersNetworkListener( event )
 			local alert = native.showAlert( alertLabel, "item  variety not found", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 			
 		elseif(event.response == "OK") then
-			print(" success response"..event.response)
 			for i = 1, #_CartArray do
 			
 				table.remove( _CartArray,(i - (i-1)) )
-				--placeOrderTableView:deleteRow(i)
 			
 			end
 			
 			
-			--noteTextBox.isVisible = false
 			_PlaceOrderBody = nil
 			_PlaceOrderTotal = nil
 			
@@ -91,29 +88,18 @@ local function placeOrdersNetworkListener( event )
     			effect = "fade",
     			time = 400
 			}
-			--local alert = native.showAlert( alertLabel, "Your order has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk )
 			local function gotoShowOverlay()
 			
 				composer.gotoScene( "OrderPopUp", options )
-				--[[emailTf.isVisible = false
-				cardTf.isVisible = false
-				expMnthTf.isVisible = false
-				expYrTf.isVisible = false
-				cvcTf.isVisible = false
-	
-				createPinBg:removeEventListener( "tap",handleCreatePinEvent )]]--
+				
 			end
 			timer.performWithDelay(200,gotoShowOverlay,1)
 			
 			
 		else
-		
 			
 			local alert = native.showAlert( alertLabel, "Somthing went wrong, please try again later", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-			print("price is changed with effect of discount ")
 			
-			print(event.response)
-		
 		end
 		
 		
@@ -123,7 +109,7 @@ end
 
 local function OrderPaymentNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
+    	
 				
     	timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -136,7 +122,6 @@ local function OrderPaymentNetworkListener( event )
     	native.setActivityIndicator( false )
 		end )
 		
-		print("Place order Response in card selection page.."..event.response)
 		if( event.response == "0" or event.response == 0 ) then
 			local alert = native.showAlert( alertLabel, "Variables missing", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
@@ -153,7 +138,6 @@ local function OrderPaymentNetworkListener( event )
 			local alert = native.showAlert( alertLabel, "Something went wrong, Query Error", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 			
 		elseif( event.response == "OK" ) then
-			--local alert = native.showAlert( alertLabel, " Payment has been successful", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 			for i = 1, #_CartArray do
 			
 				table.remove( _CartArray,(i - (i-1)) )
@@ -166,7 +150,6 @@ local function OrderPaymentNetworkListener( event )
     			effect = "fade",
     			time = 400
 			}
-			--local alert = native.showAlert( alertLabel, "Your order has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk )
 			local function gotoShowOverlay()
 			
 				composer.gotoScene( "OrderPopUp", options )
@@ -182,54 +165,20 @@ end
 
 local function paymentNetworkListener( event )
         if ( event.isError ) then
-            print( "Network error!" )
+            
         else
-            print( "RESPONSE: "..event.response )
+            
             local data1 = event.response
             resp1 = json.decode(data1)
-            print(data1)
             local error = resp1.error
             if error ~= nil then
                 for i = 1, #resp1.error do
-                    print(resp1.error[i].type)
-                    print(resp1.error[i].message)
+                    
                 end 
             end
            
           if error == nil then
-                --[[chargeId = resp1.id
-                chargedCard = resp1.card.id
-                chargedCardLastFour = resp1.card.last4
-                chargePaid = resp1.paid --true/false
-                chargeFail = resp1.failure_message
-                print(chargeFail)
-                print(chargeId)
-                print(chargedCard)
-                print(chargedCardLastFour)
-                print(chargePaid)
                 
-                ]]--
-                print("payment done successfully")
-                
-                
-               --[[ local headers = {}
-		
-				headers["Content-Type"] = "application/x-www-form-urlencoded"
-				headers["Accept-Language"] = "en-US"
-		
-				local body = _PlaceOrderBody
-				local params = {}
-				params.headers = headers
-				params.body = body
-				params.timeout = 180
-		
-				local url = _WebLink.."place-order.php?"
-		
-				network.request( url, "POST", placeOrdersNetworkListener, params )
-				native.setActivityIndicator( true )
-				print("order url////////")
-				print( url..body )]]--
-				
 				local paymentID = resp1.id
 				
 				local headers = {}
@@ -248,7 +197,7 @@ local function paymentNetworkListener( event )
 				paymentRequest = network.request( url, "POST", OrderPaymentNetworkListener, params )
 				native.setActivityIndicator( true )
 				
-				print( url..body )
+				
 				
 				
 				
@@ -264,12 +213,9 @@ local function doPaymentFunc()
 	local amount = tostring(tonumber(_PlaceOrderTotal) * 100 ) 
 	local description = ""
 	local appFees = ((tonumber(amount) * _AppFee) / 100)		
-	print( "total amout is  .. "..amount.. " & app fees is 10% so actual app fee is .."..appFees )
 	
 	local newCharge = "amount="..amount.."&currency="..currency.."&customer="..customer.."&description="..description.."&application_fee="..appFees.."&destination="..desti		
 	
-	--local newCharge = "amount="..amount.."&currency="..currency.."&customer="..customer.."&description="..description
-			
 	local key = {["Bearer"] = strip_api_key}
     
     local headers = { 
@@ -281,7 +227,6 @@ local function doPaymentFunc()
     params.headers = headers
     params.body =  newCharge 
     
-    print( "params.body: "..params.body )
    	stripePaymentRequest = network.request("https://api.stripe.com/v1/charges", "POST", paymentNetworkListener, params)
 	
 	return true
@@ -298,14 +243,13 @@ end
 
 local function StipeRegisterNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
 		local alert = native.showAlert( alertLabel, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
     else
-        print ( "RESPONSE:" .. event.response )
         
         local frgtPinList = json.decode(event.response)
         
@@ -410,27 +354,22 @@ local function registerNetworkListener( event )
         	timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
-            print( "Network error!" )
+            
         else
-            print( "RESPONSE: "..event.response )
+            
             timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
 			
             local data1 = event.response
             resp1 = json.decode(data1)
-            print(data1)
             local error = resp1.error
             if error ~= nil then
                 for i = 1, #resp1.error do
-                    print(resp1.error[i].type)
-                    print(resp1.error[i].message)
                     
                 end 
             else
-            
-            	print("error has been occured while updaing/registraing account in stripe -- 1")
-
+            	
             end
            
           	if error == nil then
@@ -445,8 +384,6 @@ local function registerNetworkListener( event )
 					local cvc = param.CVCNo
 					local fullName = ""
                 	
-                	
-               --stripe-register.php?user_id=1&stripe_id=shirishmakwana&pin_number=1234
 					local headers = {}
 			
 					headers["Content-Type"] = "application/x-www-form-urlencoded"
@@ -459,7 +396,7 @@ local function registerNetworkListener( event )
 					params.timeout = 180
 				
 					local url = _WebLink.."stripe-add.php?"
-					print( url..body )
+					
 					sRegRequest = network.request( url, "POST", StipeRegisterNetworkListener, params )
 					native.setActivityIndicator( true )
                 
@@ -486,7 +423,6 @@ local function registerNetworkListener( event )
             	end
             	
             	local alert = native.showAlert( alertLabel,error.message, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onHandleError )
-            	print(error.message)
             	
             end 
             
@@ -496,7 +432,6 @@ local function registerNetworkListener( event )
 
 local function handleButtonEvent( event )
     if ( "ended" == event.phase ) then
-        print( "Button was pressed and released" )
         if(event.target.id == "CANCEL") then
         	composer.setVariable( "ErrorType", "Cancel" )
         	composer.hideOverlay( "fade" )
@@ -506,17 +441,6 @@ local function handleButtonEvent( event )
         		local alert = native.showAlert( alertLabel, "Please enter all 4 digits", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk )
         	
         	else
-        	
-        	--[[local t1 = VariableTable.textField1.text:sub(" ","%%20")
-        	local t2 = VariableTable.textField2.text:sub(" ","%%20")
-        	local t3 = VariableTable.textField3.text:sub(" ","%%20")
-        	local t4 = VariableTable.textField4.text:sub(" ","%%20")
-        	
-        	if(t1 == "" or t2 == "" or t3 == "" or t4 == "") then
-        		print("Please insert all 4 digits")
-        		local alert = native.showAlert( alertLabel, "Please enter all 4 digits", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk )
-
-        	else]]--
         		
         		pin = VariableTable.textField1.text..VariableTable.textField2.text..VariableTable.textField3.text..VariableTable.textField4.text
 		
@@ -528,10 +452,8 @@ local function handleButtonEvent( event )
 				local cvc = param.CVCNo
 				local fullName = ""
  
-    				local newCustomer = "email="..email.."&description="..description.."&card[number]="..cardNumber.."&card[exp_year]="..expYear.."&card[exp_month]="..expMonth.."&card[cvc]="..cvc--{["email"] = email, ["description"] = description}--, ["card"] = firstCard}
-    
-    				print(newCharge)
-    
+    				local newCustomer = "email="..email.."&description="..description.."&card[number]="..cardNumber.."&card[exp_year]="..expYear.."&card[exp_month]="..expMonth.."&card[cvc]="..cvc
+    				
     				local key = {["Bearer"] = strip_api_key}
     
     				local headers = { 
@@ -543,9 +465,7 @@ local function handleButtonEvent( event )
     				local params = {}
     				params.headers = headers
     				params.body =  newCustomer 
-    
-    				print( "params.body: "..params.body )
-    
+    				
    					stripeRegistrationRequest = network.request("https://api.stripe.com/v1/customers", "POST", registerNetworkListener, params)
 					
     				native.setActivityIndicator( true )
@@ -564,13 +484,11 @@ local function onFirstDigit( event )
 	if ( event.phase == "began" ) then
 		createPinGroup.y = createPinGroup.y - _H/8
     elseif ( event.phase == "ended" ) then
-    	--native.setKeyboardFocus(nil)
     	createPinGroup.y = yPos
     elseif ( event.phase == "submitted" ) then
-		--native.setKeyboardFocus(nil)
 		createPinGroup.y = yPos
     elseif ( event.phase == "editing" ) then
-    	print( "new.."..event.newCharacters )
+    	
 		if(event.target.text:len() > 0) then
 			VariableTable.textField1.text = ""
 			VariableTable.textField1.text = event.newCharacters
@@ -586,13 +504,11 @@ local function onSecondDigit( event )
 	if ( event.phase == "began" ) then
 		createPinGroup.y = createPinGroup.y - _H/8
     elseif ( event.phase == "ended" ) then
-    	--native.setKeyboardFocus(nil)
     	createPinGroup.y = yPos
     elseif ( event.phase == "submitted" ) then
-		--native.setKeyboardFocus(nil)
 		createPinGroup.y = yPos
     elseif ( event.phase == "editing" ) then
-    	print( "new.."..event.newCharacters )
+    	
 		if(event.target.text:len() > 0) then
 			VariableTable.textField2.text = ""
 			VariableTable.textField2.text = event.newCharacters
@@ -609,13 +525,11 @@ local function onThirdDigit( event )
 	if ( event.phase == "began" ) then
 		createPinGroup.y = createPinGroup.y - _H/8
     elseif ( event.phase == "ended" ) then
-    	--native.setKeyboardFocus(nil)
     	createPinGroup.y = yPos
     elseif ( event.phase == "submitted" ) then
-		--native.setKeyboardFocus(nil)
 		createPinGroup.y = yPos
     elseif ( event.phase == "editing" ) then
-    	print( "new.."..event.newCharacters )
+    	
     	
 		if(event.target.text:len() > 0) then
 			VariableTable.textField3.text = ""
@@ -638,7 +552,7 @@ local function onFourthDigit( event )
 		native.setKeyboardFocus(nil)
 		createPinGroup.y = yPos
     elseif ( event.phase == "editing" ) then
-    	print( "new.."..event.newCharacters )
+    	
 		if(event.target.text:len() > 0) then
 			VariableTable.textField4.text = ""
 			VariableTable.textField4.text = event.newCharacters
@@ -701,8 +615,6 @@ function scene:show( event )
     VariableTable.logo.y = VariableTable.popUpBg.y - VariableTable.popUpBg.height/2.15	
     createPinGroup:insert(VariableTable.logo)
     
-    --130,1120
-    
     textFieldWidth = _W/7.44 - _W/32
     textFieldHeight = _H/13.24 - _H/64
     
@@ -723,7 +635,6 @@ function scene:show( event )
     	onEvent = handleButtonEvent
 	}
 
-	-- Center the button
 	VariableTable.CancelButton.x = _W/8.30 + VariableTable.CancelButton.width/2
 	VariableTable.CancelButton.y = _H/1.52 - VariableTable.CancelButton.height/2
 	createPinGroup:insert(VariableTable.CancelButton)
@@ -743,7 +654,6 @@ function scene:show( event )
     	onEvent = handleButtonEvent
 	}
 
-	-- Center the button
 	VariableTable.CreateButton.x = _W/1.92 + VariableTable.CreateButton.width/2
 	VariableTable.CreateButton.y = VariableTable.CancelButton.y
 	createPinGroup:insert(VariableTable.CreateButton)
@@ -765,32 +675,6 @@ function scene:show( event )
 	VariableTable.Label2:setFillColor( 83/255, 20/255, 111/255 )
 	createPinGroup:insert(VariableTable.Label2)
 	
-	--[[local option = {
-		text = "",
-		font = _FontArr[7],
-		fontSize = _H/31.48,
-		
-	}
-	
-	VariableTable.Label1 = display.newText(option)
-	VariableTable.Label1.text = "4 digit"
-	VariableTable.Label1.x =  VariableTable.Label2.x + VariableTable.Label2.width + _W/54--_W/2.55
-	VariableTable.Label1.y = _H/2.37
-	VariableTable.Label1.anchorX = 0
-	VariableTable.Label1.anchorY = 0
-	VariableTable.Label1:setFillColor( 83/255, 20/255, 111/255 )
-	createPinGroup:insert(VariableTable.Label1)
-	
-	VariableTable.Label3 = display.newText(option2)
-	VariableTable.Label3.text = "pin"
-	VariableTable.Label3.x = VariableTable.Label1.x + VariableTable.Label1.width + _W/54
-	VariableTable.Label3.y = VariableTable.Label1.y 
-	VariableTable.Label3.anchorX = 0
-	VariableTable.Label3.anchorY = 0
-	VariableTable.Label3:setFillColor( 83/255, 20/255, 111/255 )
-	createPinGroup:insert(VariableTable.Label3)
-    ]]--
-    
     VariableTable.textFieldBg1 = display.newImageRect(ImageDirectory.."TextField1.png",_W/7.44,_H/13.24)
     VariableTable.textFieldBg1.x = _W/6.75 + VariableTable.textFieldBg1.width/2
     VariableTable.textFieldBg1.y = _H/2.14 + VariableTable.textFieldBg1.height/2
@@ -854,7 +738,6 @@ function scene:show( event )
         
         
 local function onKeyEvent( event )
-    -- If the "back" key was pressed on Android, then prevent it from backing out of your app.
 	if (event.keyName == "back") and (system.getInfo("platformName") == "Android") and event.phase == "up"  then
     	
     	composer.hideOverlay( "fade" )
