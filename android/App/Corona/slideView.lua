@@ -45,15 +45,12 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 	else
 		background = display.newRect( _W/2, _H/2 - 400,_W, _H/3.84 )
 
-		--background = display.newImageRect( "images/Booking Page/Image Border.png", _W/1.2, _H/3.84 )
 		background.x = _W/2
 		background.y = ypos
 		background:toBack()
 		background.anchorX = 0.5
 		background.anchorY = 0
 		background:setFillColor( 1,1,1,0.1 )
-		--background.xScale = 0.5
-		--background.yScale = 0.5
 		
 	end
 	g:insert(background)
@@ -61,28 +58,9 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 	images = {}
 	for i = 1,#imageSet do
 		local p = display.newImage(imageSet[i],system.TemporaryDirectory)
-		local h = background.height --viewableScreenH-(top+bottom)
-		--p.anchorY = 0
+		local h = background.height 
 		p.width = _W
 		p.height = _W,_W/(p.width/p.height)
-		--[[
-		if p.width > viewableScreenW or p.height > h then
-			if p.width/viewableScreenW > p.height/h then 
-				
-					p.height = _H/3.84
-					p.width = _W/1.2
-					--p.xScale = viewableScreenW/p.width
-					--p.yScale = viewableScreenW/p.width
-			else
-				
-					p.height = _H/3.84
-					p.width = _W/1.2
-					--/(p.height/p.width)
-					--p.xScale = h/p.height
-					--p.yScale = h/p.height
-			end		 
-		end
-		]]--
 		
 		if(p.height > _H/3.84) then
 			p.height = _H/3.84
@@ -94,7 +72,7 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 		g:insert(p)
 	    
 		if (i > 1) then
-			p.x = screenW*1.5 + pad -- all images offscreen except the first one
+			p.x = screenW*1.5 + pad 
 		else 
 			p.x = screenW*.5
 		end
@@ -116,7 +94,6 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 			
 	function touchListener (self, touch) 
 		local phase = touch.phase
-		--print("slides", phase)
 		if ( phase == "began" ) then
             -- Subsequent touch events will target button even if they are outside the contentBounds of button
             display.getCurrentStage():setFocus( self )
@@ -134,9 +111,7 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 				transition.to(navBar,  { time=400, alpha=0 } )
 						
 				if tween then transition.cancel(tween) end
-	
-				--print(imgNum)
-				
+					
 				local delta = touch.x - prevPos
 				prevPos = touch.x
 				
@@ -153,7 +128,6 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 			elseif ( phase == "ended" or phase == "cancelled" ) then
 				
 				dragDistance = touch.x - startPos
-				--print("dragDistance: " .. dragDistance)
 				
 				if (dragDistance < -40 and imgNum < #images) then
 					nextImage()
@@ -179,17 +153,10 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 	end
 	
 	function setSlideNumber()
-		--print("setSlideNumber", imgNum .. " of " .. #images)
-		--imageNumberText.text = imgNum .. " of " .. #images
-		--imageNumberTextShadow.text = imgNum .. " of " .. #images
-		
 		for i = 1,#imageSet do
-			print(i)
 			dot2[i].isVisible = false
 			dot[i].isVisible = true
 		end
-		print(imgNum)
-		--dot[imgNum].isVisible = false
 		dot2[imgNum].isVisible = true
 		
 	end
@@ -228,7 +195,6 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 		if (num > 1) then
 			images[num-1].x = (screenW*.5 + pad)*-1
 		end
-		--setSlideNumber()
 	end
 
 	background.touch = touchListener
@@ -239,8 +205,6 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 	
 	function g:jumpToImage(num)
 		local i
-		--print("jumpToImage")
-		--print("#images", #images)
 		for i = 1, #images do
 			if i < num then
 				images[i].x = -screenW*.5;
@@ -258,7 +222,6 @@ function new( ypos, imageSet, slideBackground, top, bottom )
 	end
 
 	function g:cleanUp()
-		--print("slides cleanUp")
 		background:removeEventListener("touch", touchListener)
 	end
 

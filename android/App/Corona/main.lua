@@ -16,9 +16,9 @@ facebook = require("plugin.facebook.v4")
 GGTwitter = require( "GGTwitter" )
 lfs = require( "lfs" )
 local notifications = require( "plugin.notifications" )
-notifications.registerForPushNotifications()   -- request for the use of push notifications, prompting iOS to ask for permission
+notifications.registerForPushNotifications()
 local networkReqCount = 0
-strip_api_key = "sk_test_uC1ksEtDoRv6izuAcdCQesap" --"sk_test_XQFLVqmOhqHtWu07a3e23GJm" --API Key for stripe Here
+strip_api_key = "sk_test_uC1ksEtDoRv6izuAcdCQesap"
 
 GBCLanguageCabinet = require ("GBCLanguageCabinet")
 
@@ -29,27 +29,15 @@ notificationFlag2 = false
 iBeaconRunning = false
 iBeacon = require "plugin.ibeacon"
 
-print(system.getInfo("model").." ......................")
-
 ----------------- FACEBOOK -----------------
 appId  = "290289701345335"	-- Add  your App ID here (also go into build.settings and replace XXXXXXXXX with your appId under CFBundleURLSchemes)
 apiKey = nil	-- Not needed at this time
 ----------------- FACEBOOK -----------------
 
 ----------------- TWITTER -----------------
---api_key  = "FNIXZ5fE8Y0Zv50nYLP6prznm"
---api_Secret_key = "CSufsBpGxPS25q46RWgOWt9BSoe775JvXFy4rmyJP57K9hMaDk"
---api_key2 = FNIXZ5fE8Y0Zv50nYLP6prznm
---api_Secret_key2 = CSufsBpGxPS25q46RWgOWt9BSoe775JvXFy4rmyJP57K9hMaDk
---twitter.showAlerts = true
---twitter.init(api_key, api_Secret_key)
---loggedIn = false
 consumerKey  = "FNIXZ5fE8Y0Zv50nYLP6prznm"
 consumerSecret = "CSufsBpGxPS25q46RWgOWt9BSoe775JvXFy4rmyJP57K9hMaDk"
 ----------------- TWITTER -----------------
-
---activity = require( "CoronaProvider.native.popup.activity" )
---paypal = require( "plugin.paypal" )
 
 -- global variables
 
@@ -64,7 +52,6 @@ local function loadData(name)
 	 path = system.pathForFile(name, system.DocumentsDirectory )
 	 local fhd = io.open( path )
 	if(fhd) then
-		print("der")
 		local file = io.open( path, "r" )
 		 var= file:read( "*a" )
 		 io.close( file )
@@ -109,9 +96,8 @@ end
 
 alertLabel = "Wopadu"
 NetworkErrorMsg = "Please check your internet connection!!"
---_WebLink = "http://bridgetechnocrats.in/wopado/ws/"
 
-_WebLink = "http://wopadu.com/admin/ws/"  --"http://ec2-54-206-17-113.ap-southeast-2.compute.amazonaws.com/ws/"--"http://classyglitters.in/wopado/ws/"
+_WebLink = "http://wopadu.com/admin/ws/"
 _majorBea = ""
 
 _selectedMainCategoryID = nil   -- first selected Category Id from menu page
@@ -125,12 +111,10 @@ _previousScene = nil -- to use bck btn in proper way
 _PreviousSceneforSetting = nil
 _PreviousSceneforOrder = nil
 _passwordPreviousScene = nil
---isStripeRegistered = nil --  to check , we have to update old account or have to create a new one
 _PlaceOrderBody = nil -- not needed nw
 _PlaceOrderTotal = nil --  used to send total amount to stripe for payment process
 _OrderID = nil -- order id saved after placing order first on server (used to send it to server for payment web service)
 stripeRegisterPreviousPage = nil
-
 
 _HotelName = "TEST"
 _HotelAddress = ""
@@ -151,14 +135,50 @@ subMenuImageRequest2 = { }
 subMenuImageRequest3 = { }
 productImageRequest = { }
 count = 0
+_Flag = false
+_EditFlag = false
+_EditProductDetails = { }
 local deleteAccFlag = false
 
 nearestBeacon = { }
 beaconSearchCount = 0
 
+function print_r ( t )  
+    local print_r_cache={}
+    local function sub_print_r(t,indent)
+        if (print_r_cache[tostring(t)]) then
+            print(indent.."*"..tostring(t))
+        else
+            print_r_cache[tostring(t)]=true
+            if (type(t)=="table") then
+                for pos,val in pairs(t) do
+                    if (type(val)=="table") then
+                        print(indent.."["..pos.."] => "..tostring(t).." {")
+                        sub_print_r(val,indent..string.rep(" ",string.len(pos)+8))
+                        print(indent..string.rep(" ",string.len(pos)+6).."}")
+                    elseif (type(val)=="string") then
+                        print(indent.."["..pos..'] => "'..val..'"')
+                    else
+                        print(indent.."["..pos.."] => "..tostring(val))
+                    end
+                end
+            else
+                print(indent..tostring(t))
+            end
+        end
+    end
+    if (type(t)=="table") then
+        print(tostring(t).." {")
+        sub_print_r(t,"  ")
+        print("}")
+    else
+        sub_print_r(t,"  ")
+    end
+    print()
+end
+
 if system.getInfo("platformName") == "Android" then
 
-	print("platform ANDROID")
 	table.insert(_FontArr,"BEBAS.TTF") -- 1
 	table.insert(_FontArr,"FUTURASTD-BOLD_1.OTF") -- 2
 	table.insert(_FontArr,"FUTURASTD-BOLDOBLIQUE_1.OTF")-- 3
@@ -219,7 +239,6 @@ if system.getInfo("platformName") == "Android" then
 	
 else
 
-	print("platform IOS")
 	table.insert(_FontArr,"Bebas") -- 1
 	table.insert(_FontArr,"FuturaStd-Bold") -- 2
 	table.insert(_FontArr,"FuturaStd-BoldOblique")-- 3
@@ -279,134 +298,158 @@ else
 	table.insert(_FontArr,"GothamNarrow-XLightItalic") -- 52
 end
 
+local beaconArr = {}
+
 function listener( event )
 	if event.phase == "getBeacons" then
 		
-		response = ""
-		tableCount = 0
-		totalBeaconFound = 0
-		
-		if #event.data >= 1 then
+		if _Flag == false then
+			response = ""
+			tableCount = 0
+			totalBeaconFound = 0
 			
-			print("number of beacons found: "..event.count)
-			for i=1, #event.data, 1 do
-				if( event.data[i].UUID == "C0F2E240-836A-489B-A4B1-A0E87FD355BA" ) then
-					print("Beacon #"..i.." UUID "..event.data[i].UUID)
-					print("Beacon #"..i.." Major "..event.data[i].Major)
-					print("Beacon #"..i.." Minor "..event.data[i].Minor)
-					print("Beacon #"..i.." Distance "..event.data[i].Distance)
-					
-					--[[totalBeaconFound = totalBeaconFound + 160
-					
-					if( event.data[i].Distance > 1 ) then
-						tableCount = tableCount + 1
-					end
-					
-					BeaconUUID = event.data[i].UUID]]--
-					
-					if event.data[i].Distance == "Immediate" then
-						_minorBea = event.data[i].Minor
-						_majorBea = event.data[i].Major
-						distanceBea = event.data[i].Distance
-					else
-						print("no distance found as immediate...")
-					end
-					
-					--[[if(i == 1) then
-						_minorBea = event.data[i].Minor
-						_majorBea = event.data[i].Major
-						distanceBea = event.data[i].Distance
-					else
-						if(distanceBea > event.data[i].Distance) then
+			if #event.data >= 1 then
+				print_r( event.data )
+				beaconArr[#beaconArr + 1] = event.data
+				for i=1, #event.data, 1 do
+					if( event.data[i].UUID == "C0F2E240-836A-489B-A4B1-A0E87FD355BA" ) then
+						
+						totalBeaconFound = totalBeaconFound + 160
+						
+						if( event.data[i].Distance > 1 ) then
+							tableCount = tableCount + 1
+						end
+						
+						BeaconUUID = event.data[i].UUID
+						
+						if(i == 1) then
 							_minorBea = event.data[i].Minor
 							_majorBea = event.data[i].Major
 							distanceBea = event.data[i].Distance
-							
-							sameBeaconFlag = false
-							
-							for i = 1, #nearestBeacon do
-								if( nearestBeacon[i].Major == _majorBea and nearestBeacon[i].Minoir == _minorBea or nearestBeacon[i].Distance == distanceBea ) then
-									sameBeaconFlag = true
-									local var = nearestBeacon[i].appearance + 1
-									nearestBeacon[i] = { Major = _majorBea, Minoir = _minorBea, Distance = distanceBea , appearance = var }
-									print("updtaed appearance value")
+						else
+							if(distanceBea > event.data[i].Distance) then
+								_minorBea = event.data[i].Minor
+								_majorBea = event.data[i].Major
+								distanceBea = event.data[i].Distance
+								
+								sameBeaconFlag = false
+								
+								for i = 1, #nearestBeacon do
+									if( nearestBeacon[i].Major == _majorBea and nearestBeacon[i].Minoir == _minorBea or nearestBeacon[i].Distance == distanceBea ) then
+										sameBeaconFlag = true
+										local var = nearestBeacon[i].appearance + 1
+										nearestBeacon[i] = { Major = _majorBea, Minoir = _minorBea, Distance = distanceBea , appearance = var }
+									else
+										
+									end
+								end
+								
+								if( sameBeaconFlag == false ) then
+									nearestBeacon[#nearestBeacon + 1] = { Major = _majorBea, Minoir = _minorBea, Distance = distanceBea , appearance = 1 }
 								else
 									
 								end
-							end
-							
-							if( sameBeaconFlag == false ) then
-								print("added new row in nearest array")
-								nearestBeacon[#nearestBeacon + 1] = { Major = _majorBea, Minoir = _minorBea, Distance = distanceBea , appearance = 1 }
+								
 							else
 								
 							end
-							
-						else
-							-- do nothing
 						end
-					end]]--
+						
+					end
 					
 				end
 				
-			end
-			
-			print("got table.......................")
-			print( _majorBea, _minorBea )
-			
-			beaconSearchCount = beaconSearchCount + 1
-		else
-			print("no beacons found")
-		end
-		
-		if( beaconSearchCount == 1 ) then
-			-- stop search
-			for i = 1, #beaconArr do
-				for j = 1,#beaconArr[i] do
-					print( beaconArr[i][j].Major .."//".. beaconArr[i][j].Minor .. "//"..beaconArr[i][j].Distance )
-				end
-			end
-			
-			--[[if( #nearestBeacon == 0 ) then
-				print("no value in nearest array")
+				beaconSearchCount = beaconSearchCount + 1
 			else
-				for i = 1, #nearestBeacon do
-					if( i == 1 ) then
-						_minorBea = nearestBeacon[i].Minoir
-						_majorBea = nearestBeacon[i].Major
-						distanceBea = nearestBeacon[i].Distance
-						apearanceValue = nearestBeacon[i].appearance
-					else
-						if( apearanceValue < nearestBeacon[i].appearance ) then
+				
+			end
+			
+			if( beaconSearchCount == 1 ) then
+				
+				for i = 1, #beaconArr do
+					for j = 1,#beaconArr[i] do
+						
+					end
+				end
+				
+				if( #nearestBeacon == 0 ) then
+					
+				else
+					for i = 1, #nearestBeacon do
+						if( i == 1 ) then
 							_minorBea = nearestBeacon[i].Minoir
 							_majorBea = nearestBeacon[i].Major
 							distanceBea = nearestBeacon[i].Distance
-							print("got new minor major valye".._minorBea.."//".._majorBea.."//"..distanceBea)
+							apearanceValue = nearestBeacon[i].appearance
+						else
+							if( apearanceValue < nearestBeacon[i].appearance ) then
+								_minorBea = nearestBeacon[i].Minoir
+								_majorBea = nearestBeacon[i].Major
+								distanceBea = nearestBeacon[i].Distance
+							end
 						end
 					end
 				end
-			end]]--
-			
-			print("final minor major valye".._minorBea.."//".._majorBea.."//"..distanceBea)
+				
+			else
+				
+				timer.performWithDelay( 100, function()
+					if( beaconSearchCount == 5 ) then
+						
+					else
+						
+					end
+				end,1)
+				
+			end
 			
 		else
+			response = ""
+			tableCount = 0
+			totalBeaconFound = 0
 			
-			--[[timer.performWithDelay( 100, function()
-				if( beaconSearchCount == 5 ) then
+			if #event.data >= 1 then
+				print_r( event.data )
+				beaconArr[#beaconArr + 1] = event.data
+				for i=1, #event.data, 1 do
+					if( event.data[i].UUID == "C0F2E240-836A-489B-A4B1-A0E87FD355BA" ) then
+						if event.data[i].Distance == "Immediate" then
+							_minorBea = event.data[i].Minor
+							_majorBea = event.data[i].Major
+							distanceBea = event.data[i].Distance
+						else
+							
+						end
+						
+					end
 					
-				else
-					--iBeacon.getBeacons( listener )
 				end
-			end,1)]]--
+				
+				beaconSearchCount = beaconSearchCount + 1
+			else
+				
+			end
+			
+			if( beaconSearchCount == 1 ) then
+				
+				for i = 1, #beaconArr do
+					for j = 1,#beaconArr[i] do
+						
+					end
+				end
+				
+			else
+				
+			end
 			
 		end
 		
 	elseif event.phase == "scan" then
 		if event.message then
-			print("iBeacon message: "..event.message)
+			
 		end
 		if event.scanning then
-			print("ibeacon is scanning")
+			
 		end
 		
 		nearestBeacon = { }
@@ -414,23 +457,21 @@ function listener( event )
 		
 	elseif event.phase == "stopscan" then
 		if event.message then
-			print("iBeacon message: "..event.message)
+			
 		end
 		if not event.scanning then
-			print("ibeacon not scanning")
+			
 		end
 	elseif event.phase == "init" then
 		if event.message then
-			print("iBeacon message: "..event.message)
+			
 		end
 		if event.initialised then
-			print("ibeacon initialised")
 			iBeaconRunning = true
 		end
 	else 
-		print("unknown event", event.phase)
 		if event.message then
-			print("iBeacon message: "..event.message)
+			
 		end
 	end
 end
@@ -453,9 +494,6 @@ _fName = loadData( "F_Name" )
 _lName = loadData( "L_Name" )
 _StripeCustomerID = loadData( "S_ID" )
 _Alleregy = loadData( "Allergies" )
-
-print( "_UserName ::::: " )
-print( _UserName )
 
 local function onDoNothing()
 	return true
@@ -514,7 +552,6 @@ local function deviceIdNetworkListener( event )
 				display.remove(splashBackGround)
 				splashBackGround = nil
 			end
-			print( _Tutorial )
 			if _Tutorial == "0" then
 				composer.gotoScene("welcomeTutorialScreen")
 			else
@@ -531,7 +568,6 @@ local function registerDeviceFunc( event )
 	
 
 	local deviceID = system.getInfo( "deviceID" )
-    print( "Device ID : "..deviceID )
     local platformName
         		
     if system.getInfo( "platformName" ) == "Android" then
@@ -552,17 +588,13 @@ local function registerDeviceFunc( event )
 		local url2 = url:gsub(" ", "%%20")
 		network.request( url2, "GET", deviceIdNetworkListener )
 		native.setActivityIndicator( true )
-		print( url2 )
-
 	
 	return true
 end
 
 local networkReqCount1 = 0
 local function signInListNetworkListener( event )
-	print( "In signInListNetworkListener fucntion...." )
 	if ( event.isError ) then
-        print( "Network error!" )
         networkReqCount1 = networkReqCount1 + 1
         
     	native.setActivityIndicator( false )
@@ -583,7 +615,6 @@ local function signInListNetworkListener( event )
 			
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local signInList = json.decode(event.response)
         
@@ -642,7 +673,6 @@ local function signInListNetworkListener( event )
         	local alert = native.showAlert( alertLabel,  GBCLanguageCabinet.getText("Account3Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing4 )
         	
         else
-        	print( "login successfully" )
         	storeData( "UserID", signInList.id )
         	storeData( "UserName", signInList.email )
 			storeData( "Password", _Password )
@@ -652,10 +682,8 @@ local function signInListNetworkListener( event )
 			storeData( "Allergies", signInList.allergies )
 			
 			if(signInList.card_number == nil or signInList.card_number == "" or signInList.card_number == " ") then
-				print( "no stripe details" )
+				
 			else
-				print("stripe details")
-				--storeData( "S_ID", signInList.stripe_id )
 				storeData( "S_CardNo", signInList.card_number )
 				storeData( "S_CVVNo", signInList.cvv_number )
 				storeData( "S_ExpiryMonth", signInList.expiry_date_month )
@@ -665,7 +693,6 @@ local function signInListNetworkListener( event )
 				_StripeCVVNo = signInList.cvv_number
 				_StripeExpMont = signInList.expiry_date_month
 				_StripeExpYear = signInList.expiry_date_year
-				--_StripeCustomerID = signInList.stripe_id
 				_StripePin = signInList.pin_number
 			end
 			
@@ -677,7 +704,6 @@ local function signInListNetworkListener( event )
 			_Varified = signInList.verif_account
 			_Alleregy = signInList.allergies
 			
-			print("now register device")
 			registerDeviceFunc()
         	
         end
@@ -690,7 +716,6 @@ end
 local networkReqCount2 = 0
 local function signInUsingTwitterNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         networkReqCount2 = networkReqCount2 + 1
         
@@ -709,7 +734,6 @@ local function signInUsingTwitterNetworkListener( event )
 			
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local twitterSignInList = json.decode(event.response)
         
@@ -744,7 +768,6 @@ local function signInUsingTwitterNetworkListener( event )
         	local alert = native.showAlert( alertLabel, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         
         else
-        	print( "login successful via Twitter ...." )
         	_UserID = twitterSignInList.id
 			storeData( "UserID", twitterSignInList.id )
         	storeData( "UserName", twitterSignInList.email )
@@ -756,10 +779,8 @@ local function signInUsingTwitterNetworkListener( event )
 			storeData( "Allergies", twitterSignInList.allergies )
 			
 			if(twitterSignInList.card_number == nil or twitterSignInList.card_number == "" or twitterSignInList.card_number == " ") then
-				print( "no stripe details" )
+				
 			else
-				print("stripe details")
-				--storeData( "S_ID", twitterSignInList.stripe_id )
 				storeData( "S_CardNo", twitterSignInList.card_number )
 				storeData( "S_CVVNo", twitterSignInList.cvv_number )
 				storeData( "S_ExpiryMonth", twitterSignInList.expiry_date_month )
@@ -769,7 +790,6 @@ local function signInUsingTwitterNetworkListener( event )
 				_StripeCVVNo = twitterSignInList.cvv_number
 				_StripeExpMont = twitterSignInList.expiry_date_month
 				_StripeExpYear = twitterSignInList.expiry_date_year
-				--_StripeCustomerID = twitterSignInList.stripe_id
 				_StripePin = twitterSignInList.pin_number
 			end
 			
@@ -781,7 +801,6 @@ local function signInUsingTwitterNetworkListener( event )
 			_Varified = "1"
 			_Alleregy = twitterSignInList.allergies
 			
-			print("now register device")
 			registerDeviceFunc()
         	
         end
@@ -794,7 +813,6 @@ end
 local networkReqCount3 = 0
 local function signInUsingFBNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         networkReqCount3 = networkReqCount3 + 1
         
@@ -813,7 +831,6 @@ local function signInUsingFBNetworkListener( event )
 			
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local fbSignInList = json.decode(event.response)
         
@@ -848,7 +865,6 @@ local function signInUsingFBNetworkListener( event )
         	local alert = native.showAlert( alertLabel, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         
         else
-        	print( "login successful via Facebook ...." )
         	_UserID = fbSignInList.id
 			storeData( "UserID", fbSignInList.id )
         	storeData( "UserName", fbSignInList.email )
@@ -860,10 +876,8 @@ local function signInUsingFBNetworkListener( event )
 			storeData( "Allergies", fbSignInList.allergies )
 			
 			if(fbSignInList.card_number == nil or fbSignInList.card_number == "" or fbSignInList.card_number == " ") then
-				print( "no stripe details" )
+				
 			else
-				print("stripe details")
-				--storeData( "S_ID", fbSignInList.stripe_id )
 				storeData( "S_CardNo", fbSignInList.card_number )
 				storeData( "S_CVVNo", fbSignInList.cvv_number )
 				storeData( "S_ExpiryMonth", fbSignInList.expiry_date_month )
@@ -873,7 +887,6 @@ local function signInUsingFBNetworkListener( event )
 				_StripeCVVNo = fbSignInList.cvv_number
 				_StripeExpMont = fbSignInList.expiry_date_month
 				_StripeExpYear = fbSignInList.expiry_date_year
-				--_StripeCustomerID = fbSignInList.stripe_id
 				_StripePin = fbSignInList.pin_number
 			end
 			
@@ -885,7 +898,6 @@ local function signInUsingFBNetworkListener( event )
 			_Varified = "1"
 			_Alleregy = fbSignInList.allergies
 			
-			print("now register device")
 			registerDeviceFunc()
         	
         end
@@ -896,64 +908,55 @@ local function signInUsingFBNetworkListener( event )
 end
 
 function twitterCancel()
-	print( "Twitter Cancel" )
 	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 end
 
 function twitterSuccess( requestType, name, response )
 	local results = ""
 	
-	print( "Twitter Success" )
-	
 	if "users" == requestType then
 		results = response.name .. ", count: " ..
 			response.statuses_count
 	end
 	
-	print( results )
-	print("got twitter account ???????????? ")
-	print( response.email )
-	print( response.name )
-	
 	local n = response.name
 	local fName = string.sub(n,0,(string.find(n," ")-1))
-	print( fName.."//" )
 	local lName = string.sub(n,(string.find(n," ")+1),string.len(n))
-	print( lName.."//" )
 	
 	local url = _WebLink.."fb-g-connect.php?first_name="..fName.."&last_name="..lName.."&email="..response.email.."&connect=t"
 	local url2 = url:gsub(" ", "%%20")
-	print( url2 )
 	signInTwitterRequest = network.request( url2, "GET", signInUsingTwitterNetworkListener )
 	native.setActivityIndicator( true )
 	
 end
 
 function twitterFailed()
-	print( "Failed: Invalid Token" )
 	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 end
 
 timer.performWithDelay( 2000, function()
-	print("request init ibeacon plugin from corona")
-	iBeacon.init( listener )
+	local isEnabled = iBeacon.getStatus()
+	if ( isEnabled == "1" ) then
+		iBeacon.init( listener )
+	else
+		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("19Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onLeaveApplication )
+	end
 end )
 
 timer.performWithDelay( 3000, function()
-	if iBeaconRunning then
-		print("request start scan from corona")
-		iBeacon.scan( listener )
+	local isEnabled = iBeacon.getStatus()
+	if ( isEnabled == "1" ) then
+		if iBeaconRunning then
+			iBeacon.scan( listener )
+		else
+			
+		end
 	else
-		print("iBeacon not running")
+		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("19Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onLeaveApplication )
 	end
-		
-end ) -- 1000
-
-print( _Varified, _UserID, _UserName )
-print( "*****************" )
+end )
 
 if _UserID == nil then
-	print( "tutorial will be here" )
 	timer.performWithDelay( 2000, function()
 		if( splashBackGround ) then
 			display.remove(splashBackGround)
@@ -964,7 +967,6 @@ if _UserID == nil then
 		
 	end,1)
 else
-	print( "tutorial will be here ******************" )
 	
 	local ifFbLogin = loadData( "fb" )
 	local ifTwitterLogin = loadData( "twitter" )
@@ -978,11 +980,9 @@ else
 	elseif (ifTwitterLogin == "1") then
 		local listener = function( event )
 			if event.phase == "authorised" then
-				print( "authorisation is successful...." )
 				local postMessage = {"users", "account/verify_credentials.json", "GET",
 					{"screen_name", "SELF"}, {"skip_status", "true"},
 					{"include_entities", "false"}, {"include_email", "true"} }
-				print( "size :::: "..#postMessage )
 				twitter:getInfo( postMessage )
 			end
 		end
@@ -996,7 +996,6 @@ else
 		
 		local url = _WebLink.."login.php?ws=1&email="..emailTfValue.."&password="..pswdTfValue
 		local url2 = url:gsub(" ", "%%20")
-		print( url2 )
 		network.request( url2, "GET", signInListNetworkListener )
 		native.setActivityIndicator( true )
 		
@@ -1006,7 +1005,6 @@ end
 
 local function deviceIdNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         
         networkReqCount = networkReqCount + 1
         
@@ -1021,7 +1019,6 @@ local function deviceIdNetworkListener( event )
 		else
 		
 			local deviceID = system.getInfo( "deviceID" )
-    		print( "Device ID : "..deviceID )
     		local platformName
         		
     		if system.getInfo( "platformName" ) == "Android" then
@@ -1045,9 +1042,6 @@ local function deviceIdNetworkListener( event )
 		end
 		
     else
-        print ( "RESPONSE: " .. event.response )
-        
-       -- local deviceIdList = json.decode(event.response)
         
         if( event.response == 0 ) then
         	local alert = native.showAlert( alertLabel, "All fields are mandatory123.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } , onDoNothing)
@@ -1089,10 +1083,9 @@ local function deviceIdNetworkListener( event )
 	_PreviousSceneforOrder = nil
 	
 	local ifFbLogin = loadData( "fb" )
-	print( ifFbLogin )
 	
 	if(ifFbLogin == "1") then
-		local fbCommand			-- forward reference
+		local fbCommand
 		local LOGOUT = 1
 		fbCommand = LOGOUT
 		facebook.logout()
@@ -1104,7 +1097,6 @@ local function deviceIdNetworkListener( event )
 	end
 	
 	local ifTwitterLogin = loadData( "twitter" )
-	print( ifTwitterLogin )
 	
 	if(ifTwitterLogin == "1") then
 		twitter:destroy()
@@ -1118,7 +1110,6 @@ local function deviceIdNetworkListener( event )
 	
 	for i = 1, #productRequest do
 		if productRequest[i] then
-			--productRequest[i]
 			network.cancel( )
 			productRequest[i] = nil
 		end
@@ -1191,7 +1182,6 @@ local function deviceIdNetworkListener( event )
 	os.remove( system.pathForFile( "Varified", system.DocumentsDirectory ) )
 	os.remove( system.pathForFile( "F_Name", system.DocumentsDirectory ) )
 	os.remove( system.pathForFile( "L_Name", system.DocumentsDirectory ) )
-	--os.remove( system.pathForFile( "googleAccount.json", system.DocumentsDirectory ) )
 	os.remove( system.pathForFile( "Varified", system.DocumentsDirectory ) )
 	os.remove( system.pathForFile( "S_ID", system.DocumentsDirectory ) )
 	os.remove( system.pathForFile( "Allergies", system.DocumentsDirectory ) )
@@ -1206,7 +1196,6 @@ local function deviceIdNetworkListener( event )
 	
 	for file in lfs.dir( doc_path ) do
     	-- File is the current file or directory name
-	    print( "Found file: " .. file )
 	    os.remove( system.pathForFile( file, system.TemporaryDirectory ) )
 	end
 		composer.gotoScene("login")
@@ -1224,7 +1213,6 @@ end
 function logOutFunc()
 	
 	local deviceID = system.getInfo( "deviceID" )
-    print( "Device ID : "..deviceID )
     local platformName
         		
     if system.getInfo( "platformName" ) == "Android" then
@@ -1240,51 +1228,26 @@ function logOutFunc()
 	else
 	
 	end						
-							
-	--[[local headers = {}
-			
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Accept-Language"] = "en-US"
-	local body = "user_id=".._UserID.."&device_id="..deviceID.."&notif_id="..RegistrationId.."&type="..platformName.."&action=logout"
-			
-	local params = {}
-	params.headers = headers
-	params.body = body
-	params.timeout = 180
-			
-	local url = _WebLink.."reg-device.php?"
-			
-	deviceRequest = network.request( url, "POST", deviceIdNetworkListener, params )]]--
 	
 	local url = _WebLink.."reg-device.php?user_id=".._UserID.."&device_id="..deviceID.."&notif_id="..RegistrationId.."&type="..platformName.."&action=logout"
 	deviceRequest = network.request( url, "GET", deviceIdNetworkListener )
 	native.setActivityIndicator( true )
-        		
-   
-	
-	
-	--composer.gotoScene("login")
-	
+    
 end
 
 function roundDigit(value)
 	local digValue	
-	--print("got value.."..value)
 	if(string.find(tostring(value),"%.")) then
 		digValue1 = tostring(value):sub(1,string.find(tostring(value),"%.") + 3)
-		--print("digValue1 ::::>>>> "..digValue1)
 		if(tonumber(digValue1:sub(digValue1:len(),digValue1:len())) > 5 ) then
 			digValue2 = digValue1:sub(1,string.find(tostring(value),"%.") + 2)
-			digValue3 = tonumber(digValue2) --+ 0.01
+			digValue3 = tonumber(digValue2)
 		else
 			digValue3 = digValue1:sub(1,string.find(tostring(value),"%.") + 2)
 		end
-		--print("digValue3::::>>>>> "..digValue3)
 	else
 		digValue3 = value
 	end
-
-	--print("Last digit is .."..digValue3)
 	
 	return digValue3
 end
@@ -1295,41 +1258,29 @@ function make2Digit( value )
 	
 	if(string.find(tostring(value),"%.")) then
 		d_value1 = tostring(value):sub(1,string.find(tostring(value),"%.") + 3)
-		print("calue.."..d_value1)
 		if( tostring(d_value1:sub(string.find(tostring(d_value1),"%.") + 1),d_value1:len()):len() < 2 ) then
-			
 			d_value = tostring(d_value1).."0"
-			print(d_value.."^^^^^^^^^^^^^")
 		else
 			d_value = d_value1:sub(1,string.find(tostring(d_value1),"%.") + 2)
-			print(d_value.."PPPPPPP")
 		end
 	else
 		d_value = value..".00"
-		print(d_value.."PPPPPPP222")
 	end
-	print("value is after?????????"..d_value)
 	return d_value
 end
 
 local function onKeyEvent( event )
-    -- If the "back" key was pressed on Android, then prevent it from backing out of your app.
 if (event.keyName == "back") and (system.getInfo("platformName") == "Android") and event.phase == "up"  then
     
     if composer.getSceneName("current") == "menu" then
-	    print("go out of application")
 	    native.requestExit()
 	elseif composer.getSceneName("current") == "welcomeScreen" then
-		print("go out of application")
 	    native.requestExit()
 	elseif composer.getSceneName("current") == "login" then
-	    print("go out of application")
 	    native.requestExit()
 	elseif composer.getSceneName("current") == "FrontPage" then
-	    print("go out of application")
 	    native.requestExit()
 	elseif composer.getSceneName("current") == "tutorial" then
-	    print(composer.getSceneName("current").."??????")
 	    if composer.getSceneName("previous") == "welcomeTutorialScreen" then
 	    	composer.gotoScene( "welcomeTutorialScreen" )
 	    elseif composer.getSceneName("previous") == "menu" then
@@ -1342,11 +1293,8 @@ if (event.keyName == "back") and (system.getInfo("platformName") == "Android") a
 	    	composer.gotoScene( "Product" )
 	    end
 	elseif composer.getSceneName("current") == "welcomeTutorialScreen" then
-	    print(composer.getSceneName("current")..">>>>>")
 	   	native.requestExit()
 	elseif composer.getSceneName("current") == "LanguageList" then
-		print( composer.getSceneName("previous") )
-		print( "+++++++++++++++++++++++++" )
 		if composer.getSceneName("previous") == nil then
 	    	native.requestExit()
 			deleteAccFlag = false
@@ -1412,10 +1360,8 @@ if (event.keyName == "back") and (system.getInfo("platformName") == "Android") a
 		
 	elseif composer.getSceneName( "current" ) == "Product" then
 		if(composer.getSceneName( "previous" ) == "ProductListPage") then
-			print("previous scene is product list")
 			composer.gotoScene( "ProductListPage" )
 		else
-			print("previous scene is sub menu")
 			composer.gotoScene( _previousScene )
 		end
 		 
@@ -1473,7 +1419,6 @@ if (event.keyName == "back") and (system.getInfo("platformName") == "Android") a
 		if(composer.getSceneName( "previous" ) == "SubMenu3") then
 			composer.gotoScene("SubMenu3")
 		else
-			print("back to main menu")
 			composer.gotoScene("menu")
 		end
 		
@@ -1500,32 +1445,25 @@ local function onNotification(event)
 		-- This device has just been registered for Google Cloud Messaging (GCM) push notifications.
 		-- Store the Registration ID that was assigned to this application by Google.
 		RegistrationId = event.token
-		print(RegistrationId)
 		-- Display a message indicating that registration was successful.
 		
 
 	else
 		-- A push notification has just been received. Print it to the log.
-		print("")
-		--print("response..."..event.response)
 		notificationFlag = true
 		notificationFlag2 = false
-		print( json.encode(event))
 		
 		local notificationTable
 		if system.getInfo("platformName") == "Android" then
 			notificationTable = event.custom
 		else
-			notificationTable = event.alert  --event.custom
+			notificationTable = event.alert
 		end
-		
-		
 		
 		local function onReceiveNotification( event )
 			if event.action == "clicked" then
        	 	local i = event.index
         	if i == 1 then
-        			print("show notification page1111")
         			if( splashBackGround ) then
         				display.remove( splashBackGround )
         				splashBackGround = nil
@@ -1542,14 +1480,13 @@ local function onNotification(event)
 				
 				
         	elseif i == 2 then
-            	-- Do nothing
+            	
         	end
    	  		end
 			
 		end
 		
 		local function showNotificationAlert( e )
-			print("Show alert111")
 			if(_UserID == nil) then
 				
 			else
@@ -1570,9 +1507,6 @@ if launchArgs and launchArgs.notification then
 local function onComplete123(e)
 	
 	if "clicked" == e.action then
-		print(" akhskjhasjkdhajshdja")
-		print(e.response)
-		print("nofication response...........")
 		
 	end
 end
@@ -1583,7 +1517,7 @@ end
 		if system.getInfo("platformName") == "Android" then
 			notificationTable = launchArgs.notification.custom
 		else
-			notificationTable = launchArgs.notification.alert  --launchArgs.notification.custom
+			notificationTable = launchArgs.notification.alert
 		end
 				
 		local function onReceiveNotification( event )
@@ -1593,7 +1527,6 @@ end
         		splashBackGround = nil
         	end		
         		
-			print("show notification page123")
 			local option = {
 				params = {
 					orderTable = notificationTable
@@ -1606,7 +1539,6 @@ end
 		end
 		
 		local function showNotificationAlert( event )
-			print("Show alert123")
 			if(_UserID == nil) then
 				
 			else
@@ -1631,19 +1563,14 @@ local function onSystemEvent( event )
     
     if (event.type == "applicationStart") then
         
-        print("Application started")
-
     elseif (event.type == "applicationExit") then 
     
-    	--iBeacon.stopscan( listener )
     	_majorBea = nil
         _minorBea = nil
         
         local doc_path = system.pathForFile( "", system.TemporaryDirectory )
         if( doc_path ) then
 		for file in lfs.dir( doc_path ) do
-    		-- File is the current file or directory name
-	   	 	print( "Found file: " .. file )
 	   	 	os.remove( system.pathForFile( file, system.TemporaryDirectory ) )
 		end
 		end
@@ -1672,10 +1599,7 @@ local function onSystemEvent( event )
 		subToSub_count = 0
 		subToSub2_count = 0
 		
-        print("Application exited")
-        
     elseif ( event.type == "applicationSuspend" ) then
-        
         
         _majorBea = nil
         _minorBea = nil
@@ -1707,30 +1631,40 @@ local function onSystemEvent( event )
         local doc_path = system.pathForFile( "", system.TemporaryDirectory )
         for file in lfs.dir( doc_path ) do
     		-- File is the current file or directory name
-	   	 	print( "Found file: " .. file )
 	   	 	os.remove( system.pathForFile( file, system.TemporaryDirectory ) )
 		end
         
-        print("Application suspended") 
         native.requestExit()       
     
     elseif event.type == "applicationResume" then
-        iBeacon.stopscan( listener )
-        print("Application resumed from suspension")     
+    	local isEnabled = iBeacon.getStatus()
+		if ( isEnabled == "1" ) then
+			iBeacon.stopscan( listener )
+		else
+			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("19Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onLeaveApplication )
+		end
         timer.performWithDelay( 500, function()
-				print("request init ibeacon plugin from corona")
-			iBeacon.init( listener )	
+			local isEnabled = iBeacon.getStatus()
+			if ( isEnabled == "1" ) then
+				iBeacon.init( listener )
+			else
+				print( " is off" )
+				local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("19Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onLeaveApplication )
+			end
 		end )
 
 		timer.performWithDelay( 800, function()
-			if iBeaconRunning then
-				print("request start scan from corona")
-				iBeacon.scan( listener )
+			local isEnabled = iBeacon.getStatus()
+			if ( isEnabled == "1" ) then
+				if iBeaconRunning then
+					iBeacon.scan( listener )
+				else
+					
+				end
 			else
-				print("iBeacon not running")
+				local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("19Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onLeaveApplication )
 			end
-		
-		end ) -- 1000     
+		end )
 
     end
 

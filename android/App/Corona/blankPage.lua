@@ -33,7 +33,6 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        print("blank page .............................................")
         
    		local background = display.newImageRect( imageDirectory.."Background.png", _W, _H )
         background.x = _W/2

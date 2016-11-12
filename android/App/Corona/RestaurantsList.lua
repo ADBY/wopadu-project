@@ -1,6 +1,5 @@
 local scene = composer.newScene()
   
-  --ADD PERMISSIONS IN BUILD.SETTINGS
   
 -- -----------------------------------------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE unless "composer.removeScene()" is called
@@ -97,8 +96,6 @@ function scene:show( event )
         latitudeText = ""
         longitudeText = ""
         
-        print( "In restaurants list screen........".._LanguageKey )
-        
         heading = display.newText( GBCLanguageCabinet.getText("restaurantLabel",_LanguageKey), _W/2, _H/27, _FontArr[30], _H/36.76 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
@@ -110,7 +107,6 @@ function scene:show( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = _H/27
@@ -158,9 +154,8 @@ restaurantListGroup:insert( restaurantListScrollView )
 				rectBg[i].x = _W/2
 				rectBg[i].y =  ((i-1) * _H/6)
 				rectBg[i].anchorY = 0
-				rectBg[i].id = i --restaurantList[i].store_name
+				rectBg[i].id = i
 				rectBg[i]:addEventListener("tap",onRectTap)
-				--rectBg[i]:addEventListener("touch",onRectTouch)
 				restaurantListScrollView:insert(rectBg[i])
 			
 				title[i] = display.newText(restaurantList[i].store_name,_W/4,rectBg[i].y + rectBg[i].height/6,_FontArr[6],_H/36.76)
@@ -201,7 +196,7 @@ restaurantListGroup:insert( restaurantListScrollView )
 				
 					restaurantImg[i].x = _W/108 + restaurantImg[i].width/2
 					restaurantImg[i].y =  rectBg[i].y + rectBg[i].height/2
-					restaurantImg[i].id = i--restaurantList[i].store_name
+					restaurantImg[i].id = i
 					restaurantListScrollView:insert(restaurantImg[i])
 				
 				else
@@ -225,7 +220,7 @@ restaurantListGroup:insert( restaurantListScrollView )
 				
 					restaurantImg[i].x = _W/108 + restaurantImg[i].width/2
 					restaurantImg[i].y =  rectBg[i].y + rectBg[i].height/2
-					restaurantImg[i].id = i--restaurantList[i].store_name
+					restaurantImg[i].id = i
 					restaurantListScrollView:insert(restaurantImg[i])
 						
 					end
@@ -252,9 +247,8 @@ restaurantListGroup:insert( restaurantListScrollView )
 				rectBg[i].x = _W/2
 				rectBg[i].y =  ((i-1) * _H/6)
 				rectBg[i].anchorY = 0
-				rectBg[i].id = i--restaurantList[i].store_name
+				rectBg[i].id = i
 				rectBg[i]:addEventListener("tap",onRectTap)
-				--rectBg[i]:addEventListener("touch",onRectTouch)
 				restaurantListScrollView:insert(rectBg[i])
 			
 				title[i] = display.newText(restaurantList[i].store_name,_W/4,rectBg[i].y + rectBg[i].height/6,_FontArr[6],_H/36.76)
@@ -296,7 +290,7 @@ restaurantListGroup:insert( restaurantListScrollView )
 				
 					restaurantImg[i].x = _W/108 + restaurantImg[i].width/2
 					restaurantImg[i].y =  rectBg[i].y + rectBg[i].height/2
-					restaurantImg[i].id = i--restaurantList[i].store_name
+					restaurantImg[i].id = i
 					restaurantListScrollView:insert(restaurantImg[i])
 				
 				else
@@ -321,7 +315,7 @@ restaurantListGroup:insert( restaurantListScrollView )
 				
 					restaurantImg[i].x = _W/108 + restaurantImg[i].width/2
 					restaurantImg[i].y =  rectBg[i].y + rectBg[i].height/2
-					restaurantImg[i].id = i--restaurantList[i].store_name
+					restaurantImg[i].id = i
 					restaurantListScrollView:insert(restaurantImg[i])
 						
 					end
@@ -354,7 +348,6 @@ restaurantListGroup:insert( restaurantListScrollView )
 		
 		local function restaurantListNetworkListener( event )
 		if ( event.isError ) then
-        	print( "Network error!" )
     		
     		timer.performWithDelay( 200, function() 
 			native.setActivityIndicator( false )
@@ -363,7 +356,6 @@ restaurantListGroup:insert( restaurantListScrollView )
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("networkErrorAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 
 		else
-			print("response"..event.response)
 			
 			native.setActivityIndicator( true )
 			
@@ -459,10 +451,6 @@ restaurantListGroup:insert( restaurantListScrollView )
 		
 		end
 		
-		print( _LanguageKey )
-		print( latitudeText )
-		print( longitudeText )
-		
 		if( latitudeText == "" or latitudeText == nil or longitudeText == nil or longitudeText == nil ) then
 		
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("GPSAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey)}, handleOk  )
@@ -477,7 +465,6 @@ restaurantListGroup:insert( restaurantListScrollView )
 			url = _WebLink.."store-locator.php?map_latitude="..latitudeText.."&map_longitude="..longitudeText.."&lang=".._LanguageKey
 		end
 		
-		print( url )
 		restaurantListRequest = network.request( url, "GET", restaurantListNetworkListener )
 		native.setActivityIndicator( true )
 		
@@ -487,12 +474,9 @@ restaurantListGroup:insert( restaurantListScrollView )
 	
 		
 local locationHandler = function( event )
-	print( "In location handler function........" )
 	
-    -- Check for error (user may have turned off location services)
     if ( event.errorCode ) then
         native.showAlert( "GPS Location Error", event.errorMessage, {GBCLanguageCabinet.getText("okLabel",_LanguageKey)}, onDoNothing )
-        print( "Location error: " .. tostring( event.errorMessage ) )
         
     else
         latitudeText = string.format( '%.4f', event.latitude )
@@ -504,7 +488,6 @@ end
 Runtime:addEventListener( "location", locationHandler )
 
 local function checkLocation( event )
-	print( event.count )
 	
 	if event.count == 10 then
 		
@@ -513,44 +496,27 @@ local function checkLocation( event )
 		end )
 		
 		if latitudeText:len() and longitudeText:len() > 0 then
-			print( latitudeText )
-			print( longitudeText )
-			
 			if locationTimer then
         		timer.cancel( locationTimer )
         		locationTimer = nil
         	end
         	
         	Runtime:removeEventListener( "location", locationHandler )
-			--latitudeText = "22.2944"
-			--longitudeText = "70.7856"
 			passLocation()
 			
 		else
 			Runtime:removeEventListener( "location", locationHandler )
-			--latitudeText = "22.2944"
-			--longitudeText = "70.7856"
 			passLocation()
-			--local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("GPSAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey)}, handleOk  )
 		end
 		
 	else
-		print( "latitude and longitude >>>>>>>>>>> " )
-		print( latitudeText )
-		print( longitudeText )
-			
 		if latitudeText:len() and longitudeText:len() > 0 then
-			print( latitudeText )
-			print( longitudeText )
-			
 			if locationTimer then
         		timer.cancel( locationTimer )
         		locationTimer = nil
         	end
         	
         	Runtime:removeEventListener( "location", locationHandler )
-			--latitudeText = "22.2944"
-			--longitudeText = "70.7856"
 			passLocation()
 			
 		end

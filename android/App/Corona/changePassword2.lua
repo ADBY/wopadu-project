@@ -71,7 +71,7 @@ local function onVerificationCodeEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -87,7 +87,7 @@ local function onNewPswdEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -103,7 +103,7 @@ local function onRetypePswdEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -147,7 +147,6 @@ end
 local function changePswdListNetworkListener( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
         networkReqCount = networkReqCount + 1
         
     	native.setActivityIndicator( false )
@@ -170,7 +169,6 @@ local function changePswdListNetworkListener( event )
 			
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local changePswdList = json.decode(event.response)
 		
@@ -218,26 +216,11 @@ local function handleButtonEvent( event )
 	if event.phase == "ended" then
 		
 		if event.target.id == "save" then
-			print( "save password" )
 			-- Access Google over SSL:
 			
 			local verificationCodeTfValue = verificationCodeTf.text:gsub( "&", "%%26" )
 			local newPswdTfValue = newPswdTf.text:gsub( "&", "%%26" )
 			local retypePswdTfValue = retypePswdTf.text:gsub( "&", "%%26" )
-			
-			--[[local headers = {}
-			
-			headers["Content-Type"] = "application/x-www-form-urlencoded"
-			headers["Accept-Language"] = "en-US"
-			
-			local body = "ws=1&step=2&email="..param.emailForChangePswd.."&verif_code="..verificationCodeTfValue.."&n_password="..newPswdTfValue.."&r_password="..retypePswdTfValue
-			local params = {}
-			params.headers = headers
-			params.body = body
-			
-			local url = _WebLink.."password-forgot.php?"
-			print( url..body )
-			changePassRequest = network.request( url, "POST", changePswdListNetworkListener, params )]]--
 			
 			local url = _WebLink.."password-forgot.php?ws=1&step=2&email="..param.emailForChangePswd.."&verif_code="..verificationCodeTfValue.."&n_password="..newPswdTfValue.."&r_password="..retypePswdTfValue
 			local url2 = url:gsub(" ", "%%20")
@@ -276,20 +259,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("savePasswordLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
-    	
+        
     local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -297,7 +267,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -320,7 +289,6 @@ function scene:show( event )
         
         heading.text = GBCLanguageCabinet.getText("savePasswordLabel",_LanguageKey)
         
-        print( "In change Password2 screen....." )
         
         title = display.newText( GBCLanguageCabinet.getText("SaveYourPasswordLabel",_LanguageKey), _W/2, _H/26 + _H/26 + _H/27.42, _FontArr[6], _H/35 )
         title:setFillColor( 83/255, 80/255, 79/255 )

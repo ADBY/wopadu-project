@@ -70,11 +70,7 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen)
         
-        
-        print( "In welcomeTutorial screen......" )
-        
-        print( _Tutorial )
-        
+                
         local options = {
         	text = "",
         	x = _W/2,
@@ -98,12 +94,11 @@ function scene:show( event )
 			height = (_H/28.23)*2,
 			defaultFile = imageDirectory3.."Selected_CheckBox2.png",
 			overFile = imageDirectory3.."Selected_CheckBox2.png",
-			label = "CLOSE",--GBCLanguageCabinet.getText("NextLabel",_LanguageKey),
+			label = "CLOSE",
 			font = _FontArr[6],
-			fontSize = _H/21.33,--forwardBtnTextSize
+			fontSize = _H/21.33,
 			labelYOffset = 5,
 			labelColor = { default={1,1,1,1}, over={1,1,1,1} },
-			--onEvent = handleButtonEvent,
 		}
 		)
 		close.x = close.width/2 + _W/108
@@ -111,22 +106,15 @@ function scene:show( event )
 		close:addEventListener( "tap", handleCloseEventListenerTap  )
 		sceneGroup:insert( close )
 		
-		--close = display.newText( "CLOSE", _W/36, lineImg.y + lineImg.height/2 + _H/64, _FontArr[30], _H/48 )
---		close.anchorX = 0
---		close.anchorY = 0
---        close:setFillColor( 1 )--206/255, 23/255, 100/255 )
---        close:addEventListener( "tap", handleCloseEventListenerTap )
---        sceneGroup:insert( close )
-        
         nextBtn = widget.newButton(
 		{
 			width = (_W/5.5)*2,
 			height = (_H/28.23)*2,
 			defaultFile = imageDirectory3.."unSelected_CheckBox1.png",
 			overFile = imageDirectory3.."unSelected_CheckBox1.png",
-			label = "NEXT",--GBCLanguageCabinet.getText("NextLabel",_LanguageKey),
+			label = "NEXT",
 			font = _FontArr[6],
-			fontSize = _H/21.33,--forwardBtnTextSize
+			fontSize = _H/21.33,
 			labelYOffset = 5,
 			labelColor = { default={1,1,1,1}, over={1,1,1,1} },
 			onPress = handleNextBtnEventListenerTap,
@@ -134,16 +122,7 @@ function scene:show( event )
 		)
 		nextBtn.x = _W - nextBtn.width/2 - _W/108
 		nextBtn.y = _H - nextBtn.height/2 - _H/192
-		--nextBtn:addEventListener( "tap", handleNextBtnEventListenerTap  )
 		sceneGroup:insert( nextBtn )
-        
-        --nextBtn = display.newImageRect( imageDirectory.."ForwardArrow.png", _W/18, _H/36.22 )
-        --nextBtn = display.newText( "NEXT", _W - _W/36, close.y, _FontArr[30], _H/48 )
---        nextBtn.anchorX = 1
---        nextBtn.anchorY = 0
---        nextBtn:setFillColor( 1 )--206/255, 23/255, 100/255 )
---		nextBtn:addEventListener( "tap", handleNextBtnEventListenerTap )
---		sceneGroup:insert( nextBtn )
         
         lineImg = display.newImageRect( imageDirectory.."DeviderLine2.png", _W, _H/384 )
 		lineImg.x = _W/2

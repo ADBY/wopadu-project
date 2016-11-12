@@ -35,10 +35,8 @@ end
 local function aboutUsListNetworkListener( event )
 	
 	if ( event.isError ) then
-        print( "Network error!" )
         networkReqCount = networkReqCount + 1
         
-       
     	native.setActivityIndicator( false )
 		
 		if( networkReqCount > 3 ) then
@@ -54,17 +52,13 @@ local function aboutUsListNetworkListener( event )
 		
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local aboutUsList = json.decode(event.response)
         
         if aboutUsList == 0 then
-        	print( "No data is available." )
-        	--local alert = native.showAlert( alertLabel, "There is no data available.", { "OK" }, onDoNothing )
         	noData = display.newText( GBCLanguageCabinet.getText("noInfoLabel",_LanguageKey) , _W/2,_H/2,_FontArr[6], _H/40)
         	noData:setFillColor( 83/255, 80/255, 79/255 )
         	aboutUsGroup:insert(noData)
-        	
         	
         else
         	title = display.newText( "", _W/32, _H/48, _W - _W/16, 0, _FontArr[6], _H/30 )
@@ -110,20 +104,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("AboutUsLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventtouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-		]]--
-		
+        
 	local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -131,7 +112,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -152,7 +132,6 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         
-        print( "In about us screen...." )
         heading.text = GBCLanguageCabinet.getText("AboutUsLabel",_LanguageKey)
         
         aboutUsGroup = display.newGroup()
@@ -175,20 +154,6 @@ function scene:show( event )
         
         
         -- Access Google over SSL:
-		
-		--[[local headers = {}
-		
-		headers["Content-Type"] = "application/x-www-form-urlencoded"
-		headers["Accept-Language"] = "en-US"
-		
-		local body = ""
-		local params = {}
-		params.headers = headers
-		params.body = body
-				
-		local url = _WebLink.."site-about-us.php"
-		print( url..body )
-		aboutUSRequest = network.request( url, "POST", aboutUsListNetworkListener, params )]]--
 		
 		if( _LanguageKey == "en" ) then
 		

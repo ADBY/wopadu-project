@@ -62,7 +62,6 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen)
         
         
-        print( "In restaurnat details page.......".._LanguageKey )
         
         heading = display.newText( GBCLanguageCabinet.getText("restaurantLabel",_LanguageKey), _W/2, _H/27, _FontArr[30], _H/36.76 )
         heading:setFillColor( 1 )
@@ -75,7 +74,6 @@ function scene:show( event )
 	    	defaultFile = imageDirectory.."Back_Btn2.png",
    			overFile = imageDirectory.."Back_Btn2.png",
     		id = "back",
-	    	--onEvent = handleButtonEvent
 		}
 		backBtn.x = _W/13.5
 		backBtn.y = _H/27
@@ -90,10 +88,7 @@ function scene:show( event )
     		width = _W,
     		height = _H - _H/13.61 - _H/38.4,
     		top = _H/13.61 + _H/38.4,
-    		--topPadding = _W/36,
 	   		bottomPadding = _H/9.6,
-    		--hideBackground = true,
-    		--scrollHeight = _H*2,
     		horizontalScrollDisabled = true
 		}
 		restaurantDetailsGroup:insert( scrollView )
@@ -165,7 +160,6 @@ function scene:show( event )
    			labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
    			font = _FontArr[1],
    			fontSize = _H/60,
-	    	--onEvent = handleButtonEvent
 		}
 		locationBtn.anchorY = 0
 		locationBtn.x = _W/2

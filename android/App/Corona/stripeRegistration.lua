@@ -66,7 +66,7 @@ end
 
 local function placeOrdersNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
+    	
 				
     	timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
@@ -102,16 +102,12 @@ local function placeOrdersNetworkListener( event )
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Item3Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 			
 		elseif(event.response == "OK") then
-			print(" success response"..event.response)
 			for i = 1, #_CartArray do
 			
 				table.remove( _CartArray,(i - (i-1)) )
-				--placeOrderTableView:deleteRow(i)
 			
 			end
 			
-			
-			--noteTextBox.isVisible = false
 			_PlaceOrderBody = nil
 			_PlaceOrderTotal = nil
 			
@@ -120,29 +116,18 @@ local function placeOrdersNetworkListener( event )
     			effect = "fade",
     			time = 400
 			}
-			--local alert = native.showAlert( alertLabel, "Your order has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk )
+			
 			local function gotoShowOverlay()
 			
 				composer.gotoScene( "OrderPopUp", options )
-				--[[emailTf.isVisible = false
-				cardTf.isVisible = false
-				expMnthTf.isVisible = false
-				expYrTf.isVisible = false
-				cvcTf.isVisible = false
-	
-				createPinBg:removeEventListener( "tap",handleCreatePinEvent )]]--
+				
 			end
 			timer.performWithDelay(200,gotoShowOverlay,1)
 			
-			
 		else
-		
 			
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-			print("price is changed with effect of discount ")
 			
-			print(event.response)
-		
 		end
 		
 		
@@ -152,7 +137,7 @@ end
 
 local function OrderEmailNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
+    	
 				
     	networkReqCount1 = networkReqCount1 + 1
     	native.setActivityIndicator( false )
@@ -192,7 +177,6 @@ local function OrderEmailNetworkListener( event )
     			effect = "fade",
     			time = 400
 			}
-			--local alert = native.showAlert( alertLabel, "Your order has been placed successfully.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk )
 			local function gotoShowOverlay()
 			
 				composer.gotoScene( "OrderPopUp", options )
@@ -206,7 +190,7 @@ end
 
 local function OrderPaymentNetworkListener( event )
 	if ( event.isError ) then
-    	print( "Network error!" )
+    	
 				
     	 networkReqCount2 = networkReqCount2 + 1
     	native.setActivityIndicator( false )
@@ -224,7 +208,6 @@ local function OrderPaymentNetworkListener( event )
     	native.setActivityIndicator( false )
 		end )
 		
-		print("Place order Response in card selection page.."..event.response)
 		if( event.response == "0" or event.response == 0 ) then
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("6Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 		
@@ -241,32 +224,10 @@ local function OrderPaymentNetworkListener( event )
 			local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
 			
 		elseif( event.response == "OK" ) then
-			--local alert = native.showAlert( alertLabel, " Payment has been successful", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-			
-			
-				--[[local headers = {}
-		
-				headers["Content-Type"] = "application/x-www-form-urlencoded"
-				headers["Accept-Language"] = "en-US"
-		
-				local body = "ws=1&order_id=".._OrderID
-				local params = {}
-				params.headers = headers
-				params.body = body
-				params.timeout = 180
-		
-				local url = _WebLink.."email-receipt.php?"
-		
-				orderEmailRequest = network.request( url, "POST", OrderEmailNetworkListener, params )
-				]]--
-				
 				local url = _WebLink.."email-receipt.php?ws=1&order_id=".._OrderID
 				local url2 = url:gsub( " ", "%%20" )
 				orderEmailRequest = network.request( url2, "GET", OrderEmailNetworkListener )
 				native.setActivityIndicator( true )
-				
-			
-			
 						
 		end
 	end
@@ -275,78 +236,27 @@ end
 
 local function paymentNetworkListener( event )
         if ( event.isError ) then
-            print( "Network error!" )
+            
         else
-            print( "RESPONSE: "..event.response )
+            
             local data1 = event.response
             resp1 = json.decode(data1)
-            print(data1)
+            
             local error = resp1.error
             if error ~= nil then
                 for i = 1, #resp1.error do
-                    print(resp1.error[i].type)
-                    print(resp1.error[i].message)
+                    
                 end 
             end
            
           if error == nil then
-                --[[chargeId = resp1.id
-                chargedCard = resp1.card.id
-                chargedCardLastFour = resp1.card.last4
-                chargePaid = resp1.paid --true/false
-                chargeFail = resp1.failure_message
-                print(chargeFail)
-                print(chargeId)
-                print(chargedCard)
-                print(chargedCardLastFour)
-                print(chargePaid)
                 
-                ]]--
-                print("payment done successfully")
-                
-                
-               --[[ local headers = {}
-		
-				headers["Content-Type"] = "application/x-www-form-urlencoded"
-				headers["Accept-Language"] = "en-US"
-		
-				local body = _PlaceOrderBody
-				local params = {}
-				params.headers = headers
-				params.body = body
-				params.timeout = 180
-		
-				local url = _WebLink.."place-order.php?"
-		
-				network.request( url, "POST", placeOrdersNetworkListener, params )
-				native.setActivityIndicator( true )
-				print("order url////////")
-				print( url..body )]]--
-				
-				 paymentID = resp1.id
-				
-				--[[local headers = {}
-		
-				headers["Content-Type"] = "application/x-www-form-urlencoded"
-				headers["Accept-Language"] = "en-US"
-		
-				local body = "user_id=".._UserID.."&store_id=".._StoreID.."&order_id=".._OrderID.."&transaction_id="..paymentID
-				local params = {}
-				params.headers = headers
-				params.body = body
-				params.timeout = 180
-		
-				local url = _WebLink.."place-order-payment.php?"
-		
-				paymentRequest = network.request( url, "POST", OrderPaymentNetworkListener, params )]]--
+				paymentID = resp1.id
 				
 				local url = _WebLink.."place-order-payment.php?user_id=".._UserID.."&store_id=".._StoreID.."&order_id=".._OrderID.."&transaction_id="..paymentID
 				local url2 = url:gsub( " ", "%%20" )
 				paymentRequest = network.request( url2, "GET", OrderPaymentNetworkListener )
 				native.setActivityIndicator( true )
-				
-				
-				
 				
             end 
             
@@ -361,12 +271,9 @@ local function doPaymentFunc()
 	local description = ""
 			
 	local appFees = ((tonumber(amount) * _AppFee) / 100)	
-	print( "total amout is  .. "..amount.. " & app fees is 10% so actual app fee is .."..appFees )
-	  --local newCharge = "amount="..amount.."&currency="..currency.."&customer="..customer.."&description="..description -- old without api fee
 	
 	local newCharge = "amount="..amount.."&currency="..currency.."&customer="..customer.."&description="..description.."&application_fee="..appFees.."&destination="..desti 
-
-			
+	
 	local key = {["Bearer"] = strip_api_key}
     
     local headers = { 
@@ -378,7 +285,7 @@ local function doPaymentFunc()
     params.headers = headers
     params.body =  newCharge 
     
-    print( "params.body: "..params.body )
+    
    	stripePaymentRequest = network.request("https://api.stripe.com/v1/charges", "POST", paymentNetworkListener, params)
 	
 	return true
@@ -395,7 +302,7 @@ end
 
 local function StipeRegisterNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         
         networkReqCount3 = networkReqCount3 + 1
     	native.setActivityIndicator( false )
@@ -408,7 +315,7 @@ local function StipeRegisterNetworkListener( event )
 			native.setActivityIndicator( true )
 		end
     else
-        print ( "RESPONSE:" .. event.response )
+        
         
         local frgtPinList = json.decode(event.response)
         
@@ -464,59 +371,38 @@ local function registerNetworkListener( event )
         	timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
-            print( "Network error!" )
+            
         else
-            print( "RESPONSE: "..event.response )
+            
             timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
 			
             local data1 = event.response
             resp1 = json.decode(data1)
-            print(data1)
+            
             local error = resp1.error
             if error ~= nil then
                 for i = 1, #resp1.error do
-                    print(resp1.error[i].type)
-                    print(resp1.error[i].message)
+                    
                     
                 end 
             else
-            
-            	print("error has been occured while updaing/registraing account in stripe -- 1")
-
+            	
             end
            
           if error == nil then
           		
                 _StripeCustomerID = resp1.id
                 
-               --stripe-register.php?user_id=1&stripe_id=shirishmakwana&pin_number=1234
-					--[[local headers = {}
-			
-					headers["Content-Type"] = "application/x-www-form-urlencoded"
-					headers["Accept-Language"] = "en-US"
-
-					local body = "user_id=".._UserID.."&stripe_id=".._StripeCustomerID.."&pin_number="..Pin
-					local params = {}
-					params.headers = headers
-					params.body = body
-					params.timeout = 180
-				
-					local url = _WebLink.."stripe-register.php?"
-					print( url..body )
-					sRegRequest = network.request( url, "POST", StipeRegisterNetworkListener, params )]]--
-					
-					
-					local url = _WebLink.."stripe-register.php?user_id=".._UserID.."&stripe_id=".._StripeCustomerID.."&pin_number="..Pin
-					local url2 = url:gsub( " ", "%%20" )
-					sRegRequest = network.request( url2, "GET", StipeRegisterNetworkListener )
-					native.setActivityIndicator( true )
+                local url = _WebLink.."stripe-register.php?user_id=".._UserID.."&stripe_id=".._StripeCustomerID.."&pin_number="..Pin
+				local url2 = url:gsub( " ", "%%20" )
+				sRegRequest = network.request( url2, "GET", StipeRegisterNetworkListener )
+				native.setActivityIndicator( true )
                 
                 return resp1
             else
             	local alert = native.showAlert( alertLabel,error.message, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
-            	print(error.message)
             end 
             
         end
@@ -524,7 +410,7 @@ end
 
 local function stripeUpdationNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
@@ -585,10 +471,7 @@ local function stripeUpdationNetworkListener( event )
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )							
         
         else
-        		print( "??????????????????" )
-        		print( _StripeCardNo )
-        		print( cardTf.text )
-        		_StripeCardNo = _StripeCardNo --cardTf.text
+        		_StripeCardNo = _StripeCardNo
 				_StripeCVVNo = cvcTf.text
 				_StripeExpMont = expMnthTf.text
 				_StripeExpYear = expYrTf.text
@@ -612,7 +495,7 @@ end
 
 local function updateCustomerNetworkListener( event )
         if ( event.isError ) then
-            print( "Network error!" )
+            
             timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
@@ -620,28 +503,22 @@ local function updateCustomerNetworkListener( event )
        		timer.performWithDelay( 200, function() 
     		native.setActivityIndicator( false )
 			end )
-            print( "RESPONSE: "..event.response )
+            
             local data1 = event.response
             local resp1 = json.decode(data1)
-            print(resp1)
+            
             local error = resp1.error
             if error ~= nil then
                 for i = 1, #resp1.error do
-                    print(resp1.error[i].type)
-                    print(resp1.error[i].message)
+                    
                 end 
             end
             
             if error == nil then
                 emailReturn = resp1.email
-                print(emailReturn)
-                print("Stripe Account Details Updated Successful.")
-                print( _StripeCardNo )
-                print( cardTf.text )
-                print( _StripePin )
-                local email = emailTf.text
+               	local email = emailTf.text
 				local description = ""
-				local cardNumber = _StripeCardNo --cardTf.text
+				local cardNumber = _StripeCardNo
 				local expYear = expYrTf.text
 				local expMonth = expMnthTf.text
 				local cvc = cvcTf.text
@@ -649,7 +526,6 @@ local function updateCustomerNetworkListener( event )
 				
                 local stripeUpdateUrl = _WebLink.."stripe-update.php?user_id=".._UserID.."&store_id=".._StoreID.."&stripe_acc_id=".._StripeCustomerID.."&cvv_number="..cvc.."&card_number="..cardNumber.."&exp_date_month="..expMonth.."&exp_date_year="..expYear.."&secret_key="..strip_api_key.."&publishable_key="..stripe_Public_key.."&pin_number=".._StripePin
 				local stripeUpdateUrl2 = stripeUpdateUrl:gsub( " ", "%%20" )
-				print( stripeUpdateUrl2 )
 				stripeDetailsRequest = network.request( stripeUpdateUrl2, "GET", stripeUpdationNetworkListener )
                 native.setActivityIndicator( true )
                 
@@ -668,7 +544,6 @@ local function updateCustomerNetworkListener( event )
             	end
             	
             	local alert = native.showAlert( alertLabel,error.message, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onHandleError )
-            	print(error.message)
             end  
         end
 end
@@ -676,10 +551,7 @@ end
 local function handleButtonEvent( event )
 	if( event.phase == "ended" ) then
 		if(_StripeCustomerID) then
-			local date = os.date( "*t" )    -- Returns table of date & time values
-			print( date.year, date.month )  -- Print year and month
-			print( date.hour, date.min )  
-	
+			local date = os.date( "*t" )
 			if(emailTf.text == "" or emailTf.text:len() == 0 or emailTf.text == " ") then
 				
 				local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Email1Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk1 )
@@ -711,17 +583,15 @@ local function handleButtonEvent( event )
 				local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Enter5Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk2 )
 		
 			else
-				--http://classyglitters.in/wopado/ws/stripe-register.php?user_id=1&stripe_id=shirishmakwana&pin_number=1234
-
 				local email = emailTf.text
 				local description = ""
-				local cardNumber = _StripeCardNo --cardTf.text
+				local cardNumber = _StripeCardNo
 				local expYear = expYrTf.text
 				local expMonth = expMnthTf.text
 				local cvc = cvcTf.text
 				local fullName = ""
 				
-				local updateCustomer = "email="..email.."&description="..description.."&card[number]="..cardNumber.."&card[exp_year]="..expYear.."&card[exp_month]="..expMonth.."&card[cvc]="..cvc--{["email"] = email, ["description"] = description}--, ["card"] = firstCard}
+				local updateCustomer = "email="..email.."&description="..description.."&card[number]="..cardNumber.."&card[exp_year]="..expYear.."&card[exp_month]="..expMonth.."&card[cvc]="..cvc
     
     
    				local key = {["Bearer"] = strip_api_key}
@@ -735,7 +605,7 @@ local function handleButtonEvent( event )
     			params.headers = headers
     			params.body =  updateCustomer 
     
-    			print( "params.body: "..params.body )
+    			
     			
     			updateStripeAccountRequest = network.request("https://api.stripe.com/v1/customers/".._StripeCustomerID, "POST", updateCustomerNetworkListener, params)
 				native.setActivityIndicator( true )    
@@ -745,9 +615,7 @@ local function handleButtonEvent( event )
 		else
 		
 			if( emailTf.text == "" or cardTf.text == "" or cvcTf.text == "" or Pin == nil or Pin == "" or expMnthTf.text == "" or expYrTf.text == "" ) then
-				--system.vibrate()
-				--shakeObject(stripRegiGroup)
-			
+				
 			else
 		
 				local email = emailTf.text
@@ -758,10 +626,8 @@ local function handleButtonEvent( event )
 				local cvc = cvcTf.text
 				local fullName = ""
  
-    				local newCustomer = "email="..email.."&description="..description.."&card[number]="..cardNumber.."&card[exp_year]="..expYear.."&card[exp_month]="..expMonth.."&card[cvc]="..cvc--{["email"] = email, ["description"] = description}--, ["card"] = firstCard}
-    
-    				print(newCharge)
-    
+    				local newCustomer = "email="..email.."&description="..description.."&card[number]="..cardNumber.."&card[exp_year]="..expYear.."&card[exp_month]="..expMonth.."&card[cvc]="..cvc
+    				
     				local key = {["Bearer"] = strip_api_key}
     
     				local headers = { 
@@ -774,7 +640,7 @@ local function handleButtonEvent( event )
     				params.headers = headers
     				params.body =  newCustomer 
     
-    				print( "params.body: "..params.body )
+    				
     
    					stripAccountRequest = network.request("https://api.stripe.com/v1/customers", "POST", registerNetworkListener, params)
 					
@@ -803,10 +669,10 @@ end
 
 local function onCardEdit( event )
 	if ( event.phase == "began" ) then
-		--stripRegiGroup.y = -_H/4 
+		
     elseif ( event.phase == "ended" ) then
     	native.setKeyboardFocus( nil )
-    	--stripRegiGroup.y = yPos
+    	
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( cvcTf )
     	_StripeCardNo = cardTf.text
@@ -820,13 +686,13 @@ end
 
 local function onCvcEdit( event )
 	if ( event.phase == "began" ) then
-		--stripRegiGroup.y = -_H/4 
+		
     elseif ( event.phase == "ended" ) then
     	native.setKeyboardFocus( nil )
-		--stripRegiGroup.y = yPos
+		
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( expMnthTf )
-		--stripRegiGroup.y = yPos
+		
     elseif ( event.phase == "editing" ) then
         
     end
@@ -835,7 +701,6 @@ end
 
 local function onExpMonthEdit( event )
 	if ( event.phase == "began" ) then
-		--native.setKeyboardFocus( nil )
 		
     elseif ( event.phase == "ended" ) then
     	native.setKeyboardFocus( nil )
@@ -850,7 +715,6 @@ end
 
 local function onExpYearEdit( event )
 	if ( event.phase == "began" ) then
-		--native.setKeyboardFocus( nil )
 		
     elseif ( event.phase == "ended" ) then
     	native.setKeyboardFocus( nil )
@@ -866,9 +730,7 @@ end
 local function handleCreatePinEvent( event )
 	if(event.phase == "ended") then
 
-	local date = os.date( "*t" )    -- Returns table of date & time values
-	print( date.year, date.month )  -- Print year and month
-	print( date.hour, date.min )  
+	local date = os.date( "*t" )
 	
 	if(emailTf.text == "" or emailTf.text:len() == 0 or emailTf.text == " ") then
 	
@@ -898,19 +760,16 @@ local function handleCreatePinEvent( event )
 	
 		local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Enter5Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk3 )
 	else
-		print("go to create page")
 	emailTf.isVisible = false
 	cardTf.isVisible = false
 	expMnthTf.isVisible = false
 	expYrTf.isVisible = false
 	cvcTf.isVisible = false
 	
-	--createPinBg:removeEventListener( "tap",handleCreatePinEvent )
-	
 	local options = {
 		params = {
 			email = emailTf.text,
-			cardNo = _StripeCardNo,--cardTf.text,
+			cardNo = _StripeCardNo,
 			e_Month = expMnthTf.text,
 			e_Year = expYrTf.text,
 			CVCNo = cvcTf.text
@@ -926,18 +785,13 @@ local function handleCreatePinEvent( event )
 end
 
 
-function scene:resumeApp()
-    --code to resume game
-    
+function scene:resumeApp()    
     emailTf.isVisible = true
 	cardTf.isVisible = true
 	expMnthTf.isVisible = true
 	expYrTf.isVisible = true
 	cvcTf.isVisible = true
 	
-	--createPinBg:addEventListener( "tap",handleCreatePinEvent )
-	--Pin = composer.getVariable( "PinValue" )
-	--print("error type is..........."..composer.getVariable( "ErrorType" ))
 	if(composer.getVariable( "ErrorType" ) == "Cancel" ) then
 	
 	elseif(composer.getVariable( "ErrorType" ) == "NA" ) then
@@ -957,7 +811,6 @@ function scene:resumeApp()
 end
 
 local function handleBackButtonEvent( event )
-	print("go to place order")
 	
 		composer.gotoScene( composer.getSceneName("previous") )
 		
@@ -972,17 +825,8 @@ function scene:create( event )
 
     -- Initialize the scene here.
     -- Example: add display objects to "sceneGroup", add touch listeners, etc.
-    
-    	--[[local whiteBg = display.newImageRect( imageDirectory3.."White_Background.png", _W, _H )
-        whiteBg.x = _W/2
-        whiteBg.y = _H/2
-        sceneGroup:insert( whiteBg )
-        
-        local background = display.newImageRect( imageDirectory2.."Background.png", _W, _H )
-        background.x = _W/2
-        background.y = _H/2
-        sceneGroup:insert( background )]]--
-        
+    	
+    	
         local background = display.newImageRect( imageDirectory4.."Background.png", _W, _H )
         background.x = _W/2
         background.y = _H/2
@@ -1005,7 +849,6 @@ function scene:create( event )
     	defaultFile = imageDirectory4.."Back_Btn2.png",
    		overFile = imageDirectory4.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -1025,11 +868,8 @@ function scene:show( event )
         -- Called when the scene is still off screen (but is about to come on screen).
         
         
-        print( "In stripe registration screen......" )
         
 	    heading.text = GBCLanguageCabinet.getText("paymentGatewayLabel",_LanguageKey)
-        --e_year = "2018"
-        --e_Month = "12"
         
         stripRegiGroup = display.newGroup()
         sceneGroup:insert(stripRegiGroup)
@@ -1040,17 +880,6 @@ function scene:show( event )
         
         stripeRegisterPreviousPage = composer.getSceneName( "previous" )
         
-        --[[overlayBg = display.newImageRect( imageDirectory.."PopUpBg.png", _W - _W/8, _H - _H/3 )
-        overlayBg.x = _W/2
-        overlayBg.y = _H/2
-        stripRegiGroup:insert( overlayBg )
-        
-        
-        logo = display.newImageRect(imageDirectory2.."Logo.png",_W/3.913,_H/6.78)
-    	logo.x = overlayBg.x
-    	logo.y = overlayBg.y - overlayBg.height/2.15	
-    	stripRegiGroup:insert(logo)]]--
-    	
     	local textFieldWidth = _W - _W/4 
     	local textFieldHeight = _H/19.2
     	
@@ -1081,9 +910,8 @@ function scene:show( event )
 		stripRegiGroup:insert( cardTf )
 		
 		cvcBg = display.newImageRect( imageDirectory.."textBox.png", textFieldWidth , _H/13.33 )
-        cvcBg.x = cardBg.x -- cardBg.width/2
+        cvcBg.x = cardBg.x
         cvcBg.y = cardTf.y + cardTf.height + _H/38.4
-        --cvcBg.anchorX = 1
         stripRegiGroup:insert( cvcBg )
         
         cvcTf = native.newTextField( cvcBg.x , cvcBg.y, cvcBg.width - _W/27, cvcBg.height - _H/96 )
@@ -1092,7 +920,6 @@ function scene:show( event )
 		cvcTf.placeholder = "CVC"
 		cvcTf:addEventListener( "userInput", onCvcEdit )
 		cvcTf.font = native.newFont( _FontArr[10], _H/28 )
-		--cvcTf.anchorX = 1
 		stripRegiGroup:insert( cvcTf )
 		
 		
@@ -1128,9 +955,6 @@ function scene:show( event )
 		
         if(_StripeCustomerID) then
         	
-			print( "stripe card number >>>>>> " )
-			print( _StripeCardNo )
-			
 			if( _StripeCardNo == nil ) then
 				
 				submitBtn = widget.newButton
@@ -1154,24 +978,15 @@ function scene:show( event )
 				
 			else
 				
-				print( string.len(_StripeCardNo) )
 				local s = string.sub(_StripeCardNo,0,string.len(_StripeCardNo)-4)
-				print( string.len(s) )
 				local s2 = string.sub(_StripeCardNo,string.len(_StripeCardNo)-3,string.len(_StripeCardNo))
-				print( string.len(s2) )
 				
 				local function displayData( )
 					local temp = ""
-					print( temp )
-					print( "in display data functtion......." )
 					for i = 1, string.len(s) do
-						print( i )
 						temp = temp.."*"
-						print( temp )
 					end
 					
-					print( "**************" )
-					print( temp )
 					cardTf.text = temp..s2
 					
 				end
@@ -1198,19 +1013,6 @@ function scene:show( event )
 			end
 			
         else
-        
-        --[[createPin = display.newText( "Create your 4 digit pin", expYrBg.x, expYrBg.y + expYrBg.height/2 + _H/38.4, _FontArr[6], _H/32 )
-		createPin.anchorX = 1
-		createPin.anchorY = 0
-        createPin:setFillColor( 206/255 ,23/255 ,100/255 )
-        stripRegiGroup:insert( createPin )
-        
-        createPinBg = display.newRect( createPin.x, createPin.y, createPin.width + _W/36, createPin.height + _H/96 )
-        createPinBg.anchorX = 1
-        createPinBg.anchorY = 0
-        createPinBg:setFillColor( 0, 0, 0, 0.01 )
-        createPinBg:addEventListener( "tap", handleCreatePinEvent )
-        stripRegiGroup:insert( createPinBg )]]--
         	
         	submitBtn = widget.newButton
 			{

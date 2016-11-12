@@ -21,7 +21,6 @@ local function onBgTouch( event )
 	if( event.phase == "ended" ) then
 	
 		composer.gotoScene( composer.getSceneName( "previous" ) )
-		--parent:resumeGame()
 		
 	end
 	return true
@@ -30,7 +29,6 @@ end
 local function onBgTap( event )
 	
 	composer.gotoScene( composer.getSceneName( "previous" ) )
-	--parent:resumeGame()
 	return true
 end
 
@@ -73,14 +71,12 @@ end
 local function onComplete( event )
 
 	composer.gotoScene( composer.getSceneName( "previous" ) )
-	--parent:resumeGame()
 	
 	return true
 end
 
 local function shareWopadoNetworkListener( event )
 	if ( event.isError ) then
-        print( "Network error!" )
         networkReqCount = networkReqCount + 1
         
     	native.setActivityIndicator( false )
@@ -98,7 +94,6 @@ local function shareWopadoNetworkListener( event )
 		
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         
         local googleSignInList = json.decode(event.response)
         
@@ -151,22 +146,6 @@ end
 
 local function handleButtonEvent( event )
 	if( event.phase == "ended" ) then
-		--[[local headers = {}
-			
-		headers["Content-Type"] = "application/x-www-form-urlencoded"
-		headers["Accept-Language"] = "en-US"
-			
-		local body = "user_id=".._UserID.."&email="..emailTf.text.."&desc="
-		local params = {}
-		params.headers = headers
-		params.body = body
-		params.timeout = 180
-				
-		local url = _WebLink.."share-app.php?"
-		print( url..body )
-		shareRequest = network.request( url, "POST", shareWopadoNetworkListener, params )]]--
-		
-		
 		local url = _WebLink.."share-app.php?user_id=".._UserID.."&email="..emailTf.text.."&desc="
 		local url2 = url:gsub( " ", "%%20" )
 		shareRequest = network.request( url2, "GET", shareWopadoNetworkListener )
@@ -196,7 +175,6 @@ function scene:show( event )
     local sceneGroup = self.view
     local phase = event.phase
 	parent = event.parent
-	--param = event.params
 	
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
@@ -313,9 +291,6 @@ function scene:hide( event )
         display.remove(shareGroup)
         shareGroup = nil
         
-        
-        
-        ----parent:resumeGame()
         
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.

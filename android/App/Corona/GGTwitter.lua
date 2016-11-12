@@ -55,7 +55,6 @@ local oAuth = require( "oAuth" )
 -- @param url The twitter callback url?
 -- @return The new object.
 function GGTwitter:new( consumerKey, consumerSecret, listener, url )
-    print( "In new function....." )
     local self = {}
     
     setmetatable( self, GGTwitter_mt )
@@ -144,7 +143,6 @@ end
 
 --- Deauthorises the user.
 function GGTwitter:deauthorise()
-	print( "In deauthorise fucntion......." )
 	
 	self.accessToken = nil
 	self.accessTokenSecret = nil
@@ -161,7 +159,6 @@ end
 
 --- Authorises the user.
 function GGTwitter:authorise()
-	print( "In authorise function........" )
 	local twitterRequest 
 	
 	if self:isAuthorised() then
@@ -172,11 +169,9 @@ function GGTwitter:authorise()
 	end
 	
 	local listener = function( event )
-		print( "In listener function...." )
 		
 		local remainOpen = true
 		local url = event.url
-		print( "url >>>>> "..url )
 
 		if url:find( "oauth_token" ) and url:find( self.url ) then
 			
@@ -189,8 +184,6 @@ function GGTwitter:authorise()
 				self.accessTokenSecret = accessResponse.oauth_token_secret
 				self.userID = accessResponse.user_id
 				self.screenName = accessResponse.screen_name
-				
-				print( self.accessToken.."//"..self.accessTokenSecret.."//"..self.userID.."//"..self.screenName )
 				
 				if not self.accessToken then
 				
@@ -229,7 +222,6 @@ function GGTwitter:authorise()
 	end
 	
 	local authCallback = function( isError, result )
-		print( "In authCallback function........" )
 		
 		local twitterRequestToken = result:match('oauth_token=([^&]+)')
 		local twitterRequestTokenSecret = result:match('oauth_token_secret=([^&]+)')
@@ -250,8 +242,6 @@ function GGTwitter:authorise()
 		native.showWebPopup( display.screenOriginX, display.screenOriginY, fullX, fullY, "https://api.twitter.com/oauth/authorize?oauth_token=" .. twitterRequestToken, { urlRequest = listener } )
 	end
 	
-	print( self.consumerKey.."%%"..self.url.."%%"..self.requestTokenURL.."%%"..self.consumerSecret )
-	
 	local twitterRequest = ( oAuth.getRequestToken( self.consumerKey, self.url, self.requestTokenURL, self.consumerSecret, authCallback ) )
 	
 end
@@ -259,8 +249,6 @@ end
 --- Checks if the user is authorised.
 -- @return True if the user is currently authorised, false otherwise.
 function GGTwitter:isAuthorised()
-	print( "In isAuthorised  fucntion........" )
-	print( self.accessToken )
 	
 	if self.accessToken then
 		return true
@@ -273,8 +261,6 @@ function GGTwitter:load()
 
 	local path = system.pathForFile( "twitter.dat", system.DocumentsDirectory )
 	local file = io.open( path, "r" )
-	print( "file :::: " )
-	print( file )
 	
 	if file then
 	
@@ -297,8 +283,6 @@ function GGTwitter:save()
 
 	local path = system.pathForFile( "twitter.dat", system.DocumentsDirectory )
 	local file = io.open( path, "w" )
-	print( "file ,,,,,,,,,,,, " )
-	print( file )
 	
 	if file then
 		file:write( json.encode( data ) )
@@ -335,7 +319,6 @@ function  GGTwitter:getLastTweet( name, count)
 				self.listener{ phase = "failed", response = response }
 			else
 				self.listener{ phase = "Succeed", response = response }
-				print("the tweet are now in event.reponse[].text in the callback")
 			end
 		end
 	end
@@ -400,14 +383,8 @@ local function printTable( t, label, level )
 end
 
 function GGTwitter:getInfo( postMessage )
-	print( "In getInfo fucntion......" )
-	print( #postMessage )
 	local values = postMessage
-	print( #values )
 	local params = {}
-	
-	print( "screen_name is >>>>>>>>>>>> " )
-	print( screen_name )
 	
 	function doTweetCallback( status, result )
 		
@@ -415,14 +392,12 @@ function GGTwitter:getInfo( postMessage )
 		printTable( response, "Request", 3 )
 		
 		-- Return the following: type of request, screen name, response
-		--delegate.twitterSuccess( values[1], screen_name, response )
 		twitterSuccess( values[1], screen_name, response )
 		
 	end
 	
 	if #values > 3 then
 		for i = 4, #values do
-			print( values[i][1] .. " = " .. values[i][2]  )
 			params[i-3] = { key = values[i][1], value = values[i][2] }
 		
 			if params[i-3].value == "SELF" then 

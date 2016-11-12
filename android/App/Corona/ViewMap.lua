@@ -69,28 +69,12 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen)
-        
-        
-        print( "In view map screen.........".._LanguageKey )
+              
         
         heading = display.newText( GBCLanguageCabinet.getText("viewLocationLabel",_LanguageKey), _W/2, _H/27, _FontArr[30], _H/36.76 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
         
-        --closeBtn = widget.newButton
---		{
---    		width = _W/9.47,
---    		height = _H/18.64,
---	    	defaultFile = "images/CancelBtn.png",
---   			overFile = "images/CancelBtn.png",
---    		id = "close",
---	    	--onEvent = handleButtonEvent
---		}
---		closeBtn.x = _W/13.5
---		closeBtn.y = _H/27
---		closeBtn:addEventListener("tap",handleCloseButtonEvent)
---		sceneGroup:insert( closeBtn )
-		
 		backBtn = widget.newButton
 		{
     		width = _W/9,
@@ -98,7 +82,6 @@ function scene:show( event )
 	    	defaultFile = imageDirectory.."Back_Btn2.png",
    			overFile = imageDirectory.."Back_Btn2.png",
     		id = "back",
-	    	--onEvent = handleButtonEvent
 		}
 		backBtn.x = _W/13.5
 		backBtn.y = _H/27
@@ -108,7 +91,7 @@ function scene:show( event )
 		addressText = display.newText( GBCLanguageCabinet.getText("addressLabel", _LanguageKey).." : ", _W/21.6, _H - _H/7.68, _W - _W/13.5, 0, _FontArr[30], _H/38.4 )
         addressText.anchorX = 0
         addressText.anchorY = 0
-        addressText:setFillColor( 206/255, 23/255, 100/255 )--83/255, 20/255, 111/255 )
+        addressText:setFillColor( 206/255, 23/255, 100/255 )
         sceneGroup:insert( addressText )
         
         if _RestaurantData.address == "" or _RestaurantData.address == " " or _RestaurantData.address == nil then
@@ -119,24 +102,6 @@ function scene:show( event )
         	addressText.text = GBCLanguageCabinet.getText("addressLabel", _LanguageKey).." : ".._RestaurantData.address
         end
         
-		--ReachedBtn = widget.newButton
---		{
---    		width = _W/1.08,
---    		height = _H/16.27,
---    		defaultFile = "images/SignUp/SinUp_Btn.png",
---   			overFile = "images/SignUp/SinUp_Btn.png",
---    		label = GBCLanguageCabinet.getText("checkMenuLabel", _LanguageKey), 
---    		labelColor = { default={ 1, 1, 1 }, over={ 1, 1, 1 } },
---    		labelYOffset = _H/275,
---    		fontSize = _H/30,
---    		font = _FontArr[6],
---    		id = "Reached",
---    		onEvent = handleButtonEvent
---		}
---		ReachedBtn.x = _W/2
---		ReachedBtn.y = _H - ReachedBtn.height/2 - _H/38.4
---		sceneGroup:insert( ReachedBtn )
-		
 		myMap = native.newMapView( _W/2, _H/2 + _H/27.22 - _H/16, _W, _H - _H/4 )
 		
 		-- Display map as vector drawings of streets (other options are "satellite" and "hybrid")
@@ -144,12 +109,9 @@ function scene:show( event )
 		
 		local function locationHandler( event )
 		    if ( event.isError ) then
-        		print( "Map Error: " .. event.errorMessage )
+        		
 		    else
-        		print( "The specified string is at: " .. event.latitude .. "," .. event.longitude )
-		        --myMap:setCenter( event.latitude, event.longitude )
 		        myMap:setCenter( tonumber(_RestaurantData.map_latitude), tonumber(_RestaurantData.map_longitude) )
-        		--local lat, long = event.latitude, event.longitude
         		local lat, long = tonumber(_RestaurantData.map_latitude), tonumber(_RestaurantData.map_longitude)
 		        myMap:addMarker( lat, long, { title = _RestaurantData.store_name, subtitle = _RestaurantData.description } )
 		    end

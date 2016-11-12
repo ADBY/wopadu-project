@@ -12,7 +12,6 @@ local ImageDirectory = "images/PopUp/"
 
 local function handleButtonEvent( event )
     if ( "ended" == event.phase ) then
-        print( "Button was pressed and released" )
         if(event.target.id == "CANCEL") then
         
         
@@ -53,10 +52,6 @@ function scene:create( event )
     logo.y = popUpBg.y - popUpBg.height/2.15	
     sceneGroup:insert(logo)
     
-    --130,1120
-    
-    
-
 	local CancelButton = widget.newButton
 	{
     	width = _W/2.79,
@@ -72,7 +67,6 @@ function scene:create( event )
     	onEvent = handleButtonEvent
 	}
 
-	-- Center the button
 	CancelButton.x = _W/8.30 + CancelButton.width/2
 	CancelButton.y = _H/1.71 + CancelButton.height/2
 	sceneGroup:insert(CancelButton)
@@ -92,7 +86,6 @@ function scene:create( event )
     	onEvent = handleButtonEvent
 	}
 
-	-- Center the button
 	OkayButton.x = _W/1.92 + OkayButton.width/2
 	OkayButton.y = CancelButton.y
 	sceneGroup:insert(OkayButton)
@@ -176,8 +169,6 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        
-        --95,625
         
         
     elseif ( phase == "did" ) then

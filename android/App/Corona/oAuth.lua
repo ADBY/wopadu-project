@@ -217,13 +217,13 @@ function rawGetRequest(url, callback)
 	local function networkListener( event )
 					
 		if event.isError then
-			print( "Network error!", event.status, event.response)
+			
 		else
---			print ( "RESPONSE: ", event.status,  event.response )	-- **debug
+			
 		end
 
 		if callback then	
-			callback( event.isError, event.response)		-- return with response
+			callback( event.isError, event.response)
 		end
 		
 	end
@@ -251,13 +251,13 @@ function rawPostRequest(url, rawdata, callback)
 	local function networkListener( event )
 					
 		if event.isError then
-			print( "Network error!", event.status, event.response)
+			
 		else
---			print ( "RESPONSE: ", event.status,  event.response )	-- **debug
+			
 		end
 
 		if callback then	
-			callback( event.isError, event.response)		-- return with response
+			callback( event.isError, event.response)
 		end
 		
 	end

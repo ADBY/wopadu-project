@@ -10,9 +10,6 @@ local imageDirectory = "images/Tutorial/"
 local imageDirectory2 = "images/Product/"
 local lineImg, close, nextBtn, endX, beginX, k, totalNoImages
 local imgArr = { }
---local dot = { }
---local dot2 = { }
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -40,8 +37,6 @@ end
 local function changeNextImage2( )
 	for i = 1, #imgArr do
 		imgArr[i].isVisible = false
-		--dot2[i].isVisible = false
---		dot[i].isVisible = true
 	end
 	
 	if(k == #imgArr) then
@@ -56,8 +51,6 @@ local function changeNextImage2( )
 		k = k + 1
 		
 		imgArr[k].isVisible = true
-		--dot2[k].isVisible = true
---		dot[k].isVisible = false
 	end
 	
 end
@@ -65,8 +58,6 @@ end
 local function changeNextImage( )
 	for i = 1, #imgArr do
 		imgArr[i].isVisible = false
-		--dot2[i].isVisible = false
---		dot[i].isVisible = true
 	end
 	
 	if(k == #imgArr) then
@@ -76,16 +67,12 @@ local function changeNextImage( )
 	end
 	
 	imgArr[k].isVisible = true
-	--dot2[k].isVisible = true
---	dot[k].isVisible = false
 	
 end
 
 local function changePreviousImage( )
 	for i = 1, #imgArr do
 		imgArr[i].isVisible = false
-		--dot2[i].isVisible = false
---		dot[i].isVisible = true
 	end
 	
 	if(k == 1) then
@@ -95,22 +82,17 @@ local function changePreviousImage( )
 	end
 	
 	imgArr[k].isVisible = true
-	--dot2[k].isVisible = true
---	dot[k].isVisible = false
 	
 end
 
 local function checkDirection( )
-	print( beginX, endX )
 	if(beginX > endX) then
 		if((beginX - endX) > 10) then
-			print( "swipe right" )
 			changeNextImage()
 		end
 		
 	else
 		if((endX - beginX) > 10) then
-			print( "swipe left" )
 			changePreviousImage()
 		end
 		
@@ -120,7 +102,6 @@ local function checkDirection( )
 end
 
 local function handleNextBtnEventListenerTap( event )
-	print( ">>>>" )
 	changeNextImage2()
 	
 	return true
@@ -169,22 +150,13 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen)
         
-        
-        print( "In tutorial screen....." )
-        print( composer.getSceneName( "previous" ) )
-        
-        --if composer.getSceneName( "previous" ) == nil then
---        	totalNoImages = 7
---        else
---        	totalNoImages = 12
---        end
-        
+                        
         totalNoImages = 12
         
         for i = 1, totalNoImages do
         	imgArr[i] = display.newImageRect( imageDirectory..i..".png", _W, _H )
         	imgArr[i].x = _W/2
-        	imgArr[i].y = _H/2 --- _H/38.4
+        	imgArr[i].y = _H/2
         	imgArr[i]:addEventListener( "touch", handleImageEventListener )
         	sceneGroup:insert( imgArr[i] )
         	imgArr[i].isVisible = false
@@ -197,12 +169,11 @@ function scene:show( event )
 			height = (_H/28.23)*2,
 			defaultFile = imageDirectory2.."Selected_CheckBox2.png",
 			overFile = imageDirectory2.."Selected_CheckBox2.png",
-			label = "CLOSE",--GBCLanguageCabinet.getText("NextLabel",_LanguageKey),
+			label = "CLOSE",
 			font = _FontArr[6],
-			fontSize = _H/21.33,--forwardBtnTextSize
+			fontSize = _H/21.33,
 			labelYOffset = 5,
 			labelColor = { default={1,1,1,1}, over={1,1,1,1} },
-			--onEvent = handleButtonEvent,
 		}
 		)
 		close.x = close.width/2 + _W/108
@@ -210,25 +181,17 @@ function scene:show( event )
 		close:addEventListener( "tap", handleCloseEventListenerTap  )
 		sceneGroup:insert( close )
 		
-		--close = display.newText( "CLOSE", _W/36, lineImg.y + lineImg.height/2 + _H/64, _FontArr[30], _H/48 )
---		close.anchorX = 0
---		close.anchorY = 0
---        close:setFillColor( 206/255, 23/255, 100/255 )
---        close:addEventListener( "tap", handleCloseEventListenerTap )
---        sceneGroup:insert( close )
-        
         nextBtn = widget.newButton(
 		{
 			width = (_W/5.5)*2,
 			height = (_H/28.23)*2,
 			defaultFile = imageDirectory2.."unSelected_CheckBox1.png",
 			overFile = imageDirectory2.."unSelected_CheckBox1.png",
-			label = "NEXT",--GBCLanguageCabinet.getText("NextLabel",_LanguageKey),
+			label = "NEXT",
 			font = _FontArr[6],
-			fontSize = _H/21.33,--forwardBtnTextSize
+			fontSize = _H/21.33,
 			labelYOffset = 5,
 			labelColor = { default={1,1,1,1}, over={1,1,1,1} },
-			--onEvent = handleButtonEvent,
 		}
 		)
 		nextBtn.x = _W - nextBtn.width/2 - _W/108
@@ -236,63 +199,16 @@ function scene:show( event )
 		nextBtn:addEventListener( "tap", handleNextBtnEventListenerTap  )
 		sceneGroup:insert( nextBtn )
         
-        --nextBtn = display.newImageRect( imageDirectory.."ForwardArrow.png", _W/18, _H/36.22 )
-        --nextBtn = display.newText( "NEXT", _W - _W/36, close.y, _FontArr[30], _H/48 )
---        nextBtn.anchorX = 1
---        nextBtn.anchorY = 0
---        nextBtn:setFillColor( 206/255, 23/255, 100/255 )
---		nextBtn:addEventListener( "tap", handleNextBtnEventListenerTap )
---		sceneGroup:insert( nextBtn )
-        
         lineImg = display.newImageRect( imageDirectory.."DeviderLine.png", _W, _H/384 )
 		lineImg.x = _W/2
 		lineImg.y = nextBtn.y - nextBtn.height/2 - _H/96
 		sceneGroup:insert( lineImg )
         
-        --[[for i = 1, #imgArr do
-        	if i == 1 then
-        		dot2[i] = display.newImageRect( imageDirectory.."pink.png", _W/36,_H/64 )
-    	    	dot2[i].x = _W/2 - dot2[i].width*(#imgArr-1)
-        		dot2[i].y = close.y + close.height/2
-        		dot2[i].alpha = 0.5
-        		sceneGroup:insert( dot2[i] )
-        		
-	        	dot[i] = display.newImageRect( imageDirectory.."pink.png", dot2[i].width,dot2[i].height )
-    	    	dot[i].x = dot2[i].x
-        		dot[i].y = dot2[i].y
-        		sceneGroup:insert( dot[i] )
-        		
-        	else
-        		dot2[i] = display.newImageRect( imageDirectory.."pink.png", _W/36,_H/64 )
-    	    	dot2[i].x = dot[i-1].x + dot[i-1].width*2
-        		dot2[i].y = dot[i-1].y
-        		dot2[i].alpha = 0.5
-        		sceneGroup:insert( dot2[i] )
-        		
-        		dot[i] = display.newImageRect( imageDirectory.."pink.png", dot2[i].width,dot2[i].height )
-    	    	dot[i].x = dot2[i].x
-        		dot[i].y = dot2[i].y
-        		sceneGroup:insert( dot[i] )
-        		
-        	end
-        	
-        	--dot2[i].isVisible = false
---	        dot[i].isVisible = false
-        	
-        end]]--
-        
         k = 1
         
-        --for i = 1, #imgArr do
---        	dot2[i].isVisible = false
---	        dot[i].isVisible = true
---        end
-        
         imgArr[k].isVisible = true
-        --dot2[k].isVisible = true
---        dot[k].isVisible = false
         
-
+        
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
 
@@ -325,23 +241,9 @@ function scene:hide( event )
         end
         imgArr = { }
         
-        --for i = 1, #dot2 do
---        	display.remove( dot2[i] )
---	        dot2[i] = nil
---        end
---        dot2 = { }
-        
-        --for i = 1, #dot do
---        	display.remove( dot[i] )
---	        dot[i] = nil
---        end
---        dot = { }
-        
         endX = nil
         beginX = nil
         k = nil
-        
-        
         
 
     elseif ( phase == "did" ) then

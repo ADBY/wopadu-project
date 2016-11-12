@@ -33,7 +33,6 @@ local function loadData(name)
 	 path = system.pathForFile(name, system.DocumentsDirectory )
 	 local fhd = io.open( path )
 	if(fhd) then
-		print("der")
 		local file = io.open( path, "r" )
 		 var= file:read( "*a" )
 		 io.close( file )
@@ -72,7 +71,7 @@ local function onFirstNameEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -88,7 +87,7 @@ local function onLastNameEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -104,7 +103,7 @@ local function onMobileNoEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -120,7 +119,7 @@ local function onAlleregyEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
+        
     
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
@@ -180,7 +179,7 @@ end
 local function EditProfileNetworkListener( event )
 	
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         networkReqCount1 = networkReqCount1 + 1
         
     	native.setActivityIndicator( false )
@@ -206,7 +205,6 @@ local function EditProfileNetworkListener( event )
 		
 		
     else
-        print ( "RESPONSE:111" .. event.response )
         
         local changePswdList = json.decode(event.response)
 
@@ -219,9 +217,6 @@ local function EditProfileNetworkListener( event )
         elseif( changePswdList == 2 ) then
         	local alert = native.showAlert( alertLabel,GBCLanguageCabinet.getText("1Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk2 )
         	
-       --[[ elseif( changePswdList == 3 ) then
-        	local alert = native.showAlert( alertLabel, "Password required minimum 6 characters.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk2 )
-		]]--
         elseif( changePswdList == 4 ) then
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("2Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk3 )
         	
@@ -259,28 +254,12 @@ local function handleButtonEvent( event )
 	if event.phase == "ended" then
 		
 		if event.target.id == "save" then
-			print( "save password" )
 			-- Access Google over SSL:
 			
 			local f_NameTfValue = f_NameTf.text:gsub( "&", "%%26" )
 			local l_NameTfValue = l_NameTf.text:gsub( "&", "%%26" )
 			local mobileNoTfValue = mobileNoTf.text:gsub( "&", "%%26" )
 			local alleregyTfTfValue = alleregyTf.text:gsub( "&", "%%26" )
-			
-			--[[local headers = {}
-			
-			headers["Content-Type"] = "application/x-www-form-urlencoded"
-			headers["Accept-Language"] = "en-US"
-			
-			
-			local body = "ws=1&user_id=".._UserID.."&first_name="..f_NameTfValue.."&last_name="..l_NameTfValue.."&mobile="..mobileNoTfValue
-			local params = {}
-			params.headers = headers
-			params.body = body
-			
-			local url = _WebLink.."profile-edit.php?"
-			print( url..body )
-			editProfileRequest = network.request( url, "POST", EditProfileNetworkListener, params )]]--
 			
 			local url = _WebLink.."profile-edit.php?ws=1&user_id=".._UserID.."&first_name="..f_NameTfValue.."&last_name="..l_NameTfValue.."&mobile="..mobileNoTfValue.."&allergies="..alleregyTfTfValue
 			local url2 = url:gsub(" ", "%%20")
@@ -302,7 +281,7 @@ end
 local function SignInNetworkListener( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
+        
         
         networkReqCount2 = networkReqCount2 + 1
         
@@ -321,7 +300,6 @@ local function SignInNetworkListener( event )
 			
 		end
     else
-        print ( "sign in details RESPONSE:" .. event.response )
         
         local signInList = json.decode(event.response)
         
@@ -353,8 +331,6 @@ local function SignInNetworkListener( event )
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Account3Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing2 )
         	
         else
-        	print( "login successfully" )
-        	print( _StripeCardNo )
         	
         	f_NameTf.text = signInList.first_name
         	mobileNoTf.text = signInList.mobile
@@ -413,20 +389,7 @@ function scene:create( event )
         heading = display.newText( GBCLanguageCabinet.getText("editAccountLabel",_LanguageKey), header.x, header.y, _FontArr[6], _H/30 )
         heading:setFillColor( 1 )
         sceneGroup:insert( heading )
-        --[[
-        local backBtn = display.newImageRect( imageDirectory.."Back_Btn.png", _W/15.42, _H/33.10 )
-        backBtn.x = _W/13.5
-        backBtn.y = header.y
-        sceneGroup:insert( backBtn )
-       			
-		local backBg = display.newRect( backBtn.x, backBtn.y, backBtn.width + _W/21.6, backBtn.height + 38.4 )
-		backBg:setFillColor( 83/255, 20/255, 111/255 )
-		backBg:addEventListener( "tap", handleBackButtonEvent )
-		backBg:addEventListener( "touch", handleBackButtonEventTouch )
-		sceneGroup:insert( backBg )
-		backBtn:toFront()
-    	]]--
-    	
+        
     local backBtn = widget.newButton
 	{
     	width = _W/9,
@@ -434,7 +397,6 @@ function scene:create( event )
     	defaultFile = imageDirectory.."Back_Btn2.png",
    		overFile = imageDirectory.."Back_Btn2.png",
     	id = "back",
-    	--onEvent = handleButtonEvent
 	}
 	backBtn.x = _W/13.5
 	backBtn.y = header.y
@@ -458,26 +420,10 @@ function scene:show( event )
         -- Example: start timers, begin animation, play audio, etc.
         
         heading.text = GBCLanguageCabinet.getText("editAccountLabel",_LanguageKey)
-        
-        print( "In Edit Profile screen..................." )
-        
+                
         networkReqCount1 = 0
         networkReqCount2 = 0
         networkReqCount3 = 0
-        
-        --[[title = display.newText( "Change your password,", _W/2.8, _H/26 + _H/26 + _H/27.42, _FontArr[6], _H/40 )
-        title:setFillColor( 83/255, 80/255, 79/255 )
-        sceneGroup:insert( title )
-        
-        title2 = display.newText( " Forgot Password?", title.x + title.width/2 + _W/8.30, title.y, _FontArr[6], _H/40 )
-        title2:setFillColor( 206/255, 23/255, 100/255 )
-        sceneGroup:insert( title2 )
-        
-        title2Bg = display.newRect( title2.x, title2.y, title2.width + _W/21.6, title2.height + _H/38.4 )
-        title2Bg:setFillColor( 0, 0, 0, 0.01 )
-        title2Bg:addEventListener( "tap", handleForgotPswdEvent)
-        title2Bg:addEventListener( "touch", handleForgotPswdEventTouch)
-        sceneGroup:insert( title2Bg )]]--
         
         f_NameBg = display.newImageRect( imageDirectory2.."OldPassTextField.png", _W/1.08, _H/13.33 )
         f_NameBg.x = _W/2
@@ -486,7 +432,6 @@ function scene:show( event )
         
         f_NameTf = native.newTextField( f_NameBg.x, f_NameBg.y, f_NameBg.width - textFieldWidth, f_NameBg.height - textFieldHeight )
 		f_NameTf.hasBackground = false
-		--f_NameTf.isSecure = true
 		f_NameTf.placeholder = GBCLanguageCabinet.getText("firstNameLabel",_LanguageKey)
 		f_NameTf:addEventListener( "userInput", onFirstNameEdit )
 		f_NameTf.font = native.newFont( _FontArr[10], _H/28 )
@@ -499,7 +444,6 @@ function scene:show( event )
         
         l_NameTf = native.newTextField( l_NameBg.x, l_NameBg.y, l_NameBg.width - textFieldWidth, l_NameBg.height - textFieldHeight )
 		l_NameTf.hasBackground = false
-		--l_NameTf.isSecure = true
 		l_NameTf.placeholder = GBCLanguageCabinet.getText("lastNameLabel",_LanguageKey)
 		l_NameTf:addEventListener( "userInput", onLastNameEdit )
 		l_NameTf.font = native.newFont( _FontArr[10], _H/28 )
@@ -512,7 +456,6 @@ function scene:show( event )
         
         mobileNoTf = native.newTextField( mobileNoBg.x, mobileNoBg.y, mobileNoBg.width - textFieldWidth, mobileNoBg.height - textFieldHeight )
 		mobileNoTf.hasBackground = false
-		--mobileNoTf.isSecure = true
 		mobileNoTf.inputType = "phone"
 		mobileNoTf:setReturnKey( "done" )
 		mobileNoTf.placeholder = GBCLanguageCabinet.getText("mobileNoLabel",_LanguageKey)
@@ -586,30 +529,11 @@ function scene:show( event )
 		sceneGroup:insert( saveChangesBtn )
         saveChangesBtn:setEnabled( false )
         
-        print( "stripe card no >>>>>>>>> " )
-        print( _StripeCardNo )
-        
         local ifFbLogin = loadData( "fb" )
-		--local ifGoogleLogin = loadData( "google" )
 		local ifTwitterLogin = loadData( "twitter" )
 		
 		if(ifFbLogin == "1") then
-         
-         	--[[local headers = {}
-							
-			headers["Content-Type"] = "application/x-www-form-urlencoded"
-			headers["Accept-Language"] = "en-US"
-							
-			local body = "first_name=".._fName.."&last_name=".._lName.."&email=".._UserName.."&connect=fb"
-			local params = {}
-			params.headers = headers
-			params.body = body
-							
-			local url = _WebLink.."fb-g-connect.php?"
-			print( url..body )
-			getUserSocialInfoRequest = network.request( url, "POST", SignInNetworkListener, params )
-			]]--
-			
+         	
 			local url = _WebLink.."fb-g-connect.php?first_name=".._fName.."&last_name=".._lName.."&email=".._UserName.."&connect=fb"
 			local url2 = url:gsub(" ", "%%20")
 			getUserSocialInfoRequest = network.request( url, "GET", SignInNetworkListener )
@@ -623,27 +547,11 @@ function scene:show( event )
 			native.setActivityIndicator( true )
 			
 		else
-		
-       --[[ local headers = {}
 			
-		headers["Content-Type"] = "application/x-www-form-urlencoded"
-		headers["Accept-Language"] = "en-US"
-			
-			
-		local body = "ws=1&email=".._UserName.."&password=".._Password
-		local params = {}
-		params.headers = headers
-		params.body = body
-			
-		local url = _WebLink.."login.php?"
-		print( url..body )
-		getUserInfoRequest = network.request( url, "POST", SignInNetworkListener, params )]]--
-		
 			local url = _WebLink.."login.php?ws=1&email=".._UserName.."&password=".._Password
 			local url2 = url:gsub(" ", "%%20")
 			getUserInfoRequest = network.request( url, "GET", SignInNetworkListener )
 			native.setActivityIndicator( true )
-			print(url2)
 			
         end
         

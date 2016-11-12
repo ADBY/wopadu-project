@@ -31,52 +31,7 @@ local function onDoNothing( event )
 end
 
 local function deviceIdNetworkListener( event )
-
-	--[[if ( event.isError ) then
-        print( "Network error!" )
-        
-        local alert = native.showAlert( alertError, NetworkErrorMsg, { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        timer.performWithDelay( 200, function() 
-    	native.setActivityIndicator( false )
-		end )
-    else
-        print ( "RESPONSE: " .. event.response )
-        
-        local deviceIdList = json.decode(event.response)
-        
-        if( deviceIdList == 0 ) then
-        	local alert = native.showAlert( alertError, "All fields are mandatory123.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 1 ) then
-        	local alert = native.showAlert( alertError, "All fields are mandatory.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        
-        elseif( deviceIdList == 2 ) then
-        	local alert = native.showAlert( alertError, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 3 ) then
-        	local alert = native.showAlert( alertError, "User id does not exists.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 4 ) then
-        	local alert = native.showAlert( alertError, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        	
-        elseif( deviceIdList == 5 ) then
-        	local alert = native.showAlert( alertError, "Something went wrong, Query Error.", { GBCLanguageCabinet.getText("okLabel",_LanguageKey) } )
-        
-        else
-        	print( "Device id is registered successfully." )
-        	
-		end
-
-        timer.performWithDelay( 200, function() 
-    	native.setActivityIndicator( false )
-		end )
-        
-    end]]--
-    
-    --downloadMenuImage()
-    --fetchDataFromBeacon()
-    native.setActivityIndicator( false )
-	print( _Tutorial )
+	native.setActivityIndicator( false )
     if _Tutorial == "0" then
 		composer.gotoScene("welcomeTutorialScreen")
 	else
@@ -89,7 +44,6 @@ local function registerDeviceFunc( event )
 
 
 	local deviceID = system.getInfo( "deviceID" )
-    print( "Device ID : "..deviceID )
     local platformName
         		
     if system.getInfo( "platformName" ) == "Android" then
@@ -104,37 +58,18 @@ local function registerDeviceFunc( event )
 		else
 	
 		end					
-							
-		--[[local headers = {}
-			
-		headers["Content-Type"] = "application/x-www-form-urlencoded"
-		headers["Accept-Language"] = "en-US"
-			
-		local body = "user_id=".._UserID.."&device_id="..deviceID.."&notif_id="..RegistrationId.."&type="..platformName.."&action=login"
-			
-		local params = {}
-		params.headers = headers
-		params.body = body
-		params.timeout = 180
-			
-		local url = _WebLink.."reg-device.php?"
-			
-		deviceRequest = network.request( url, "POST", deviceIdNetworkListener, params )]]--
 		
 		local url = _WebLink.."reg-device.php?user_id=".._UserID.."&device_id="..deviceID.."&notif_id="..RegistrationId.."&type="..platformName.."&action=login"
 		local url2 = url:gsub( " ", "%%20" )
 		deviceRequest = network.request( url2, "GET", deviceIdNetworkListener )
 		native.setActivityIndicator( true )
-
-
-	
+		
 	return true
 end
 
 local function handleOk( event )
 	verificationCodeTf.text = ""
 	registerDeviceFunc()
-	--composer.gotoScene( "welcomeScreen" )
 
 	return true
 end
@@ -147,20 +82,6 @@ end
 
 local function handleOk3( event )
 	-- Access Google over SSL:
-	
-	--[[local headers = {}
-	
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Accept-Language"] = "en-US"
-	
-	local body = "ws=1&user_id=".._UserID.."&send_email=1"
-	local params = {}
-	params.headers = headers
-	params.body = body
-	
-	local url = _WebLink.."account-verify.php?"
-	print( url..body )
-	verificationRequest1 = network.request( url, "POST", verificationListNetworkListener2, params )]]--
 	
 	local url
 	
@@ -195,8 +116,7 @@ local function onVerificationCodeEdit( event )
 	if ( event.phase == "began" ) then
 	
     elseif ( event.phase == "ended" ) then
-        print( event.target.text )
-    
+        
     elseif ( event.phase == "submitted" ) then
     	native.setKeyboardFocus( nil )
 
@@ -224,7 +144,6 @@ end
 function verificationListNetworkListener2( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
        	networkReqCount2 = networkReqCount2 + 1
     	native.setActivityIndicator( false )
 		
@@ -237,7 +156,6 @@ function verificationListNetworkListener2( event )
         	
         end
     else
-        print ( "RESPONSE:" .. event.response )
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
@@ -259,8 +177,7 @@ function verificationListNetworkListener2( event )
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("Email8Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk3 )
         	
         elseif event.response == "OK" then
-        	print( "mail sent successfully" )
-        
+        	
         end
 		
     end
@@ -270,7 +187,6 @@ end
 local function verificationListNetworkListener( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
         networkReqCount3 = networkReqCount3 + 1
     	native.setActivityIndicator( false )
 		if( networkReqCount3 > 3 ) then  
@@ -287,7 +203,6 @@ local function verificationListNetworkListener( event )
 			native.setActivityIndicator( true )
 		end
     else
-        print ( "RESPONSE:" .. event.response )
         timer.performWithDelay( 200, function() 
     	native.setActivityIndicator( false )
 		end )
@@ -318,7 +233,6 @@ local function verificationListNetworkListener( event )
         	local alert = native.showAlert( alertLabel, GBCLanguageCabinet.getText("somethingWentWrongAlert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, onDoNothing )
         	
         else
-        	print( verificationList.flag, verificationList.user_id )
         	if verificationList.user_id ~= nil then
         		_UserID = verificationList.user_id
         		storeData( "UserID", verificationList.user_id )
@@ -343,7 +257,6 @@ end
 local function signInListNetworkListener( event )
 
 	if ( event.isError ) then
-        print( "Network error!" )
         networkReqCount1 = networkReqCount1 + 1
         
     	native.setActivityIndicator( false )
@@ -360,9 +273,7 @@ local function signInListNetworkListener( event )
 			native.setActivityIndicator( true )
 			
 		end
-    else
-        print ( "RESPONSE:" .. event.response )
-        
+    else      
         local signInList = json.decode(event.response)
         
         if( signInList == 0 ) then
@@ -420,7 +331,6 @@ local function signInListNetworkListener( event )
         	local alert = native.showAlert( alertLabel,  GBCLanguageCabinet.getText("Account3Alert",_LanguageKey), { GBCLanguageCabinet.getText("okLabel",_LanguageKey) }, handleOk4 )
         	
         else
-        	print( "login successfully" )
         	storeData( "UserID", signInList.id )
         	storeData( "UserName", emailTfValue )
 			storeData( "Password", pswdTfValue )
@@ -430,10 +340,8 @@ local function signInListNetworkListener( event )
 			storeData( "Allergies", signInList.allergies )
 			
 			if(signInList.card_number == nil or signInList.card_number == "" or signInList.card_number == " ") then
-				print( "no stripe details" )
+				
 			else
-				print( "stripe details" )
-				--storeData( "S_ID", signInList.stripe_id )
 				storeData( "S_CardNo", signInList.card_number )
 				storeData( "S_CVVNo", signInList.cvv_number )
 				storeData( "S_ExpiryMonth", signInList.expiry_date_month )
@@ -442,7 +350,6 @@ local function signInListNetworkListener( event )
 				_StripeCVVNo = signInList.cvv_number
 				_StripeExpMont = signInList.expiry_date_month
 				_StripeExpYear = signInList.expiry_date_year
-				--_StripeCustomerID = signInList.stripe_id
 				_StripePin = signInList.pin_number
 			end
 			
@@ -467,27 +374,9 @@ local function handleButtonEvent( event )
 	if event.phase == "ended" then
 		
 		if event.target.id == "verify" then
-			print( "verification account" )
 			-- Access Google over SSL:
 			
-			--[[local headers = {}
-			
-			headers["Content-Type"] = "application/x-www-form-urlencoded"
-			headers["Accept-Language"] = "en-US"
-			
-			--param.userIdForVerification
-			local body = "ws=1&user_id=".._UserID.."&verif_code="..verificationCodeTfValue
-			local params = {}
-			params.headers = headers
-			params.body = body
-			
-			local url = _WebLink.."account-verify.php?"
-			print( url..body )
-			verificationRequest2 = network.request( url, "POST", verificationListNetworkListener, params )]]--
-			
 			local verificationCodeTfValue = verificationCodeTf.text:gsub( "&", "%%26" )
-			
-			print( param.userIdForVerification, _UserID )
 			
 			local url
 			
@@ -548,14 +437,10 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
         
-        
-        print( "In verifiedAcc screen....." )
-        
+                
         heading.text = GBCLanguageCabinet.getText("VerificationLabel",_LanguageKey)
         
-        function verificationFunc( )
-			print( "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" )
-			
+        function verificationFunc( )			
 			networkReqCount1 = 0
 			networkReqCount2 = 0
 			networkReqCount3 = 0
@@ -597,24 +482,7 @@ function scene:show( event )
 			sceneGroup:insert( verificationCodeBtn )
 			
 			if composer.getSceneName( "previous" ) ~= "signUp" then
-				print( "main....." )
 				-- Access Google over SSL:
-				
-				--[[local headers = {}
-				
-				headers["Content-Type"] = "application/x-www-form-urlencoded"
-				headers["Accept-Language"] = "en-US"
-				
-				local body = "ws=1&user_id=".._UserID.."&send_email=1"
-				local params = {}
-				params.headers = headers
-				params.body = body
-				
-				local url = _WebLink.."account-verify.php?"
-				print( url..body )
-				verificationRequest3 = network.request( url, "POST", verificationListNetworkListener2, params )]]--
-				
-				print( param.userIdForVerification, _UserID )
 				
 				local url
 				
@@ -628,16 +496,12 @@ function scene:show( event )
 				verificationRequest3 = network.request( url2, "GET", verificationListNetworkListener2 )
 				
 			else
-				print( "+++++++++++++" )
-				print(composer.getSceneName( "previous" ))
 				
 			end
 			
 		end
         
-        if param.userIdForVerification and param.pswdForVerification then
-        	print( param.userIdForVerification, param.pswdForVerification )
-        	
+        if param.userIdForVerification and param.pswdForVerification then        	
 			emailTfValue = (param.userIdForVerification):gsub( "&", "%%26" )
 			pswdTfValue = (param.pswdForVerification):gsub( "&", "%%26" )
 			
@@ -647,7 +511,6 @@ function scene:show( event )
 			native.setActivityIndicator( true )
 			
 		else
-        	print( "*************" )
         	verificationFunc()
         	
         end
